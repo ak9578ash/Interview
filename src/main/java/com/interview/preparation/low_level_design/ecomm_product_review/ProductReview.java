@@ -133,25 +133,25 @@ public class ProductReview {
         reviewService.addReview(iphoneReview2);
 
 
-//        Address userAddress3 = new Address("xyz madhav ","Jaipur house",
-//                "Agra","UP","282002");
-//
-//        UserProfile userProfile3 = new UserProfile();
-//        userProfile3.setEmailId("abcxyz@gmail.com");
-//        userProfile3.setFirstName("abc");
-//        userProfile3.setLastName("xyz");
-//        userProfile3.setUserName("abcxyz");
-//        userProfile3.setPassword("********");
-//        userProfile3.setPhoneNumber("1234567890");
-//        userProfile3.setUserAddress(userAddress3);
-//
-//        User user3 = new User(userProfile3);
-//
-//        accountService.addUser(user3);
-//        accountService.initiateVerification(user3);
-//
-//        Review iphoneReview3 = new Review(iphone.getProductId() , user3.getUserId(),1);
-//        reviewService.addReview(iphoneReview3);
+        Address userAddress3 = new Address("xyz madhav ","Jaipur house",
+                "Agra","UP","282002");
+
+        UserProfile userProfile3 = new UserProfile();
+        userProfile3.setEmailId("abcxyz@gmail.com");
+        userProfile3.setFirstName("abc");
+        userProfile3.setLastName("xyz");
+        userProfile3.setUserName("abcxyz");
+        userProfile3.setPassword("********");
+        userProfile3.setPhoneNumber("1234567890");
+        userProfile3.setUserAddress(userAddress3);
+
+        User user3 = new User(userProfile3);
+
+        accountService.addUser(user3);
+        accountService.initiateVerification(user3);
+
+        Review iphoneReview3 = new Review(iphone.getProductId() , user3.getUserId(),1);
+        reviewService.addReview(iphoneReview3);
 
         // get reviews of product --> TEST CASE 6
         List<Review> productReviewsById = productService.getReviewsOfProduct(iphone.getProductId());
