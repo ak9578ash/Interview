@@ -36,7 +36,4 @@ public class PaymentService {
             seatLockProvider.unlockSeats(booking.getShow(), booking.getBookedSeats(), booking.getUser().getId());
         }
     }
-
-
-
 }

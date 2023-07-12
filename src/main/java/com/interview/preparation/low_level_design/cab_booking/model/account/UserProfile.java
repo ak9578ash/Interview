@@ -12,4 +12,5 @@ public class UserProfile {
     private String middleName;
     private String lastName;
     private String emailId;
+    private String phoneNumber;
 }

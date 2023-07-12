@@ -12,6 +12,7 @@ import com.interview.preparation.low_level_design.cab_booking.strategies.CabMatc
 import com.interview.preparation.low_level_design.cab_booking.strategies.PriceStrategy;
 import com.interview.preparation.low_level_design.cab_booking.utils.CabLockProvider;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,8 @@ public class TripService {
     private final CabMatchingStrategy cabMatchingStrategy;
     private final PriceStrategy priceStrategy;
 
-    public TripService(TripRepository tripRepository, CabLockProvider cabLockProvider, CabMatchingStrategy cabMatchingStrategy, PriceStrategy priceStrategy) {
+    public TripService(TripRepository tripRepository, CabLockProvider cabLockProvider,
+                       CabMatchingStrategy cabMatchingStrategy, PriceStrategy priceStrategy) {
         this.tripRepository = tripRepository;
         this.cabLockProvider = cabLockProvider;
         this.cabMatchingStrategy = cabMatchingStrategy;
@@ -34,8 +36,8 @@ public class TripService {
             throw new CabTemporarilyUnavailable("cab is not available");
         }
         cabLockProvider.lockCabs(cabs, user.getId());
-        Cab cab = cabMatchingStrategy.matchCabToRider(cabs, toLocation, MAX_ALLOWED_TRIP_MATCHING_DISTANCE);
-        Double charges = priceStrategy.getPrice(fromLocation, toLocation);
+        List<Cab> cab = cabMatchingStrategy.matchCabToRider(cabs, toLocation, MAX_ALLOWED_TRIP_MATCHING_DISTANCE);
+        Double charges = priceStrategy.getPrice(fromLocation, toLocation) * cab.size();
 
         Trip trip = new Trip(user, cab, charges, fromLocation, toLocation);
 
@@ -57,6 +59,7 @@ public class TripService {
                 .stream()
                 .filter(trip -> trip.getTripStatus() == TripStatus.CONFIRM)
                 .map(Trip::getCab)
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
@@ -76,5 +79,6 @@ public class TripService {
             throw new BadRequestException();
         }
         trip.endTrip();
+        cabLockProvider.unlockCabs(trip.getCab(),user.getId());
     }
 }

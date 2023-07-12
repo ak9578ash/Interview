@@ -26,4 +26,8 @@ public class CabRepository {
         return cab;
     }
 
+    public List<Cab> getAllCabs(){
+        return cabList;
+    }
+
 }

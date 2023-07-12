@@ -3,11 +3,14 @@ package com.interview.preparation.low_level_design.cab_booking.model;
 import com.interview.preparation.low_level_design.cab_booking.model.account.User;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 import java.util.UUID;
 
 
 @Getter
 @Setter
+@ToString
 public class Cab {
     private String id;
     private String licensePlate;

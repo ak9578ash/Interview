@@ -6,5 +6,5 @@ import com.interview.preparation.low_level_design.cab_booking.model.Location;
 import java.util.List;
 
 public interface CabMatchingStrategy {
-    Cab matchCabToRider(List<Cab> candidateCabs, Location toPoint , Double allowedDistance);
+    List<Cab> matchCabToRider(List<Cab> candidateCabs, Location toPoint , Double allowedDistance);
 }

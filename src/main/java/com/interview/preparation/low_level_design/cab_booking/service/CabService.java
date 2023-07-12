@@ -22,4 +22,9 @@ public class CabService {
         return cabRepository.getCabByCabId(cabId);
     }
 
+    public List<Cab> getAllCabs(){
+        return cabRepository.getAllCabs();
+    }
+
+
 }
