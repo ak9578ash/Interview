@@ -8,8 +8,8 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.model.Sho
 import java.util.*;
 
 public class InMemorySeatLockProvider implements SeatLockProvider {
-    private Map<Show, Map<Seat, SeatLock>> locks;
-    private Integer lockoutTime;
+    private final Map<Show, Map<Seat, SeatLock>> locks;
+    private final Integer lockoutTime;
 
     public InMemorySeatLockProvider(Integer lockoutTime) {
         this.locks = new HashMap<>();
