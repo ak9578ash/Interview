@@ -108,7 +108,7 @@ public class CabBookingMain {
         User driver4 = new User(driverAddress4, driverProfile4);
         userService.addUser(driver4);
 
-
+// -----------------------------------------------------------------------------------------------
         Cab cab1 = new Cab("UP80 CD 1234", driver1);
         cab1.setCurrentLocation(new Location(1.0, 1.0));
         cabService.addCab(cab1);
