@@ -30,7 +30,7 @@ public class ParkingLotRepository {
                 .filter(pFloor -> pFloor.getParkingFloorId().equalsIgnoreCase(parkingFloor.getParkingFloorId()))
                 .findFirst();
         if (floor.isPresent()) {
-            throw new InvalidParkingFloorException("Invalid parking floor");
+            throw new InvalidParkingFloorException("parking floor already present");
         }
         parkingLotMap.get(parkingLotId).getParkingFloors().add(parkingFloor);
         return parkingFloor;
