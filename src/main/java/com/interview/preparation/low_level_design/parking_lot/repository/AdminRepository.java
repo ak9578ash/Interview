@@ -15,8 +15,10 @@ public class AdminRepository {
     }
 
     public Admin getAdminByEmailId(String emailId){
-        Optional<Admin> admin =
-                admins.stream().filter(adm -> adm.getEmail().equalsIgnoreCase(emailId)).findFirst();
+        Optional<Admin> admin = admins
+                .stream()
+                .filter(adm -> adm.getEmail().equalsIgnoreCase(emailId))
+                .findFirst();
         return admin.orElse(null);
     }
 

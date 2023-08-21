@@ -2,6 +2,7 @@ package com.interview.preparation.low_level_design.parking_lot.model.account;
 
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingFloorException;
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingLotException;
+import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingSpotException;
 import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
 import com.interview.preparation.low_level_design.parking_lot.service.ParkingLotService;
 
@@ -19,7 +20,7 @@ public class Admin extends Account {
         return parkingLotService.addParkingFloor(parkingLotId, parkingFloor);
     }
 
-    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingFloorException, InvalidParkingLotException {
+    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingFloorException, InvalidParkingLotException, InvalidParkingSpotException {
         return parkingLotService.addParkingSpot(parkingLotId, parkingFloorId, parkingSpot);
     }
     public EntranceGate addEntranceGate(String parkingLotId, EntranceGate entranceGate) throws InvalidParkingLotException {

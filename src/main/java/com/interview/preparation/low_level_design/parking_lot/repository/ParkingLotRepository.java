@@ -2,6 +2,7 @@ package com.interview.preparation.low_level_design.parking_lot.repository;
 
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingFloorException;
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingLotException;
+import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingSpotException;
 import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
 
 import java.util.*;
@@ -36,7 +37,7 @@ public class ParkingLotRepository {
         return parkingFloor;
     }
 
-    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingLotException, InvalidParkingFloorException {
+    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingLotException, InvalidParkingFloorException, InvalidParkingSpotException {
         ParkingLot parkingLot = parkingLotMap.get(parkingLotId);
         if (parkingLot == null) {
             throw new InvalidParkingLotException("Invalid parking lot");
@@ -53,9 +54,8 @@ public class ParkingLotRepository {
                 .filter(pSpot -> pSpot.getParkingSpotId().equalsIgnoreCase(parkingSpot.getParkingSpotId()))
                 .findFirst();
         if (spot.isPresent()) {
-            return spot.get();
+            throw new InvalidParkingSpotException("parking spot already present");
         }
-
         floor.get().getParkingSpots().get(parkingSpot.getParkingSpotType()).add(parkingSpot);
         return parkingSpot;
     }
@@ -91,6 +91,4 @@ public class ParkingLotRepository {
         parkingLotMap.get(parkingLotId).getExitGates().add(exitGate);
         return exitGate;
     }
-
-
 }

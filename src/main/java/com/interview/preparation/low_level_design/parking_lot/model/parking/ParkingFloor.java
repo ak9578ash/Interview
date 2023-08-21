@@ -14,25 +14,16 @@ import static com.interview.preparation.low_level_design.parking_lot.model.parki
 @Setter
 public class ParkingFloor {
     private String parkingFloorId;
-    private Map<ParkingSpotType , Deque<ParkingSpot>> parkingSpots = new HashMap<>();
-    private Map<String , ParkingSpot>usedParkingSpot = new HashMap<>();
+    private Map<ParkingSpotType, Deque<ParkingSpot>> parkingSpots = new HashMap<>();
+    private Map<String, ParkingSpot> usedParkingSpot = new HashMap<>();
 
-    public ParkingFloor(String parkingFloorId){
+    public ParkingFloor(String parkingFloorId) {
         this.parkingFloorId = parkingFloorId;
         parkingSpots.put(ABLED, new ConcurrentLinkedDeque<>());
-        parkingSpots.put(CAR, new  ConcurrentLinkedDeque<>());
-        parkingSpots.put(LARGE,new ConcurrentLinkedDeque<>());
+        parkingSpots.put(CAR, new ConcurrentLinkedDeque<>());
+        parkingSpots.put(LARGE, new ConcurrentLinkedDeque<>());
         parkingSpots.put(MOTORBIKE, new ConcurrentLinkedDeque<>());
         parkingSpots.put(ELECTRIC_BIKE, new ConcurrentLinkedDeque<>());
-    }
-
-    public boolean isFloorFull(){
-        for (Map.Entry<ParkingSpotType, Deque<ParkingSpot>> entry : parkingSpots.entrySet()) {
-            if(entry.getValue().size() > 0){
-                return false;
-            }
-        }
-        return true;
     }
 
     public static ParkingSpotType getSpotTypeForVehicle(VehicleType vehicleType) {
@@ -48,29 +39,40 @@ public class ParkingFloor {
         }
     }
 
+    public boolean isFloorFull() {
+        for (Map.Entry<ParkingSpotType, Deque<ParkingSpot>> entry : parkingSpots.entrySet()) {
+            if (entry.getValue().size() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean canPark(VehicleType vehicleType) {
         return canPark(getSpotTypeForVehicle(vehicleType));
     }
 
-    public boolean canPark(ParkingSpotType parkingSpotType){
+    public boolean canPark(ParkingSpotType parkingSpotType) {
         return parkingSpots.get(parkingSpotType).size() > 0;
     }
 
     public ParkingSpot getSpot(VehicleType vehicleType) throws NoParkingSpotAvailableException {
-        if(!canPark(vehicleType)){
+        if (!canPark(vehicleType)) {
             return null;
         }
 
         ParkingSpotType parkingSpotType = getSpotTypeForVehicle(vehicleType);
-        ParkingSpot parkingSpot  =  parkingSpots.get(parkingSpotType).poll();
-
-        usedParkingSpot.put(parkingSpot.getParkingSpotId() , parkingSpot);
+        ParkingSpot parkingSpot = parkingSpots.get(parkingSpotType).poll();
+        if (parkingSpot == null) {
+            throw new NoParkingSpotAvailableException("parking spot is not available");
+        }
+        usedParkingSpot.put(parkingSpot.getParkingSpotId(), parkingSpot);
         return parkingSpot;
     }
 
-    public ParkingSpot vacateParkingSpot(String parkingSpotId){
+    public ParkingSpot vacateParkingSpot(String parkingSpotId) {
         ParkingSpot parkingSpot = usedParkingSpot.get(parkingSpotId);
-        if(parkingSpot!=null){
+        if (parkingSpot != null) {
             parkingSpot.freeSpot();
             parkingSpots.get(parkingSpot.getParkingSpotType())
                     .addFirst(parkingSpot);
@@ -78,6 +80,4 @@ public class ParkingFloor {
         }
         return null;
     }
-
-
 }

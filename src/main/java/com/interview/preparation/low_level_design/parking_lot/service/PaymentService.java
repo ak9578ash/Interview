@@ -4,7 +4,7 @@ import com.interview.preparation.low_level_design.parking_lot.model.parking.Paym
 import com.interview.preparation.low_level_design.parking_lot.repository.PaymentRepository;
 
 public class PaymentService {
-    private PaymentRepository paymentRepository ;
+    private final PaymentRepository paymentRepository ;
 
     public PaymentService(PaymentRepository paymentRepository){
         this.paymentRepository = paymentRepository;

@@ -2,6 +2,7 @@ package com.interview.preparation.low_level_design.parking_lot;
 
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingFloorException;
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingLotException;
+import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingSpotException;
 import com.interview.preparation.low_level_design.parking_lot.exception.NoParkingSpotAvailableException;
 import com.interview.preparation.low_level_design.parking_lot.model.account.*;
 import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
@@ -24,7 +25,7 @@ public class ParkingLotMain {
     static PaymentRepository paymentRepository;
     static PaymentService paymentService;
 
-    public static void main(String[] args) throws InvalidParkingFloorException, InvalidParkingLotException, NoParkingSpotAvailableException {
+    public static void main(String[] args) throws InvalidParkingFloorException, InvalidParkingLotException, NoParkingSpotAvailableException, InvalidParkingSpotException {
         parkingLotRepository = new ParkingLotRepository();
         parkingLotService = new ParkingLotService(parkingLotRepository);
 
@@ -152,12 +153,9 @@ public class ParkingLotMain {
         }
 
         // make payment --> TEST CASE 17
-        Payment bill = paymentService.makePayment(vanParkingTicket1.getTicketNumber(),
-                new Payment(vanParkingTicket1.getTicketNumber(),vacatedParkingTicket.getCharges()));
+        Payment bill = paymentService.makePayment(vanParkingTicket1.getTicketNumber(), new Payment(vanParkingTicket1.getTicketNumber(), vacatedParkingTicket.getCharges()));
 
         System.out.println(bill.getAmount());
         System.out.println(bill.getStatus());
-
     }
-
 }

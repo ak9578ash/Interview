@@ -2,11 +2,12 @@ package com.interview.preparation.low_level_design.parking_lot.service;
 
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingFloorException;
 import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingLotException;
+import com.interview.preparation.low_level_design.parking_lot.exception.InvalidParkingSpotException;
 import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
 import com.interview.preparation.low_level_design.parking_lot.repository.ParkingLotRepository;
 
 public class ParkingLotService {
-    private ParkingLotRepository parkingLotRepository;
+    private final ParkingLotRepository parkingLotRepository;
 
     public ParkingLotService(ParkingLotRepository parkingLotRepository) {
         this.parkingLotRepository = parkingLotRepository;
@@ -24,7 +25,7 @@ public class ParkingLotService {
         return parkingLotRepository.addParkingFloor(parkingLotId, parkingFloor);
     }
 
-    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingFloorException, InvalidParkingLotException {
+    public ParkingSpot addParkingSpot(String parkingLotId, String parkingFloorId, ParkingSpot parkingSpot) throws InvalidParkingFloorException, InvalidParkingLotException, InvalidParkingSpotException {
         return parkingLotRepository.addParkingSpot(parkingLotId, parkingFloorId, parkingSpot);
     }
 

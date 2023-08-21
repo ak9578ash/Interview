@@ -4,7 +4,7 @@ import com.interview.preparation.low_level_design.parking_lot.model.account.Admi
 import com.interview.preparation.low_level_design.parking_lot.repository.AdminRepository;
 
 public class AdminService {
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
 
     public AdminService(AdminRepository adminRepository){
         this.adminRepository = adminRepository;

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HourlyCost {
-    private Map<ParkingSpotType, Double> hourlyCosts = new HashMap<>();
+    private final Map<ParkingSpotType, Double> hourlyCosts = new HashMap<>();
 
     public HourlyCost() {
         hourlyCosts.put(ParkingSpotType.CAR, 20.0);

@@ -37,5 +37,4 @@ public class EntranceGate {
         parkingTicket.setTicketStatus(TicketStatus.ACTIVE);
         return parkingTicket;
     }
-
 }
