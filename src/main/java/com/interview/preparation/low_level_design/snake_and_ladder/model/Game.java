@@ -76,8 +76,7 @@ public class Game {
             assert player != null;
             int newPosition = player.getPosition() + val;
             if (newPosition > board.getEnd()) {
-                player.setPosition(newPosition);
-                players.offer(player);
+                players.add(player);
             } else {
                 player.setPosition(getNewPosition(newPosition));
                 if (player.getPosition() == board.getEnd()) {

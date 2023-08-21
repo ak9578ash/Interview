@@ -8,8 +8,9 @@ public class SnakeAndLadderMain {
         Player p1 = new Player("P1");
         Player p2 = new Player("P2");
         Player p3 = new Player("P3");
+        Player p4 = new Player("P4");
 
-        int noOfSnakes = 0;
+        int noOfSnakes = 4;
         int noOfLadders = 4;
         int boardSize = 100;
 
@@ -17,7 +18,7 @@ public class SnakeAndLadderMain {
         game.addPlayer(p1);
         game.addPlayer(p2);
         game.addPlayer(p3);
-
+        game.addPlayer(p4);
         game.playGame();
     }
 }
