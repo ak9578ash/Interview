@@ -1,6 +1,5 @@
 package com.interview.preparation.low_level_design.snake_and_ladder.model;
 
-import ch.qos.logback.core.testUtil.RandomUtil;
 import org.apache.commons.lang3.RandomUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

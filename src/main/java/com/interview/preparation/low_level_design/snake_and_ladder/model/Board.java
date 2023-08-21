@@ -4,10 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class Board {
-    private int size;
-    private int end;
-    private int start;
-
+    private final int size;
+    private final int end;
+    private final int start;
 
     public Board(int size) {
         this.size = size;

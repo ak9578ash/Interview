@@ -7,15 +7,13 @@ import java.util.*;
 
 @Getter
 public class Game {
-    private int noOfSnakes;
-    private int noOfLadders;
-
-    private Queue<Player> players;
-    private List<Snake> snakes;
-    private List<Ladder> ladders;
-
-    private Board board;
-    private Dice dice;
+    private final int noOfSnakes;
+    private final int noOfLadders;
+    private final Queue<Player> players;
+    private final List<Snake> snakes;
+    private final List<Ladder> ladders;
+    private final Board board;
+    private final Dice dice;
 
     public Game(int noOfSnakes, int noOfLadders, int boardSize) {
         this.noOfSnakes = noOfSnakes;
@@ -30,7 +28,6 @@ public class Game {
 
         initBoard();
     }
-
     public void initBoard() {
         Set<String> snakeLadderToExistSet = new HashSet<>();
         for (int i = 0; i < noOfSnakes; i++) {
@@ -67,39 +64,32 @@ public class Game {
                 }
             }
         }
-
     }
-
     public void addPlayer(Player player){
         players.add(player);
     }
-
     public void playGame(){
-        while (true){
+        do {
             Player player = players.poll();
             int val = dice.roll();
 
             assert player != null;
             int newPosition = player.getPosition() + val;
-            if(newPosition > board.getEnd()){
+            if (newPosition > board.getEnd()) {
                 player.setPosition(newPosition);
                 players.offer(player);
-            }else{
+            } else {
                 player.setPosition(getNewPosition(newPosition));
-                if(player.getPosition() == board.getEnd()){
+                if (player.getPosition() == board.getEnd()) {
                     player.setWon(true);
                     System.out.println("Player " + player.getName() + " Won.");
-                }else{
+                } else {
                     System.out.println("Setting " + player.getName() + "'s new position to " + player.getPosition());
-                    players.offer(player);
+                    players.add(player);
                 }
             }
-            if(players.size() < 2) {
-                break;
-            }
-        }
+        } while (players.size() > 0);
     }
-
     private int getNewPosition(int newPosition) {
         for (Snake snake : snakes) {
             if (snake.getHead() == newPosition) {
@@ -115,5 +105,4 @@ public class Game {
         }
         return newPosition;
     }
-
 }

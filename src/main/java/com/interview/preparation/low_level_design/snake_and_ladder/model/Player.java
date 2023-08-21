@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 public class Player {
-    private String name;
+    private final String name;
     @Setter private int position;
     @Setter private Boolean won;
 
