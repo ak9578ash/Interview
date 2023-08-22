@@ -27,7 +27,6 @@ public class InMemorySeatLockProvider implements SeatLockProvider {
         for (Seat seat : seats) {
             lockSeat(show, seat, user, lockoutTime);
         }
-
     }
 
     @Override
@@ -77,6 +76,4 @@ public class InMemorySeatLockProvider implements SeatLockProvider {
         }
         locks.get(show).remove(seat);
     }
-
-
 }

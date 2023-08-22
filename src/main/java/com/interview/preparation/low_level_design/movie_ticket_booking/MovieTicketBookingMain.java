@@ -119,6 +119,7 @@ public class MovieTicketBookingMain {
 //        user1SelectedSeats.add(user1AvailableSeats.get(1));
 //
 //        Booking user1Booking = bookingService.addBooking(user1 , show , user1SelectedSeats);
+//
 //        user2AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show);
 //
 //        // to demonstrate failed payment case we have to set the allowed retry count in paymentService to zero
@@ -141,12 +142,6 @@ public class MovieTicketBookingMain {
 //        user2SelectedSeats.add(user2AvailableSeats.get(0));
 //
 //        Booking user2Booking = bookingService.addBooking(user2 , show , user2SelectedSeats);
-
-
-
-
-
-
 
     }
 }

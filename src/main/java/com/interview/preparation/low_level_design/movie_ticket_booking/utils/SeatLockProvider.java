@@ -9,6 +9,6 @@ import java.util.List;
 public interface SeatLockProvider {
     void lockSeats(Show show, List<Seat> seats, String user) throws SeatTemporarilyUnavailableException;
     void unlockSeats(Show show, List<Seat> seats, String userId);
-    boolean validateLock(Show show, Seat seat, String userId); // to check whether the seats are locked or not
+    boolean validateLock(Show show, Seat seat, String userId); // to check whether the seats are locked or not by given user
     List<Seat> getLockedSeats(Show show);
 }

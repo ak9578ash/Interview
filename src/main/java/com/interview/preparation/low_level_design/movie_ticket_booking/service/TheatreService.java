@@ -9,7 +9,7 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.model.The
 import com.interview.preparation.low_level_design.movie_ticket_booking.repository.TheatreRepository;
 
 public class TheatreService {
-    private TheatreRepository theatreRepository;
+    private final TheatreRepository theatreRepository;
 
     public TheatreService(TheatreRepository theatreRepository) {
         this.theatreRepository = theatreRepository;
