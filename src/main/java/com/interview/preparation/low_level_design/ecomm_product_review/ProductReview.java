@@ -50,8 +50,6 @@ public class ProductReview {
         accountService = new AccountService(accountRepository,reviewService);
 
 
-
-
         Address userAddress = new Address("82 A Madhav Kunj","Pratap Nagar",
                 "Agra","UP","282002");
 
@@ -179,7 +177,5 @@ public class ProductReview {
 
         // get summary of the product --> TEST CASE 10
         Summary iphoneSummary = summaryService.getSummary(iphone);
-
-
     }
 }

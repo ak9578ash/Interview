@@ -15,15 +15,14 @@ import java.util.List;
 import static com.interview.preparation.low_level_design.ecomm_product_review.model.review.ReviewType.CERTIFIED_BUYER;
 
 public class ReviewService {
-    private ReviewRepository reviewRepository;
-    private ProductService productService;
-    private SummaryService summaryService;
+    private final ReviewRepository reviewRepository;
+    private final ProductService productService;
+    private final SummaryService summaryService;
     public ReviewService(ReviewRepository reviewRepository, ProductService productService , SummaryService summaryService) {
         this.reviewRepository = reviewRepository;
         this.productService = productService;
         this.summaryService = summaryService;
     }
-
 
     public Review addReview(Review review) throws InvalidRatingException, ProductNotFoundException {
         if (review.getRating() <= 0 || review.getRating() > 5) {

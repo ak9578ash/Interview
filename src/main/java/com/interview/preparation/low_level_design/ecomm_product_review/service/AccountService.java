@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccountService {
-    private AccountRepository accountRepository;
-    private ReviewService reviewService;
+    private final AccountRepository accountRepository;
+    private final ReviewService reviewService;
 
     public AccountService(AccountRepository accountRepository ,ReviewService reviewService ){
         this.accountRepository = accountRepository;
@@ -47,5 +47,4 @@ public class AccountService {
     public void setVerificationStatus(String userId, VerificationStatus verificationStatus) throws UserNotFoundException {
         accountRepository.getUserByUserId(userId).getUserProfile().setVerificationStatus(verificationStatus);
     }
-
 }

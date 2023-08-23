@@ -11,8 +11,8 @@ import java.util.List;
 
 
 public class SummaryService {
-    private SummaryRepository summaryRepository;
-    private ProductService productService;
+    private final SummaryRepository summaryRepository;
+    private final ProductService productService;
 
     public SummaryService(SummaryRepository summaryRepository, ProductService productService) {
         this.summaryRepository = summaryRepository;
@@ -32,21 +32,11 @@ public class SummaryService {
 
         for (Review productReview : productReviews) {
             switch (productReview.getRating()) {
-                case 1:
-                    productSummary.setTotalOneStars(productSummary.getTotalOneStars() + 1);
-                    break;
-                case 2:
-                    productSummary.setTotalTwoStars(productSummary.getTotalTwoStars() + 1);
-                    break;
-                case 3:
-                    productSummary.setTotalThreeStars(productSummary.getTotalThreeStars() + 1);
-                    break;
-                case 4:
-                    productSummary.setTotalFourStars(productSummary.getTotalFourStars() + 1);
-                    break;
-                default:
-                    productSummary.setTotalFiveStars(productSummary.getTotalFiveStars() + 1);
-                    break;
+                case 1 -> productSummary.setTotalOneStars(productSummary.getTotalOneStars() + 1);
+                case 2 -> productSummary.setTotalTwoStars(productSummary.getTotalTwoStars() + 1);
+                case 3 -> productSummary.setTotalThreeStars(productSummary.getTotalThreeStars() + 1);
+                case 4 -> productSummary.setTotalFourStars(productSummary.getTotalFourStars() + 1);
+                default -> productSummary.setTotalFiveStars(productSummary.getTotalFiveStars() + 1);
             }
         }
         return productSummary;

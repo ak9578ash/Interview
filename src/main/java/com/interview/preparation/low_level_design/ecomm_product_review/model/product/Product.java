@@ -16,11 +16,9 @@ public class Product {
     private String productName;
     private List<Review> reviews;
 
-    public Product(String productName){
+    public Product(String productName) {
         this.productId = UUID.randomUUID().toString();
         this.productName = productName;
         this.reviews = new ArrayList<>();
     }
-
-
 }

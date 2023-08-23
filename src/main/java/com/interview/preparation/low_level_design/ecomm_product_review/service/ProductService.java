@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -28,7 +28,6 @@ public class ProductService {
     }
 
     public List<Review> getReviewsOfProduct(String productId) throws ProductNotFoundException {
-
         return productRepository.getProductById(productId)
                 .getReviews()
                 .stream()
@@ -62,7 +61,8 @@ public class ProductService {
     }
 
     public List<Review> getReviewByCertifiedBuyers(String productId) throws ProductNotFoundException {
-        return productRepository.getProductById(productId).getReviews()
+        return productRepository.getProductById(productId)
+                .getReviews()
                 .stream()
                 .filter(r -> r.getReviewState() == ReviewState.MODERATION_PASSED
                         && r.getReviewType() == ReviewType.CERTIFIED_BUYER)
@@ -70,17 +70,18 @@ public class ProductService {
     }
 
     public List<Review> getReviewsOfProductByRating(String productId, int star) throws ProductNotFoundException {
-        return productRepository.getProductById(productId).getReviews()
+        return productRepository.getProductById(productId)
+                .getReviews()
                 .stream()
                 .filter(r -> r.getRating() >= star)
                 .collect(Collectors.toList());
     }
 
     public List<Review> getReviewsWithMeta(String productId ) throws ProductNotFoundException {
-        return productRepository.getProductById(productId).getReviews()
+        return productRepository.getProductById(productId)
+                .getReviews()
                 .stream()
-                .filter(r -> r.getReviewState() ==ReviewState.MODERATION_PASSED
-                        && isMetaPresent(r))
+                .filter(r -> r.getReviewState() == ReviewState.MODERATION_PASSED && isMetaPresent(r))
                 .collect(Collectors.toList());
     }
 
@@ -93,7 +94,4 @@ public class ProductService {
         }
         return false;
     }
-
-
-
 }

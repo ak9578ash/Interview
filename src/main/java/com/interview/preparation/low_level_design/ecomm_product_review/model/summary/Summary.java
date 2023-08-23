@@ -22,5 +22,4 @@ public class Summary {
         this.summaryId = UUID.randomUUID().toString();
         this.productId = productId;
     }
-
 }
