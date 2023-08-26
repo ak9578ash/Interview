@@ -25,7 +25,6 @@ public class ExitGate {
         long hours = duration.toHours();
         if (hours == 0)
             hours = 1;
-        double amount = hours * new HourlyCost().getCost(parkingSpotType);
-        return amount;
+        return hours * new HourlyCost().getCost(parkingSpotType);
     }
 }

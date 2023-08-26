@@ -33,7 +33,7 @@ public class TripService {
 
     public Trip addTrip(User user, List<Cab> cabs, Location fromLocation, Location toLocation) throws CabTemporarilyUnavailable {
         if (isAnyCabAlreadyBooked(cabs)) {
-            throw new CabTemporarilyUnavailable("cab is not available");
+            throw new CabTemporarilyUnavailable("selected cab is not available");
         }
         cabLockProvider.lockCabs(cabs, user.getId());
         List<Cab> cab = cabMatchingStrategy.matchCabToRider(cabs, toLocation, MAX_ALLOWED_TRIP_MATCHING_DISTANCE);

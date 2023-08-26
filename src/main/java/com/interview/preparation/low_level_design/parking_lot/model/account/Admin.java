@@ -7,7 +7,7 @@ import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
 import com.interview.preparation.low_level_design.parking_lot.service.ParkingLotService;
 
 public class Admin extends Account {
-    private ParkingLotService parkingLotService;
+    private final ParkingLotService parkingLotService;
 
     public Admin(ParkingLotService parkingLotService) {
         this.parkingLotService = parkingLotService;

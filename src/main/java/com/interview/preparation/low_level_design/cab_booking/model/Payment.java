@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Getter
 public class Payment {
-    private String paymentId;
-    private Trip trip;
+    private final String paymentId;
+    private final Trip trip;
 
     public Payment(Trip trip){
         this.paymentId = UUID.randomUUID().toString();

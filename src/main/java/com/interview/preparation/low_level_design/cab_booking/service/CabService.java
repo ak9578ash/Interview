@@ -25,6 +25,4 @@ public class CabService {
     public List<Cab> getAllCabs(){
         return cabRepository.getAllCabs();
     }
-
-
 }

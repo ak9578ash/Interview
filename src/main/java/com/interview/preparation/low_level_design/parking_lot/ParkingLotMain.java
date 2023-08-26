@@ -153,7 +153,8 @@ public class ParkingLotMain {
         }
 
         // make payment --> TEST CASE 17
-        Payment bill = paymentService.makePayment(vanParkingTicket1.getTicketNumber(), new Payment(vanParkingTicket1.getTicketNumber(), vacatedParkingTicket.getCharges()));
+        Payment bill = paymentService.makePayment(vanParkingTicket1.getTicketNumber(),
+                new Payment(vanParkingTicket1.getTicketNumber(), vacatedParkingTicket.getCharges()));
 
         System.out.println(bill.getAmount());
         System.out.println(bill.getStatus());

@@ -36,5 +36,4 @@ public class Trip {
     public void endTrip(){
         this.tripStatus = TripStatus.COMPLETED;
     }
-
 }
