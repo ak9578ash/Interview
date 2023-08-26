@@ -17,5 +17,4 @@ public class ExpenseGroup {
         this.groupMembers = new HashSet<>();
         this.userContributions = new HashMap<>();
     }
-
 }

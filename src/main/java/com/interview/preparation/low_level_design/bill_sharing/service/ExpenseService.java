@@ -4,15 +4,18 @@ import com.interview.preparation.low_level_design.bill_sharing.exception.Expense
 import com.interview.preparation.low_level_design.bill_sharing.model.*;
 import com.interview.preparation.low_level_design.bill_sharing.repository.ExpenseRepository;
 import com.interview.preparation.low_level_design.bill_sharing.repository.UserRepository;
+import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 public class ExpenseService {
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
+    private final ExpenseRepository expenseRepository;
 
-    public ExpenseService(NotificationService notificationService) {
+    public ExpenseService(ExpenseRepository expenseRepository, NotificationService notificationService) {
+        this.expenseRepository = expenseRepository;
         this.notificationService = notificationService;
     }
 
@@ -26,41 +29,44 @@ public class ExpenseService {
                 .expenseStatus(ExpenseStatus.CREATED)
                 .expenseGroup(new ExpenseGroup())
                 .build();
-        ExpenseRepository.expenseMap.putIfAbsent(expense.getId(), expense);
+        expenseRepository.addExpense(expense);
         return expense;
     }
 
-    public void addUsersToExpense(String expenseId, String emailId) throws ExpenseDoesNotExistsException {
-        if (!ExpenseRepository.expenseMap.containsKey(expenseId)) {
+    public void addUsersToExpense(String expenseId, User user) throws ExpenseDoesNotExistsException {
+        Expense expense = expenseRepository.getExpenseById(expenseId);
+        if (expense == null) {
             throw new ExpenseDoesNotExistsException("Better create expense and come here....");
-
         }
-        ExpenseRepository.expenseMap.get(expenseId)
-                .getExpenseGroup()
-                .getGroupMembers()
-                .add(UserRepository.userHashMap.get(emailId));
+        expense.getExpenseGroup().getGroupMembers().add(user);
 
-        notificationService.notifyUserViaMail(UserRepository.userHashMap.get(emailId), ExpenseRepository.expenseMap.get(expenseId));
-        notificationService.notifyUserViaMessage(UserRepository.userHashMap.get(emailId), ExpenseRepository.expenseMap.get(expenseId));
+        notificationService.notifyUserViaMail(user, expense);
+        notificationService.notifyUserViaMessage(user, expense);
     }
 
-    public void assignExpenseShare(String expenseId, String emailId, double share) throws ExpenseDoesNotExistsException {
-        if (!ExpenseRepository.expenseMap.containsKey(expenseId)) {
-            throw new ExpenseDoesNotExistsException(String.format("Expense %s does not exists", expenseId));
+    public void assignExpenseShare(String expenseId, User user, double share) throws ExpenseDoesNotExistsException, BadRequestException {
+        Expense expense = expenseRepository.getExpenseById(expenseId);
+        if (expense == null) {
+            throw new ExpenseDoesNotExistsException("Better create expense and come here....");
         }
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
         expense.getExpenseGroup()
-                .getUserContributions().putIfAbsent(emailId, new UserShare(emailId, share));
-
+                .getUserContributions().
+                putIfAbsent(user.getEmailId(), new UserShare(user.getEmailId(), share));
     }
 
-    public void setExpenseStatus(String expenseId, ExpenseStatus expenseStatus) {
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
+    public void setExpenseStatus(String expenseId, ExpenseStatus expenseStatus) throws ExpenseDoesNotExistsException {
+        Expense expense = expenseRepository.getExpenseById(expenseId);
+        if (expense == null) {
+            throw new ExpenseDoesNotExistsException("Better create expense and come here....");
+        }
         expense.setExpenseStatus(expenseStatus);
     }
 
-    public boolean isExpenseSettled(String expenseId) {
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
+    public boolean isExpenseSettled(String expenseId) throws ExpenseDoesNotExistsException {
+        Expense expense = expenseRepository.getExpenseById(expenseId);
+        if (expense == null) {
+            throw new ExpenseDoesNotExistsException("Better create expense and come here....");
+        }
         ExpenseGroup expenseGroup = expense.getExpenseGroup();
         Map<String, UserShare> userContributions = expenseGroup.getUserContributions();
 
@@ -72,11 +78,15 @@ public class ExpenseService {
                 total -= contribution.getContributionValue();
             }
         }
-        if (total <= 1) {
-            return true;
-        }
-        return false;
+        return total <= 1;
     }
 
+    public Expense getExpenseById(String expenseId) throws ExpenseDoesNotExistsException {
+        return expenseRepository.getExpenseById(expenseId);
+    }
+
+    public Expense addExpense(Expense expense){
+        return expenseRepository.addExpense(expense);
+    }
 }
 

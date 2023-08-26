@@ -11,6 +11,7 @@ import com.interview.preparation.low_level_design.bill_sharing.service.ExpenseSe
 import com.interview.preparation.low_level_design.bill_sharing.service.NotificationService;
 import com.interview.preparation.low_level_design.bill_sharing.service.NotificationServiceImpl;
 import com.interview.preparation.low_level_design.bill_sharing.service.UserService;
+import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,95 +20,111 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BillSharingMain {
-    static UserService userService;
-    static ExpenseService expenseService;
-    static NotificationService notificationService = new NotificationServiceImpl();
+    public static UserRepository userRepository;
+    public static UserService userService;
+
+    public static ExpenseRepository expenseRepository;
+    public static ExpenseService expenseService;
+    public static NotificationService notificationService ;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
-            ExpenseDoesNotExistsException, InvalidExpenseStateException {
-        userService = new UserService();
-        expenseService = new ExpenseService(notificationService);
+            ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
+        notificationService = new  NotificationServiceImpl();
 
-        createTestUsers();
+        expenseRepository = new ExpenseRepository();
+        expenseService = new ExpenseService(expenseRepository,notificationService);
 
-        Expense lunchExpense = createExpense();
-        expenseService.setExpenseStatus(lunchExpense.getId(), ExpenseStatus.PENDING);
+        userRepository = new UserRepository();
+        userService = new UserService(userRepository,expenseService);
+
+// --------------------------------------------------------------------------------------------------------------------
+
+        User user1 = userService.addUser("akash@gmail.com", "Akash", "7906048908");
+        User user2 = userService.addUser("xyz@gmail.com", "xyz", "1234567890");
+        User user3 = userService.addUser("ajay@gmail.com", "ajay", "6112482630");
+        User user4 = userService.addUser("amit@gmail.com", "amit", "2509699232");
+
+        List<User>userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+        userList.add(user4);
+
+// --------------------------------------------------------------------------------------------------------------------
+
+        Expense lunchExpense = createExpense(user1);
+        expenseService.addExpense(lunchExpense);
+        lunchExpense.setExpenseStatus(ExpenseStatus.PENDING);
+
+// --------------------------------------------------------------------------------------------------------------------
+
         try {
-            bifurcateExpense(lunchExpense,BifurcationStatus.EXACT);
+            bifurcateExpense(lunchExpense,BifurcationStatus.EXACT,userList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
+// --------------------------------------------------------------------------------------------------------------------
+
         Set<User> allUsers = lunchExpense.getExpenseGroup().getGroupMembers();
         for (User user : allUsers) {
-            if (user.getEmailId().equals("xyz@gmail.com")) {
-                contributeToOtherExpense(lunchExpense.getId(), UserRepository.userHashMap.get(lunchExpense.getUserId()), user);
-            } else {
-                contributeToExpense(lunchExpense.getId(), user);
-            }
+            contributeToExpense(lunchExpense.getId(), user);
         }
 
         if (expenseService.isExpenseSettled(lunchExpense.getId())) {
-            System.out.println("Expense Settled....");
             lunchExpense.setExpenseStatus(ExpenseStatus.SETTLED);
+            System.out.println("Expense Settled....");
         } else {
-            System.out.println("Expense Not Settled....");
             lunchExpense.setExpenseStatus(ExpenseStatus.PENDING);
+            System.out.println("Expense Not Settled....");
         }
     }
 
-    private static void createTestUsers() {
-        User user1 = userService.createUser("akash@gmail.com", "Akash", "7906048908");
-        User user2 = userService.createUser("xyz@gmail.com", "xyz", "1234567890");
-        User user3 = userService.createUser("ajay@gmail.com", "ajay", "6112482630");
-        User user4 = userService.createUser("amit@gmail.com", "amit", "2509699232");
-        User user5 = userService.createUser("kamal@gmail.com", "kamal", "5816355154");
+    private static Expense createExpense(User createdBy) {
+        return expenseService.createExpense("lunch expense", LocalDateTime.now(), 400, createdBy.getEmailId());
     }
 
-    private static Expense createExpense() {
-        Expense lunchExpense = expenseService.createExpense("lunch expense", LocalDateTime.now(), 400, "akash@gmail.com");
-        return lunchExpense;
-    }
+    private static void bifurcateExpense(Expense expense , BifurcationStatus bifurcationStatus , List<User>userList) throws ExpenseDoesNotExistsException, BadRequestException {
+        for(User user : userList){
+            expenseService.addUsersToExpense(expense.getId(), user);
+        }
 
-    private static void bifurcateExpense(Expense expense , BifurcationStatus bifurcationStatus) throws ExpenseDoesNotExistsException {
-        expenseService.addUsersToExpense(expense.getId(), "xyz@gmail.com");
-        expenseService.addUsersToExpense(expense.getId(), "ajay@gmail.com");
-        expenseService.addUsersToExpense(expense.getId(), "amit@gmail.com");
-        expenseService.addUsersToExpense(expense.getId(), ExpenseRepository.expenseMap.get(expense.getId()).getUserId());
-
-        List<Split> amountList = new ArrayList<>();
         switch (bifurcationStatus){
             case EQUAL:
-                bifurcateInEqual(expense);
+                bifurcateInEqual(expense , userList);
             case EXACT:
-                amountList.add(new Split(UserRepository.userHashMap.get("xyz@gmail.com"),200.0));
-                amountList.add(new Split(UserRepository.userHashMap.get("ajay@gmail.com"),50.0));
-                amountList.add(new Split(UserRepository.userHashMap.get("amit@gmail.com"),50.0));
-                amountList.add(new Split(UserRepository.userHashMap.get(ExpenseRepository.expenseMap.get(expense.getId()).getUserId()),100.0));
+                List<Split> amountList = new ArrayList<>();
+                amountList.add(new Split(userList.get(0),200.0));
+                amountList.add(new Split(userList.get(1),50.0));
+                amountList.add(new Split(userList.get(2),50.0));
+                amountList.add(new Split(userList.get(3),10.0));
                 bifurcateInExact(expense ,amountList);
             default:
-                bifurcateInEqual(expense);
+                bifurcateInEqual(expense,userList);
         }
 
     }
 
-    private static void bifurcateInEqual(Expense expense) throws ExpenseDoesNotExistsException {
+    private static void bifurcateInEqual(Expense expense , List<User>userList) throws ExpenseDoesNotExistsException, BadRequestException {
         Double totalExpenseAmount = expense.getExpenseAmount();
-        Double individualExpenseShare = totalExpenseAmount/expense.getExpenseGroup().getGroupMembers().size();
+        Double individualExpenseShare = totalExpenseAmount/userList.size();
 
-        for(User user : expense.getExpenseGroup().getGroupMembers()){
-            expenseService.assignExpenseShare(expense.getId(), user.getEmailId(), individualExpenseShare);
+        for(User user : userList){
+            expenseService.assignExpenseShare(expense.getId(), user, individualExpenseShare);
         }
     }
     
-    private static void bifurcateInExact(Expense expense , List<Split>amountList) throws ExpenseDoesNotExistsException {
+    private static void bifurcateInExact(Expense expense , List<Split>amountList) throws ExpenseDoesNotExistsException, BadRequestException {
         for(Split split : amountList){
-            expenseService.assignExpenseShare(expense.getId() , split.getUser().getEmailId() , split.getAmount());
+            expenseService.assignExpenseShare(expense.getId() , split.getUser() , split.getAmount());
         }
     }
 
-    private static void contributeToExpense(String expenseId, User user) throws ExpenseSettledException, InvalidExpenseStateException, ContributionExceededException {
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
+    private static void contributeToExpense(String expenseId, User user) throws ExpenseSettledException, InvalidExpenseStateException, ContributionExceededException, ExpenseDoesNotExistsException {
+        Expense expense = expenseService.getExpenseById(expenseId);
+        if(expense==null){
+            throw new InvalidExpenseStateException("expense does not exist");
+        }
         ExpenseGroup expenseGroup = expense.getExpenseGroup();
 
         UserShare userShare = expenseGroup.getUserContributions().get(user.getEmailId());
@@ -128,8 +145,5 @@ public class BillSharingMain {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
-
 }

@@ -19,5 +19,4 @@ public class User {
         this.emailId = emailId;
         this.phoneNo = phoneNo;
     }
-
 }
