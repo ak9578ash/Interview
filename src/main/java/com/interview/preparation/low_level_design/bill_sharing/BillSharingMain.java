@@ -11,6 +11,8 @@ import com.interview.preparation.low_level_design.bill_sharing.service.ExpenseSe
 import com.interview.preparation.low_level_design.bill_sharing.service.NotificationService;
 import com.interview.preparation.low_level_design.bill_sharing.service.NotificationServiceImpl;
 import com.interview.preparation.low_level_design.bill_sharing.service.UserService;
+import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategy;
+import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategyImpl;
 import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 
 import java.time.LocalDateTime;
@@ -25,7 +27,9 @@ public class BillSharingMain {
 
     public static ExpenseRepository expenseRepository;
     public static ExpenseService expenseService;
-    public static NotificationService notificationService ;
+    public static NotificationService notificationService;
+
+    public static SplittingStrategy splittingStrategy;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
             ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
@@ -36,6 +40,8 @@ public class BillSharingMain {
 
         userRepository = new UserRepository();
         userService = new UserService(userRepository,expenseService);
+
+        splittingStrategy = new SplittingStrategyImpl(expenseService);
 
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -59,7 +65,7 @@ public class BillSharingMain {
 // --------------------------------------------------------------------------------------------------------------------
 
         try {
-            bifurcateExpense(lunchExpense,BifurcationStatus.EXACT,userList);
+            bifurcateExpense(lunchExpense,BifurcationStatus.EXACT,userList,splittingStrategy);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -84,39 +90,25 @@ public class BillSharingMain {
         return expenseService.createExpense("lunch expense", LocalDateTime.now(), 400, createdBy.getEmailId());
     }
 
-    private static void bifurcateExpense(Expense expense , BifurcationStatus bifurcationStatus , List<User>userList) throws ExpenseDoesNotExistsException, BadRequestException {
+    private static void bifurcateExpense(Expense expense , BifurcationStatus bifurcationStatus , List<User>userList , SplittingStrategy splittingStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
         for(User user : userList){
             expenseService.addUsersToExpense(expense.getId(), user);
         }
 
         switch (bifurcationStatus){
             case EQUAL:
-                bifurcateInEqual(expense , userList);
+                splittingStrategy.bifurcateInEqual(expense,userList);
             case EXACT:
                 List<Split> amountList = new ArrayList<>();
                 amountList.add(new Split(userList.get(0),200.0));
                 amountList.add(new Split(userList.get(1),50.0));
                 amountList.add(new Split(userList.get(2),50.0));
-                amountList.add(new Split(userList.get(3),10.0));
-                bifurcateInExact(expense ,amountList);
+                amountList.add(new Split(userList.get(3),100.0));
+                splittingStrategy.bifurcateInExact(expense,amountList);
+            case PERCENTAGE:
+                // pass a list of pair of <user , % share>
             default:
-                bifurcateInEqual(expense,userList);
-        }
-
-    }
-
-    private static void bifurcateInEqual(Expense expense , List<User>userList) throws ExpenseDoesNotExistsException, BadRequestException {
-        Double totalExpenseAmount = expense.getExpenseAmount();
-        Double individualExpenseShare = totalExpenseAmount/userList.size();
-
-        for(User user : userList){
-            expenseService.assignExpenseShare(expense.getId(), user, individualExpenseShare);
-        }
-    }
-    
-    private static void bifurcateInExact(Expense expense , List<Split>amountList) throws ExpenseDoesNotExistsException, BadRequestException {
-        for(Split split : amountList){
-            expenseService.assignExpenseShare(expense.getId() , split.getUser() , split.getAmount());
+                splittingStrategy.bifurcateInEqual(expense,userList);
         }
     }
 
