@@ -35,13 +35,13 @@ public class BillSharingMain {
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
             ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
-        notificationService = new  NotificationServiceImpl();
+        notificationService = new NotificationServiceImpl();
 
         expenseRepository = new ExpenseRepository();
-        expenseService = new ExpenseService(expenseRepository,notificationService);
+        expenseService = new ExpenseService(expenseRepository, notificationService);
 
         userRepository = new UserRepository();
-        userService = new UserService(userRepository,expenseService);
+        userService = new UserService(userRepository, expenseService);
 
         splittingStrategy = new SplittingStrategyImpl(expenseService);
 
@@ -52,7 +52,7 @@ public class BillSharingMain {
         User user3 = userService.addUser("ajay@gmail.com", "ajay", "6112482630");
         User user4 = userService.addUser("amit@gmail.com", "amit", "2509699232");
 
-        List<User>userList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
@@ -67,7 +67,7 @@ public class BillSharingMain {
 // --------------------------------------------------------------------------------------------------------------------
 
         try {
-            bifurcateExpense(lunchExpense,BifurcationStatus.PERCENTAGE,userList,splittingStrategy);
+            bifurcateExpense(lunchExpense, BifurcationStatus.PERCENTAGE, userList, splittingStrategy);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -94,36 +94,36 @@ public class BillSharingMain {
         return expenseService.createExpense("lunch expense", LocalDateTime.now(), 400, createdBy.getEmailId());
     }
 
-    private static void bifurcateExpense(Expense expense , BifurcationStatus bifurcationStatus , List<User>userList , SplittingStrategy splittingStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
-        for(User user : userList){
+    private static void bifurcateExpense(Expense expense, BifurcationStatus bifurcationStatus, List<User> userList, SplittingStrategy splittingStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
+        for (User user : userList) {
             expenseService.addUsersToExpense(expense.getId(), user);
         }
 
-        switch (bifurcationStatus){
+        switch (bifurcationStatus) {
             case EQUAL:
-                splittingStrategy.bifurcateInEqual(expense,userList);
+                splittingStrategy.bifurcateInEqual(expense, userList);
             case EXACT:
                 List<ExactSplit> amountList = new ArrayList<>();
-                amountList.add(new ExactSplit(userList.get(0),200.0));
-                amountList.add(new ExactSplit(userList.get(1),50.0));
-                amountList.add(new ExactSplit(userList.get(2),50.0));
-                amountList.add(new ExactSplit(userList.get(3),100.0));
-                splittingStrategy.bifurcateInExact(expense,amountList);
+                amountList.add(new ExactSplit(userList.get(0), 200.0));
+                amountList.add(new ExactSplit(userList.get(1), 50.0));
+                amountList.add(new ExactSplit(userList.get(2), 50.0));
+                amountList.add(new ExactSplit(userList.get(3), 100.0));
+                splittingStrategy.bifurcateInExact(expense, amountList);
             case PERCENTAGE:
-                List<PercentageSplit>percentageList = new ArrayList<>();
-                percentageList.add(new PercentageSplit(userList.get(0),expense,10.0));
-                percentageList.add(new PercentageSplit(userList.get(1),expense,20.0));
-                percentageList.add(new PercentageSplit(userList.get(2),expense,30.0));
-                percentageList.add(new PercentageSplit(userList.get(3),expense,40.0));
-                splittingStrategy.bifurcateInPercentage(expense , percentageList);
+                List<PercentageSplit> percentageList = new ArrayList<>();
+                percentageList.add(new PercentageSplit(userList.get(0), expense, 10.0));
+                percentageList.add(new PercentageSplit(userList.get(1), expense, 20.0));
+                percentageList.add(new PercentageSplit(userList.get(2), expense, 30.0));
+                percentageList.add(new PercentageSplit(userList.get(3), expense, 40.0));
+                splittingStrategy.bifurcateInPercentage(expense, percentageList);
             default:
-                splittingStrategy.bifurcateInEqual(expense,userList);
+                splittingStrategy.bifurcateInEqual(expense, userList);
         }
     }
 
     private static void contributeToExpense(String expenseId, User user) throws ExpenseSettledException, InvalidExpenseStateException, ContributionExceededException, ExpenseDoesNotExistsException {
         Expense expense = expenseService.getExpenseById(expenseId);
-        if(expense==null){
+        if (expense == null) {
             throw new InvalidExpenseStateException("expense does not exist");
         }
         ExpenseGroup expenseGroup = expense.getExpenseGroup();
