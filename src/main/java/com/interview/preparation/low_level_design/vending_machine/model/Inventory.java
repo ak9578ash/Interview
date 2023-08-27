@@ -2,10 +2,12 @@ package com.interview.preparation.low_level_design.vending_machine.model;
 
 import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Inventory {
-    private ItemShelf[] inventory;
+    private final ItemShelf[] inventory;
 
     public Inventory(int itemCount) {
         inventory = new ItemShelf[itemCount];

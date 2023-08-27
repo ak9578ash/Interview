@@ -34,7 +34,6 @@ public class VendingMachineMain {
         vendingState.chooseProduct(vendingMachine, 102);
 
         displayInventory(vendingMachine);
-
     }
 
     private static void fillUpInventory(VendingMachine vendingMachine){
@@ -60,7 +59,6 @@ public class VendingMachineMain {
     }
 
     private static void displayInventory(VendingMachine vendingMachine){
-
         ItemShelf[] slots = vendingMachine.getInventory().getInventory();
         for (int i = 0; i < slots.length; i++) {
 

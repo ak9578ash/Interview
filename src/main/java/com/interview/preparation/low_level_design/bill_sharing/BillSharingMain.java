@@ -26,11 +26,9 @@ import java.util.UUID;
 public class BillSharingMain {
     public static UserRepository userRepository;
     public static UserService userService;
-
     public static ExpenseRepository expenseRepository;
     public static ExpenseService expenseService;
     public static NotificationService notificationService;
-
     public static SplittingStrategy splittingStrategy;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,

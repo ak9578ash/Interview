@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.vending_machine.states.impl;
 
+import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 import com.interview.preparation.low_level_design.vending_machine.model.Coin;
 import com.interview.preparation.low_level_design.vending_machine.model.Item;
 import com.interview.preparation.low_level_design.vending_machine.model.VendingMachine;
@@ -24,7 +25,7 @@ public class SelectionState implements State {
 
     @Override
     public void clickOnStartProductSelectionButton(VendingMachine machine) throws Exception {
-        return;
+        throw new BadRequestException("please select product");
     }
 
     @Override
@@ -41,7 +42,6 @@ public class SelectionState implements State {
             refundFullMoney(machine);
             throw new Exception("insufficient amount");
         } else if (paidByUser >= item.getPrice()) {
-
             if (paidByUser > item.getPrice()) {
                 getChange(paidByUser - item.getPrice());
             }
@@ -65,6 +65,5 @@ public class SelectionState implements State {
         System.out.println("Returned the full amount back in the Coin Dispense Tray");
         machine.setVendingMachineState(new IdleState(machine));
         return machine.getCoinList();
-
     }
 }

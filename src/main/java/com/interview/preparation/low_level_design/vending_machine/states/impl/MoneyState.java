@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.vending_machine.states.impl;
 
+import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 import com.interview.preparation.low_level_design.vending_machine.model.Coin;
 import com.interview.preparation.low_level_design.vending_machine.model.Item;
 import com.interview.preparation.low_level_design.vending_machine.model.VendingMachine;
@@ -13,7 +14,7 @@ public class MoneyState implements State {
     }
     @Override
     public void clickOnInsertCoinButton(VendingMachine machine) throws Exception {
-        return;
+        throw new BadRequestException("Please insert coins");
     }
 
     @Override
