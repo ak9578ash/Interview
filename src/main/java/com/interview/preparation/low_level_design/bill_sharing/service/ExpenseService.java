@@ -50,8 +50,8 @@ public class ExpenseService {
             throw new ExpenseDoesNotExistsException("Better create expense and come here....");
         }
         expense.getExpenseGroup()
-                .getUserContributions().
-                putIfAbsent(user.getEmailId(), new UserShare(user.getEmailId(), share));
+                .getUserContributions()
+                .putIfAbsent(user.getEmailId(), new UserShare(user.getEmailId(), share));
     }
 
     public void setExpenseStatus(String expenseId, ExpenseStatus expenseStatus) throws ExpenseDoesNotExistsException {

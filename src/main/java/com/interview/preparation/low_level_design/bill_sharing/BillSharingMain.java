@@ -13,6 +13,8 @@ import com.interview.preparation.low_level_design.bill_sharing.service.Notificat
 import com.interview.preparation.low_level_design.bill_sharing.service.UserService;
 import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategy;
 import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategyImpl;
+import com.interview.preparation.low_level_design.bill_sharing.utils.model.ExactSplit;
+import com.interview.preparation.low_level_design.bill_sharing.utils.model.PercentageSplit;
 import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 
 import java.time.LocalDateTime;
@@ -65,7 +67,7 @@ public class BillSharingMain {
 // --------------------------------------------------------------------------------------------------------------------
 
         try {
-            bifurcateExpense(lunchExpense,BifurcationStatus.EXACT,userList,splittingStrategy);
+            bifurcateExpense(lunchExpense,BifurcationStatus.PERCENTAGE,userList,splittingStrategy);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -76,6 +78,8 @@ public class BillSharingMain {
         for (User user : allUsers) {
             contributeToExpense(lunchExpense.getId(), user);
         }
+
+// --------------------------------------------------------------------------------------------------------------------
 
         if (expenseService.isExpenseSettled(lunchExpense.getId())) {
             lunchExpense.setExpenseStatus(ExpenseStatus.SETTLED);
@@ -99,14 +103,19 @@ public class BillSharingMain {
             case EQUAL:
                 splittingStrategy.bifurcateInEqual(expense,userList);
             case EXACT:
-                List<Split> amountList = new ArrayList<>();
-                amountList.add(new Split(userList.get(0),200.0));
-                amountList.add(new Split(userList.get(1),50.0));
-                amountList.add(new Split(userList.get(2),50.0));
-                amountList.add(new Split(userList.get(3),100.0));
+                List<ExactSplit> amountList = new ArrayList<>();
+                amountList.add(new ExactSplit(userList.get(0),200.0));
+                amountList.add(new ExactSplit(userList.get(1),50.0));
+                amountList.add(new ExactSplit(userList.get(2),50.0));
+                amountList.add(new ExactSplit(userList.get(3),100.0));
                 splittingStrategy.bifurcateInExact(expense,amountList);
             case PERCENTAGE:
-                // pass a list of pair of <user , % share>
+                List<PercentageSplit>percentageList = new ArrayList<>();
+                percentageList.add(new PercentageSplit(userList.get(0),expense,10.0));
+                percentageList.add(new PercentageSplit(userList.get(1),expense,20.0));
+                percentageList.add(new PercentageSplit(userList.get(2),expense,30.0));
+                percentageList.add(new PercentageSplit(userList.get(3),expense,40.0));
+                splittingStrategy.bifurcateInPercentage(expense , percentageList);
             default:
                 splittingStrategy.bifurcateInEqual(expense,userList);
         }
