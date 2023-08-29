@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class SlidingLog implements RateLimiter {
-    private Queue<Long> slidingWindow;
-    private long windowTime; // in seconds;
-    private long noOfRequest;
+    private final Queue<Long> slidingWindow;
+    private final long windowTime; // in seconds;
+    private final long noOfRequest;
 
     public SlidingLog(long windowTime , long noOfRequest){
         this.slidingWindow = new ConcurrentLinkedDeque<>();

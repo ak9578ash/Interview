@@ -19,7 +19,7 @@ public class BucketCreatorRepository {
 
     public SlidingLog createUserBucket(String userId , long windowTime , long noOfRequest){
         SlidingLog userBucket = new SlidingLog(windowTime , noOfRequest);
-        bucket.put(userId , userBucket);
+        bucket.putIfAbsent(userId , userBucket);
         return userBucket;
     }
 

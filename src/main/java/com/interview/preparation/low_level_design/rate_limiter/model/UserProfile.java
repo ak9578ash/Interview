@@ -9,6 +9,4 @@ public class UserProfile{
     private String emailId;
     private String firstName;
     private String lastName;
-
-
 }
