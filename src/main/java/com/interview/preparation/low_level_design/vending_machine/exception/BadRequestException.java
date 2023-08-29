@@ -7,6 +7,6 @@ public class BadRequestException extends  Exception{
 
     @Override
     public String getMessage(){
-        return super.getMessage();
+        return super.getMessage() ;
     }
 }
