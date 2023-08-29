@@ -31,6 +31,5 @@ public class BucketCreatorService {
             System.out.println(" Too many request, Please try after some time");
         }
         updateUserBucket(userId , userBucket);
-
     }
 }
