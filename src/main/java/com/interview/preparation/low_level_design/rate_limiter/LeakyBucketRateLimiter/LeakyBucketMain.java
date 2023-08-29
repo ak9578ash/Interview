@@ -9,8 +9,8 @@ import com.interview.preparation.low_level_design.rate_limiter.model.UserProfile
 import java.util.UUID;
 
 public class LeakyBucketMain {
-    private static BucketCreatorRepository  bucketCreatorRepository ;
-    private static BucketCreatorService bucketCreatorService;
+    public static BucketCreatorRepository  bucketCreatorRepository ;
+    public static BucketCreatorService bucketCreatorService;
 
     public static void main(String[] args) throws UserNotFoundException {
         bucketCreatorRepository = new BucketCreatorRepository();
@@ -19,15 +19,9 @@ public class LeakyBucketMain {
         User user1 = new User(new UserProfile("akashgupta9578@gmail.com","akash","gupta"));
         bucketCreatorService.createUserBucket(user1.getId(), 3);
 
-       try{
-           bucketCreatorService.accessApplication(user1.getId());
-           bucketCreatorService.accessApplication(user1.getId());
-
-           bucketCreatorService.accessApplication(UUID.randomUUID().toString());
-
-           bucketCreatorService.accessApplication(user1.getId());
-       }catch (Exception e){
-           System.out.println(e.getMessage());
-       }
+        bucketCreatorService.accessApplication(user1.getId());
+        bucketCreatorService.accessApplication(user1.getId());
+        bucketCreatorService.accessApplication(user1.getId());
+        bucketCreatorService.accessApplication(user1.getId());
     }
 }

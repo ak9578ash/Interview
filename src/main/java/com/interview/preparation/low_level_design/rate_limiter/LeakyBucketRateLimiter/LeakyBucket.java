@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class LeakyBucket implements RateLimiter {
-    private BlockingQueue<Integer> queue;
+    private final BlockingQueue<Integer> queue;
 
     public LeakyBucket(int bucketSize) {
         this.queue = new LinkedBlockingDeque<>(bucketSize);
