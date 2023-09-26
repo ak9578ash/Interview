@@ -5,7 +5,7 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.model.Sho
 import com.interview.preparation.low_level_design.movie_ticket_booking.repository.ShowRepository;
 
 public class ShowService {
-    private ShowRepository showRepository;
+    private final ShowRepository showRepository;
     public ShowService(ShowRepository showRepository){
         this.showRepository = showRepository;
     }

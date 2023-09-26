@@ -5,7 +5,7 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.model.acc
 import com.interview.preparation.low_level_design.movie_ticket_booking.repository.UserRepository;
 
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -18,7 +18,4 @@ public class UserService {
     public  User getUserById(String userId) throws UserNotFoundException {
         return this.userRepository.getUserById(userId);
     }
-
-
-
 }

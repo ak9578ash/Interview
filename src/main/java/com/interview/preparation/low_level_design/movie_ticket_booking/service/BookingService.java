@@ -23,7 +23,6 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
         this.seatLockProvider = seatLockProvider;
     }
-
     public Booking addBooking(User user, Show show , List<Seat> seats) throws SeatsPermanentlyUnavailableException, SeatTemporarilyUnavailableException {
         if(isAnySeatAlreadyBooked(show,seats)){
             throw new SeatsPermanentlyUnavailableException("seats are permanently booked");
