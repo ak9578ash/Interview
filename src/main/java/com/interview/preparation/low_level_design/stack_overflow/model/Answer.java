@@ -11,8 +11,7 @@ public class Answer extends TextPhotoBasedEntity{
 
     public Answer(Member creatingMember, String text, List< Photo > photos) {
         super(UUID.randomUUID().toString(), creatingMember, text, photos);
-
-        comments = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public void markAsASolution() {
@@ -35,5 +34,4 @@ public class Answer extends TextPhotoBasedEntity{
     public List< Comment > getComments() {
         return comments;
     }
-
 }

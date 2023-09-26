@@ -16,30 +16,29 @@ public abstract class TextPhotoBasedEntity {  // TextPhotoBasedEntity is an abst
     protected long creationDateTime;
     protected long lastUpdated;
     protected Member creator;
-    protected List< Photo > photos;
-    protected Set< Integer > membersWhoDownVotedThisEntity;
-    protected Set< Integer > membersWhoUpVotedThisEntity;
+    protected List<Photo> photos;
+    protected Set<Integer> membersWhoDownVotedThisEntity;
+    protected Set<Integer> membersWhoUpVotedThisEntity;
     protected int numberOfUsersReportedThisEntity; // members reported as spam or abuse
     protected QuestionStatus status;
 
-    public TextPhotoBasedEntity(String id, Member creator, String text, List< Photo > photos) {
+    public TextPhotoBasedEntity(String id, Member creator, String text, List<Photo> photos) {
         this.id = id;
-        status = QuestionStatus.DEFAULT;
+        this.status = QuestionStatus.DEFAULT;
         this.creator = creator;
         this.text = text;
 
-        photos = new ArrayList<>();
-
         if (photos != null) {
             this.photos = photos;
+        }else{
+            this.photos = new ArrayList<>();
         }
 
-        membersWhoDownVotedThisEntity = new HashSet<>();
-        membersWhoUpVotedThisEntity = new HashSet<>();
-        creationDateTime = System.currentTimeMillis();
-        lastUpdated = System.currentTimeMillis();
-
-        numberOfUsersReportedThisEntity = 0;
+        this.membersWhoDownVotedThisEntity = new HashSet<>();
+        this.membersWhoUpVotedThisEntity = new HashSet<>();
+        this.creationDateTime = System.currentTimeMillis();
+        this.lastUpdated = System.currentTimeMillis();
+        this.numberOfUsersReportedThisEntity = 0;
     }
 
     public boolean equals(Object that) {
@@ -52,8 +51,8 @@ public abstract class TextPhotoBasedEntity {  // TextPhotoBasedEntity is an abst
     public void upVote(int memberId) {
         if (!membersWhoUpVotedThisEntity.contains(memberId)) { // a member cannot upvote a comment that he/she has already upvoted
             if (membersWhoDownVotedThisEntity.contains(memberId)) {
-                // if the member has downvoted this comment in past then upvoting it once just
-                // cancels the downvote.
+                // if the member has downVoted this comment in past then upVoting it once just
+                // cancels the downVote.
                 membersWhoDownVotedThisEntity.remove(memberId);
             } else {
                 membersWhoUpVotedThisEntity.add(memberId);
@@ -83,12 +82,12 @@ public abstract class TextPhotoBasedEntity {  // TextPhotoBasedEntity is an abst
         lastUpdated = System.currentTimeMillis();
     }
 
-    public void removePhoto(List< Photo > photosToBeDeleted) {
+    public void removePhoto(List<Photo> photosToBeDeleted) {
         photos.removeAll(photosToBeDeleted);
         lastUpdated = System.currentTimeMillis();
     }
 
-    public void addPhotos(List< Photo > newPhotosToBeAdded) {
+    public void addPhotos(List<Photo> newPhotosToBeAdded) {
         photos.addAll(newPhotosToBeAdded);
         lastUpdated = System.currentTimeMillis();
     }
@@ -125,15 +124,15 @@ public abstract class TextPhotoBasedEntity {  // TextPhotoBasedEntity is an abst
         return lastUpdated;
     }
 
-    public List< Photo > getPhotos() {
+    public List<Photo> getPhotos() {
         return photos;
     }
 
-    public Set< Integer > getMembersWhoDownVotedThisEntity() {
+    public Set<Integer> getMembersWhoDownVotedThisEntity() {
         return membersWhoDownVotedThisEntity;
     }
 
-    public Set< Integer > getMembersWhoUpvotedThisEntity() {
+    public Set<Integer> getMembersWhoUpvotedThisEntity() {
         return membersWhoUpVotedThisEntity;
     }
 

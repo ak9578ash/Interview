@@ -13,10 +13,8 @@ public class Question extends TextPhotoBasedEntity {
     private QuestionStatus status;
 
     public Question(Member askingMember, String title, String text, List photos, List tags) {
-
         super(UUID.randomUUID().toString(), askingMember, text, photos);
-
-        status = QuestionStatus.OPEN;
+        this.status = QuestionStatus.OPEN;
         this.title = title;
 
         if (tags != null) {
@@ -25,8 +23,8 @@ public class Question extends TextPhotoBasedEntity {
             this.tags = new ArrayList<>();
         }
 
-        comments = new ArrayList<>();
-        answers = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.answers = new ArrayList<>();
     }
 
     public void close() { // Question Asker or Admin can close a question due to various reasons like a solution has been found or due to inactivity of users or certain other reaons
