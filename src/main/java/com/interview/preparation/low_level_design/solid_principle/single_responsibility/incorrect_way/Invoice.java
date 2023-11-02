@@ -4,7 +4,7 @@ import com.interview.preparation.low_level_design.solid_principle.single_respons
 
 /*
 1. Below class is actually holding 3 responsibility or we can say that the Invoice class has
-   3 reason to change its implementation which is against he single responsibility principle
+   3 reason to change its implementation which is against the single responsibility principle
 2. So we will create 3 separate classes which have only one responsibility
  */
 public class Invoice {
