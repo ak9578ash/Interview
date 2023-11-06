@@ -1,6 +1,5 @@
 package com.interview.preparation.design_patterns.observer;
 
-public abstract class Observer {
-    protected Subject subject;
-    public abstract void update();
+public interface Observer {
+    void update(int currentScore , int currentOver);
 }
