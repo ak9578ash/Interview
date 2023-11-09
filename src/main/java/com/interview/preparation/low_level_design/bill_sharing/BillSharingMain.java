@@ -5,11 +5,12 @@ import com.interview.preparation.low_level_design.bill_sharing.exception.Expense
 import com.interview.preparation.low_level_design.bill_sharing.exception.ExpenseSettledException;
 import com.interview.preparation.low_level_design.bill_sharing.exception.InvalidExpenseStateException;
 import com.interview.preparation.low_level_design.bill_sharing.model.*;
+import com.interview.preparation.low_level_design.bill_sharing.model.observer.impl.MailNotificationObserverImpl;
+import com.interview.preparation.low_level_design.bill_sharing.model.observer.NotificationObserver;
+import com.interview.preparation.low_level_design.bill_sharing.model.observer.impl.SmsNotificationObserverImpl;
 import com.interview.preparation.low_level_design.bill_sharing.repository.ExpenseRepository;
 import com.interview.preparation.low_level_design.bill_sharing.repository.UserRepository;
 import com.interview.preparation.low_level_design.bill_sharing.service.ExpenseService;
-import com.interview.preparation.low_level_design.bill_sharing.service.NotificationService;
-import com.interview.preparation.low_level_design.bill_sharing.service.NotificationServiceImpl;
 import com.interview.preparation.low_level_design.bill_sharing.service.UserService;
 import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategy;
 import com.interview.preparation.low_level_design.bill_sharing.utils.SplittingStrategyImpl;
@@ -28,15 +29,13 @@ public class BillSharingMain {
     public static UserService userService;
     public static ExpenseRepository expenseRepository;
     public static ExpenseService expenseService;
-    public static NotificationService notificationService;
     public static SplittingStrategy splittingStrategy;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
             ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
-        notificationService = new NotificationServiceImpl();
 
         expenseRepository = new ExpenseRepository();
-        expenseService = new ExpenseService(expenseRepository, notificationService);
+        expenseService = new ExpenseService(expenseRepository);
 
         userRepository = new UserRepository();
         userService = new UserService(userRepository, expenseService);
@@ -55,6 +54,13 @@ public class BillSharingMain {
         userList.add(user2);
         userList.add(user3);
         userList.add(user4);
+
+// ---------------------------------------------------------------------------------------------------------------------
+        NotificationObserver emailNotificationObserver = new MailNotificationObserverImpl();
+        NotificationObserver smsNotificationObserver = new SmsNotificationObserverImpl();
+
+        expenseService.addObserver(emailNotificationObserver);
+        expenseService.addObserver(smsNotificationObserver);
 
 // --------------------------------------------------------------------------------------------------------------------
 
