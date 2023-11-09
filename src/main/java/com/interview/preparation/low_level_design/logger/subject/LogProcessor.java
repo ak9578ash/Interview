@@ -1,6 +1,6 @@
-package com.interview.preparation.low_level_design.logger;
+package com.interview.preparation.low_level_design.logger.subject;
 
-import com.interview.preparation.design_patterns.observer.Observer;
+import com.interview.preparation.low_level_design.logger.observer.LogObserver;
 
 import java.util.ArrayList;
 import java.util.List;

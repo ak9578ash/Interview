@@ -11,7 +11,7 @@ import java.util.List;
 public class UserShare {
     private String emailId;
     private double share;
-    List<Contribution> contributions;
+    private final List<Contribution> contributions;
 
     public UserShare( String emailId ,Double share){
         this.share = share;

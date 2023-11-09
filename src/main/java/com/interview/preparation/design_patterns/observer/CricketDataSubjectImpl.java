@@ -6,7 +6,7 @@ import java.util.List;
 public class CricketDataSubjectImpl implements Subject{
     private  int currentScore;
     private  int currentOver;
-    private  List<Observer> observerList;
+    private final List<Observer> observerList;
 
     public CricketDataSubjectImpl(int currentScore, int currentOver) {
         this.currentScore = currentScore;
@@ -19,6 +19,7 @@ public class CricketDataSubjectImpl implements Subject{
         this.currentOver = 23;
         notifyObserver();
     }
+
     @Override
     public void addObserver(Observer observer) {
         this.observerList.add(observer);

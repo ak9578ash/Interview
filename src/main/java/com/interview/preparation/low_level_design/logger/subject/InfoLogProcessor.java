@@ -1,6 +1,8 @@
-package com.interview.preparation.low_level_design.logger;
+package com.interview.preparation.low_level_design.logger.subject;
 
-public class InfoLogProcessor extends LogProcessor implements LogProcessorSubject{
+import com.interview.preparation.low_level_design.logger.observer.LogObserver;
+
+public class InfoLogProcessor extends LogProcessor implements LogProcessorSubject {
     public InfoLogProcessor(LogProcessor nextLogProcessor) {
         super(nextLogProcessor);
     }
@@ -8,7 +10,7 @@ public class InfoLogProcessor extends LogProcessor implements LogProcessorSubjec
     @Override
     public void log(int logLevel ,String msg){
         if(logLevel==INFO){
-            System.out.println("INFO:" + msg); // handle
+            System.out.println("INFO:" + msg);
             notifyObserver(logLevel,msg);
         }else{
             super.log(logLevel,msg);

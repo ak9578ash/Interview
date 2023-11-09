@@ -1,6 +1,8 @@
-package com.interview.preparation.low_level_design.logger;
+package com.interview.preparation.low_level_design.logger.subject;
 
-public class DebugLogProcessor extends LogProcessor implements LogProcessorSubject{
+import com.interview.preparation.low_level_design.logger.observer.LogObserver;
+
+public class DebugLogProcessor extends LogProcessor implements LogProcessorSubject {
     public DebugLogProcessor(LogProcessor nextLogProcessor) {
         super(nextLogProcessor);
     }

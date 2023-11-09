@@ -65,9 +65,11 @@ public class Game {
             }
         }
     }
+
     public void addPlayer(Player player){
         players.add(player);
     }
+
     public void playGame(){
         do {
             Player player = players.poll();
@@ -89,6 +91,7 @@ public class Game {
             }
         } while (players.size() > 0);
     }
+
     private int getNewPosition(int newPosition) {
         for (Snake snake : snakes) {
             if (snake.getHead() == newPosition) {
