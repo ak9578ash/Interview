@@ -8,6 +8,9 @@ import com.interview.preparation.low_level_design.bill_sharing.model.*;
 import com.interview.preparation.low_level_design.bill_sharing.model.observer.impl.MailNotificationObserverImpl;
 import com.interview.preparation.low_level_design.bill_sharing.model.observer.NotificationObserver;
 import com.interview.preparation.low_level_design.bill_sharing.model.observer.impl.SmsNotificationObserverImpl;
+import com.interview.preparation.low_level_design.bill_sharing.model.strategy.impl.EqualBifurcateStrategyImpl;
+import com.interview.preparation.low_level_design.bill_sharing.model.strategy.impl.ExactBifurcateStrategyImpl;
+import com.interview.preparation.low_level_design.bill_sharing.model.strategy.impl.PercentageBifurcateStrategyImpl;
 import com.interview.preparation.low_level_design.bill_sharing.repository.ExpenseRepository;
 import com.interview.preparation.low_level_design.bill_sharing.repository.UserRepository;
 import com.interview.preparation.low_level_design.bill_sharing.service.ExpenseService;
@@ -29,7 +32,7 @@ public class BillSharingMain {
     public static UserService userService;
     public static ExpenseRepository expenseRepository;
     public static ExpenseService expenseService;
-    public static SplittingStrategy splittingStrategy;
+//    public static SplittingStrategy splittingStrategy;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
             ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
@@ -40,7 +43,7 @@ public class BillSharingMain {
         userRepository = new UserRepository();
         userService = new UserService(userRepository, expenseService);
 
-        splittingStrategy = new SplittingStrategyImpl(expenseService);
+//        splittingStrategy = new SplittingStrategyImpl(expenseService);
 
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +74,7 @@ public class BillSharingMain {
 // --------------------------------------------------------------------------------------------------------------------
 
         try {
-            bifurcateExpense(lunchExpense, BifurcationStatus.PERCENTAGE, userList, splittingStrategy);
+            bifurcateExpense(lunchExpense, BifurcationStatus.PERCENTAGE, userList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -98,30 +101,29 @@ public class BillSharingMain {
         return expenseService.createExpense("lunch expense", LocalDateTime.now(), 400, createdBy.getEmailId());
     }
 
-    private static void bifurcateExpense(Expense expense, BifurcationStatus bifurcationStatus, List<User> userList, SplittingStrategy splittingStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
+    private static void bifurcateExpense(Expense expense, BifurcationStatus bifurcationStatus, List<User> userList) throws ExpenseDoesNotExistsException, BadRequestException {
         for (User user : userList) {
             expenseService.addUsersToExpense(expense.getId(), user);
         }
 
-        switch (bifurcationStatus) {
-            case EQUAL:
-                splittingStrategy.bifurcateInEqual(expense, userList);
-            case EXACT:
-                List<ExactSplit> amountList = new ArrayList<>();
-                amountList.add(new ExactSplit(userList.get(0), 200.0));
-                amountList.add(new ExactSplit(userList.get(1), 50.0));
-                amountList.add(new ExactSplit(userList.get(2), 50.0));
-                amountList.add(new ExactSplit(userList.get(3), 100.0));
-                splittingStrategy.bifurcateInExact(expense, amountList);
-            case PERCENTAGE:
-                List<PercentageSplit> percentageList = new ArrayList<>();
-                percentageList.add(new PercentageSplit(userList.get(0), expense, 10.0));
-                percentageList.add(new PercentageSplit(userList.get(1), expense, 20.0));
-                percentageList.add(new PercentageSplit(userList.get(2), expense, 30.0));
-                percentageList.add(new PercentageSplit(userList.get(3), expense, 40.0));
-                splittingStrategy.bifurcateInPercentage(expense, percentageList);
-            default:
-                splittingStrategy.bifurcateInEqual(expense, userList);
+        if(bifurcationStatus == BifurcationStatus.EXACT){
+            List<ExactSplit> amountList = new ArrayList<>();
+            amountList.add(new ExactSplit(userList.get(0), 200.0));
+            amountList.add(new ExactSplit(userList.get(1), 50.0));
+            amountList.add(new ExactSplit(userList.get(2), 50.0));
+            amountList.add(new ExactSplit(userList.get(3), 100.0));
+
+            expenseService.doBifurcation(expense , userList , new ExactBifurcateStrategyImpl(amountList));
+        }else if (bifurcationStatus == BifurcationStatus.PERCENTAGE){
+            List<PercentageSplit> percentageList = new ArrayList<>();
+            percentageList.add(new PercentageSplit(userList.get(0), expense, 10.0));
+            percentageList.add(new PercentageSplit(userList.get(1), expense, 20.0));
+            percentageList.add(new PercentageSplit(userList.get(2), expense, 30.0));
+            percentageList.add(new PercentageSplit(userList.get(3), expense, 40.0));
+
+            expenseService.doBifurcation(expense , userList , new PercentageBifurcateStrategyImpl(percentageList));
+        }else{
+            expenseService.doBifurcation(expense , userList , new EqualBifurcateStrategyImpl());
         }
     }
 

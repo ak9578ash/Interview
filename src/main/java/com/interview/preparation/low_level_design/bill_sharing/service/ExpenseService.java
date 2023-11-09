@@ -6,7 +6,6 @@ import com.interview.preparation.low_level_design.bill_sharing.model.observer.No
 import com.interview.preparation.low_level_design.bill_sharing.model.strategy.BifurcateStrategy;
 import com.interview.preparation.low_level_design.bill_sharing.model.strategy.UserBifurcateShare;
 import com.interview.preparation.low_level_design.bill_sharing.repository.ExpenseRepository;
-import com.interview.preparation.low_level_design.bill_sharing.repository.UserRepository;
 import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
 
 import java.time.LocalDateTime;
@@ -45,6 +44,13 @@ public class ExpenseService implements ExpenseServiceSubject{
         }
         expense.getExpenseGroup().getGroupMembers().add(user);
         notifyAllObserver(user);
+    }
+
+    public void doBifurcation(Expense expense , List<User> users , BifurcateStrategy bifurcateStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
+        List<UserBifurcateShare> userBifurcateShares = bifurcateStrategy.bifurcate(expense , users);
+        for (UserBifurcateShare userBifurcateShare : userBifurcateShares) {
+            assignExpenseShare(expense.getId(), userBifurcateShare.getUser(), userBifurcateShare.getShare());
+        }
     }
 
     public void assignExpenseShare(String expenseId, User user, double share) throws ExpenseDoesNotExistsException, BadRequestException {
