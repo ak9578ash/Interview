@@ -2,8 +2,6 @@ package com.interview.preparation.low_level_design.interview.doctor_appointment.
 
 import com.interview.preparation.low_level_design.interview.doctor_appointment.model.Doctor;
 import com.interview.preparation.low_level_design.interview.doctor_appointment.strategy.DoctorStrategy;
-
-import javax.print.Doc;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
