@@ -2,7 +2,7 @@ package com.interview.preparation.low_level_design.interview.fivetran;
 
 import java.util.*;
 
-public class Solution {
+public class Solution1 {
     public List<Integer> getUnexpiredTokens(int timeToLive, List<String> queries) {
         Map<String, Integer> tokenMap = new HashMap<>();
         PriorityQueue<Integer> expirationTimes = new PriorityQueue<>();
