@@ -29,5 +29,4 @@ public class Admin extends Account {
     public ExitGate addExitGate(String parkingLotId, ExitGate exitGate) throws InvalidParkingLotException {
         return parkingLotService.addExitGate(parkingLotId, exitGate);
     }
-
 }

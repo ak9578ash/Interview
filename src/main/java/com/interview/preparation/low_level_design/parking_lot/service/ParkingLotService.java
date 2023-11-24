@@ -36,6 +36,4 @@ public class ParkingLotService {
     public ExitGate addExitGate(String parkingLotId, ExitGate exitGate) throws InvalidParkingLotException {
         return parkingLotRepository.addExitGate(parkingLotId, exitGate);
     }
-
-
 }

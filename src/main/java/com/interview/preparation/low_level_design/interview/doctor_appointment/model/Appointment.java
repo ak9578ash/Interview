@@ -11,7 +11,6 @@ public class Appointment {
     private final String doctorId;
     private final Slot slot;
 
-
     public Appointment(String patientId, String doctorId, Slot slot) {
         this.id = UUID.randomUUID().toString();
         this.patientId = patientId;
