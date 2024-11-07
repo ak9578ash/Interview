@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.distributed_queue.model;
 
+import com.interview.preparation.low_level_design.distributed_queue.model.observer.TopicSubscriber;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -26,5 +27,9 @@ public class Topic {
 
     public void addSubscriber(@NonNull final TopicSubscriber subscriber) {
         subscribers.add(subscriber);
+    }
+
+    public void removeSubscriber(TopicSubscriber subscriber){
+        subscribers.remove(subscriber);
     }
 }

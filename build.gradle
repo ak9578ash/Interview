@@ -24,6 +24,7 @@ java {
 dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.projectlombok:lombok:latest.release'
 	annotationProcessor 'org.projectlombok:lombok:latest.release'
 	implementation 'org.postgresql:postgresql:42.2.24'
@@ -34,4 +35,11 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Remove `--release` from `compilerArgs` here
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }

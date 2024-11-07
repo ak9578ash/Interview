@@ -25,8 +25,9 @@ public class LoggerMain {
         debugLogProcessor.addObserver(consoleObserver);
 
         errorLogProcessor.addObserver(consoleObserver);
+        errorLogProcessor.addObserver(fileObserver);
 
         LogProcessor logger = infoLogProcessor;
-        logger.log(LogProcessor.DEBUG,"this is debugger");
+        logger.log(LogProcessor.ERROR,"this is logger");
     }
 }
