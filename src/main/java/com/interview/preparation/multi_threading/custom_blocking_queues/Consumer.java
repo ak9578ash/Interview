@@ -1,4 +1,4 @@
-package com.interview.preparation.low_level_design.blocking_queues;
+package com.interview.preparation.multi_threading.custom_blocking_queues;
 
 public class Consumer implements Runnable{
   private final CustomBlockingQueue<Integer> customBlockingQueue;

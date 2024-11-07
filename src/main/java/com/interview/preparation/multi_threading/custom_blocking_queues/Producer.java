@@ -1,6 +1,4 @@
-package com.interview.preparation.low_level_design.blocking_queues;
-
-import java.util.concurrent.ThreadLocalRandom;
+package com.interview.preparation.multi_threading.custom_blocking_queues;
 
 public class Producer implements Runnable{
   private final CustomBlockingQueue<Integer> customBlockingQueue;
