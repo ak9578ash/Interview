@@ -3,7 +3,7 @@ package com.interview.preparation.low_level_design.distributed_queue;
 import com.interview.preparation.low_level_design.distributed_queue.handler.TopicHandler;
 import com.interview.preparation.low_level_design.distributed_queue.model.Message;
 import com.interview.preparation.low_level_design.distributed_queue.model.Topic;
-import com.interview.preparation.low_level_design.distributed_queue.model.TopicSubscriber;
+import com.interview.preparation.low_level_design.distributed_queue.model.observer.TopicSubscriber;
 import lombok.NonNull;
 
 import java.util.HashMap;
@@ -25,18 +25,15 @@ public class Queue {
         return topic;
     }
 
-    public void subscribe(@NonNull final Topic topic , TopicSubscriber subscriber) {
+    public void subscribe(@NonNull final Topic topic , TopicSubscriber subscriber) { // add observer
         topic.addSubscriber(subscriber);
-        System.out.println(subscriber.getId() + " subscribed to topic: " + topic.getTopicName());
     }
 
-    public void publish(@NonNull final Topic topic, @NonNull final Message message) {
+    public void deSubscribe(Topic topic , TopicSubscriber subscriber){ // remove observer
+        topic.removeSubscriber(subscriber);
+    }
+    public void publish(@NonNull final Topic topic, @NonNull final Message message) { // notify observer
         topic.addMessage(message);
-        topicHandlerMap.get(topic.getTopicId()).publish();
+        topicHandlerMap.get(topic.getTopicId()).publish(message);
     }
-
-    public void resetOffset(@NonNull final Topic topic, @NonNull final TopicSubscriber subscriber, @NonNull final Integer newOffset) {
-
-    }
-
 }
