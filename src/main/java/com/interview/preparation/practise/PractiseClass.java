@@ -9,6 +9,7 @@ public class PractiseClass {
     Thread th2 = Thread.ofVirtual().name("Thread2").start(testRunnable);
 
     try {
+      th1.wait();
       th1.join();
       th2.join();
     } catch (InterruptedException e) {

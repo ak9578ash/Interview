@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.deadlock;
+package com.interview.preparation.multi_threading.deadlock.example_1;
 
 public class Resource2 {
     private String s;
