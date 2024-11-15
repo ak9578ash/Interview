@@ -70,57 +70,26 @@ import java.util.*;
 
  **/
 
-class Coupon{
-    private final String categoryName;
-    private final String couponName;
-    public Coupon(String categoryName , String couponName){
-        this.categoryName = categoryName;
-        this.couponName = couponName;
-    }
-
-    public String getCategoryName(){
-        return this.categoryName;
-    }
-
-    public String getCouponName(){
-        return this.couponName;
-    }
-}
-
-class Category{
-    private final String categoryName ;
-    private final String categoryParentName;
-
-    public Category(String categoryName , String categoryParentName ){
-        this.categoryName = categoryName;
-        this.categoryParentName = categoryParentName;
-    }
-
-    public String getCategoryName(){
-        return this.categoryName;
-    }
-
-    public String getCategoryParentName(){
-        return this.categoryParentName;
-    }
-}
-
-
 public class Solution {
     private final Map<String , String>categoryToCouponMap;
     private final Map<String , String>categoryToParentCategoryMap;
 
+    public Solution(List<Coupon>coupons , List<Category>categories){
+        this.categoryToCouponMap = new HashMap<>();
+        this.categoryToParentCategoryMap = new HashMap<>();
+        init(coupons, categories);
+    }
+
     private  void init(List<Coupon>coupons , List<Category>categories){
 
         for(int i=0;i<coupons.size();i++){
-
-            categoryToCouponMap.put(coupons.get(i).getCategoryName(),coupons.get(i).getCouponName());
+            categoryToCouponMap.put(coupons.get(i).getCategoryName(), coupons.get(i).getCouponName());
         }
 
         for(int i=0;i<categories.size();i++){
             String parentCategory = categories.get(i).getCategoryParentName();
             if(parentCategory!=null){
-                categoryToParentCategoryMap.put(categories.get(i).getCategoryName() ,categories.get(i).getCategoryParentName());
+                categoryToParentCategoryMap.put(categories.get(i).getCategoryName(), categories.get(i).getCategoryParentName());
             }
         }
     }
@@ -133,11 +102,5 @@ public class Solution {
             return getCoupon(categoryToParentCategoryMap.get(category));
         }
         return "";
-    }
-
-    public Solution(List<Coupon>coupons , List<Category>categories){
-        this.categoryToCouponMap = new HashMap<>();
-        this.categoryToParentCategoryMap = new HashMap<>();
-        init(coupons, categories);
     }
 }
