@@ -5,12 +5,12 @@ package com.interview.preparation.multi_threading.custom_read_write_lock;
  * Read Access    If no threads are writing, and no threads have requested write access.
  * Write Access   If no threads are reading or writing.
  */
-public class ReadWriteLock {
+public class ReadWriteLockWithoutReentrance {
   private int readers;
   private int writers;
   private int writeRequests;
 
-  public ReadWriteLock() {
+  public ReadWriteLockWithoutReentrance() {
     this.writers = 0;
     this.readers = 0;
     this.writeRequests = 0;
