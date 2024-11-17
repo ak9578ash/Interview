@@ -4,11 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReadWriteLockWithReentrance {
-  private Map<Thread, Integer> readingThreads = new HashMap<Thread, Integer>();
-
-  private int writeAccesses = 0;
+  private final Map<Thread, Integer> readingThreads;
   private int writeRequests = 0;
+  private int writeAccesses = 0;
   private Thread writingThread = null;
+
+  public ReadWriteLockWithReentrance() {
+    this.readingThreads = new HashMap<>();
+    this.writeAccesses = 0;
+    this.writeRequests = 0;
+    this.writingThread = null;
+  }
 
 
   public synchronized void lockRead() throws InterruptedException {
@@ -100,7 +106,7 @@ public class ReadWriteLockWithReentrance {
     if (accessCount == null) {
       return 0;
     }
-    return accessCount.intValue();
+    return accessCount;
   }
 
 

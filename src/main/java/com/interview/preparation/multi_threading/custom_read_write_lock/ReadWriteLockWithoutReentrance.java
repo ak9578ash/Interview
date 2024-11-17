@@ -32,7 +32,7 @@ public class ReadWriteLockWithoutReentrance {
     notifyAll();
   }
 
-  public synchronized void writeLock() {
+  public synchronized void writeLock() { // this writeLock in not reentrant
     writeRequests++;
     while (readers > 0 || writers > 0) {
       try {
