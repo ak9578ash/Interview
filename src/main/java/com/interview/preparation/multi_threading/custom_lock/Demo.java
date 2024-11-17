@@ -1,5 +1,7 @@
 package com.interview.preparation.multi_threading.custom_lock;
 
+import java.util.concurrent.Semaphore;
+
 public class Demo {
   public static void main(String[] args) {
     CustomLockWithReentrance lock = new CustomLockWithReentrance();
