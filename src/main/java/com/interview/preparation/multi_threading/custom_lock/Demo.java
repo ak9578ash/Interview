@@ -7,9 +7,13 @@ public class Demo {
         () -> {
           lock.lock();
           lock.lock();
-          System.out.println("Thread1 acquired lock");
-          lock.unlock();
-          lock.unlock();
+          try {
+            System.out.println("Thread1 acquired lock");
+            // some lines of code
+          } finally {
+            lock.unlock();
+            lock.unlock();
+          }
         }
     );
 
