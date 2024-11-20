@@ -1,31 +1,26 @@
 package com.interview.preparation.multi_threading.custom_blocking_queues;
 
-public class Producer implements Runnable{
+public class Producer implements Runnable {
   private final CustomBlockingQueue<Integer> customBlockingQueue;
-  private final int poisonPill;
-  private final int poisonPillPerProducer;
-  public Producer(CustomBlockingQueue<Integer> customBlockingQueue, int poisonPill, int poisonPillPerProducer) {
+  private final Integer limit;
+
+  public Producer(CustomBlockingQueue<Integer> customBlockingQueue, Integer limit) {
     this.customBlockingQueue = customBlockingQueue;
-    this.poisonPill = poisonPill;
-    this.poisonPillPerProducer = poisonPillPerProducer;
+    this.limit = limit;
   }
 
   @Override
   public void run() {
     try {
-      generateNumbers();
+      produceNumbers();
     } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+      Thread.currentThread().interrupt();
     }
   }
 
-  private void generateNumbers() throws InterruptedException {
-    for (int i = 0; i < 10; i++) {
-      customBlockingQueue.enQueue(1);
-    }
-
-    for (int j = 0; j < poisonPillPerProducer; j++) {
-      customBlockingQueue.enQueue(poisonPill);
+  private void produceNumbers() throws InterruptedException {
+    for (int i = 0; i < limit; i++) {
+      customBlockingQueue.enQueue(i);
     }
   }
 }
