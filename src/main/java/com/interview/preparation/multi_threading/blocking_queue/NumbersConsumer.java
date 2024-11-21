@@ -18,7 +18,6 @@ public class NumbersConsumer implements Runnable {
         System.out.println(Thread.currentThread().getName() + " is consuming");
         num--;
       }
-      Thread.sleep(1000);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
