@@ -4,25 +4,37 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Demo {
-    public static void main(String[] args) {
-        int BOUND = 10;
-        int N_PRODUCERS = 4;
-        int N_CONSUMERS = Runtime.getRuntime().availableProcessors();
-        int poisonPill = Integer.MAX_VALUE;
-        int poisonPillPerProducer = N_CONSUMERS / N_PRODUCERS;
-        int mod = N_CONSUMERS % N_PRODUCERS;
+  public static void main(String[] args) {
+    BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(5);
 
-        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(BOUND);
+    Thread producerThread = Thread.ofPlatform()
+        .name("ProducerThread")
+        .unstarted(
+            new NumbersProducer(queue)
+        );
 
-        for (int i = 1; i < N_PRODUCERS; i++) {
-            new Thread(new NumbersProducer(queue, poisonPill, poisonPillPerProducer)).start();
-        }
+    Thread consumerThread1 = Thread.ofPlatform()
+        .name("ConsumerThread1")
+        .unstarted(
+            new NumbersConsumer(queue)
+        );
 
-        for (int j = 0; j < N_CONSUMERS; j++) {
-            new Thread(new NumbersConsumer(queue, poisonPill)).start();
-        }
+    Thread consumerThread2 = Thread.ofPlatform()
+        .name("ConsumerThread2")
+        .unstarted(
+            new NumbersConsumer(queue)
+        );
 
-        new Thread(new NumbersProducer(queue, poisonPill, poisonPillPerProducer +  mod)).start();
+    producerThread.start();
+    consumerThread1.start();
+    consumerThread2.start();
 
+    try {
+      producerThread.join();
+      consumerThread1.join();
+      consumerThread2.join();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
     }
+  }
 }

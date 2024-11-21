@@ -4,29 +4,24 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NumbersProducer implements Runnable {
-    private BlockingQueue<Integer> numbersQueue;
-    private final int poisonPill;
-    private final int poisonPillPerProducer;
+  private final BlockingQueue<Integer> numbersQueue;
 
-    public NumbersProducer(BlockingQueue<Integer> numbersQueue, int poisonPill, int poisonPillPerProducer) {
-        this.numbersQueue = numbersQueue;
-        this.poisonPill = poisonPill;
-        this.poisonPillPerProducer = poisonPillPerProducer;
-    }
-    public void run() {
-        try {
-            generateNumbers();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
+  public NumbersProducer(BlockingQueue<Integer> numbersQueue) {
+    this.numbersQueue = numbersQueue;
+  }
 
-    private void generateNumbers() throws InterruptedException {
-        for (int i = 0; i < 100; i++) {
-            numbersQueue.put(ThreadLocalRandom.current().nextInt(100));
-        }
-        for (int j = 0; j < poisonPillPerProducer; j++) {
-            numbersQueue.put(poisonPill);
-        }
-    }
+  public void run() {
+   try {
+     int num = 10;
+       while (num > 0) {
+           int number = ThreadLocalRandom.current().nextInt();
+           numbersQueue.put(number);
+           System.out.println(Thread.currentThread().getName() + " is producing");
+           num--;
+       }
+       Thread.sleep(1000);
+   }catch (InterruptedException e) {
+       Thread.currentThread().interrupt();
+   }
+  }
 }

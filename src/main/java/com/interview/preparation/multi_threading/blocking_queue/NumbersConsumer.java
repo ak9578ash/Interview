@@ -2,25 +2,25 @@ package com.interview.preparation.multi_threading.blocking_queue;
 
 import java.util.concurrent.BlockingQueue;
 
-public class NumbersConsumer implements Runnable {
-    private BlockingQueue<Integer> queue;
-    private final int poisonPill;
 
-    public NumbersConsumer(BlockingQueue<Integer> queue, int poisonPill) {
-        this.queue = queue;
-        this.poisonPill = poisonPill;
+public class NumbersConsumer implements Runnable {
+  private final BlockingQueue<Integer> numberQueue;
+
+  public NumbersConsumer(BlockingQueue<Integer> numberQueue) {
+    this.numberQueue = numberQueue;
+  }
+
+  public void run() {
+    try {
+      int num = 5;
+      while (num > 0) {
+        numberQueue.take();
+        System.out.println(Thread.currentThread().getName() + " is consuming");
+        num--;
+      }
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
     }
-    public void run() {
-        try {
-            while (true) {
-                Integer number = queue.take();
-                if (number.equals(poisonPill)) {
-                    return;
-                }
-                System.out.println(Thread.currentThread().getName() + " result: " + number);
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
+  }
 }
