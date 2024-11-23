@@ -20,9 +20,8 @@ public class CustomThreadPool {
       runnables.add(poolThreadRunnable);
     }
 
-    Thread.Builder threadBuilder = Thread.ofPlatform().name("ThreadPool-", 0);
     for (PoolThreadRunnable runnable : runnables) {
-      threadBuilder.start(runnable);
+      Thread.ofPlatform().start(runnable);
     }
   }
 
