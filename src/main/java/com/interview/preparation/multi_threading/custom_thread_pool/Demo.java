@@ -14,8 +14,9 @@ public class Demo {
           }
       );
     }
-
-    threadPool.waitUntilAllTasksFinished();
+    System.out.println("StartTime: " + System.currentTimeMillis());
+    threadPool.waitUntilAllTaskFinishedOrTimedOut(4000);
     threadPool.stop();
+    System.out.println("EndTime: " + System.currentTimeMillis());
   }
 }

@@ -49,4 +49,19 @@ public class CustomThreadPool {
       }
     }
   }
+
+  public synchronized void waitUntilAllTaskFinishedOrTimedOut(int timeoutDurationInMillis) {
+    long startTime = System.currentTimeMillis();
+    while (!this.taskQueue.isEmpty()) {
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      if (elapsedTime >= timeoutDurationInMillis) {
+        break;
+      }
+      try {
+        Thread.sleep(1);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
 }

@@ -19,6 +19,7 @@ public class PoolThreadRunnable implements Runnable {
     while (!isStopped()) {
       try {
         Runnable runnable = (Runnable) taskQueue.take();
+        Thread.sleep(3000);
         runnable.run();
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
