@@ -12,8 +12,7 @@ public class Demo {
             new WorkerThread("" + i)
         );
       }
-    }
-    finally {
+    } finally {
       executor.shutdown();
     }
     System.out.println("Finished all threads");
