@@ -2,6 +2,10 @@ package com.interview.preparation.multi_threading.non_blocking_counter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * This locking technique is also called Optimistic Locking
+ * <a href="https://jenkov.com/tutorials/java-concurrency/non-blocking-algorithms.html">Ref: </a>
+ */
 public class AtomicCounter {
   private final AtomicLong count ;
 
