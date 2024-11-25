@@ -33,14 +33,20 @@ public class CustomThreadPool {
     this.taskQueue.offer(task);
   }
 
-  public synchronized void stop() {
+  /**
+   * shutdownNow() attempts to terminate all actively executing tasks and halts the processing of waiting tasks
+   */
+  public synchronized void shutdownNow() {
     this.isStopped = true;
     for (PoolThreadRunnable runnable : runnables) {
       runnable.doStop();
     }
   }
 
-  public synchronized void waitUntilAllTasksFinished() {
+  /**
+   * shutdown() waits until all the submitted tasks finish executing
+   */
+  public synchronized void shutdown() {
     while (!this.taskQueue.isEmpty()) {
       try {
         Thread.sleep(1);
@@ -50,11 +56,15 @@ public class CustomThreadPool {
     }
   }
 
-  public synchronized void waitUntilAllTaskFinishedOrTimedOut(int timeoutDurationInMillis) {
+  /**
+   * awaitTermination() wait until all tasks have completed execution or execution-timeout occurred
+   * @param executionDurationInMillis time to wait for the termination of tasks
+   */
+  public synchronized void awaitTermination(int executionDurationInMillis) {
     long startTime = System.currentTimeMillis();
     while (!this.taskQueue.isEmpty()) {
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime >= timeoutDurationInMillis) {
+      if (elapsedTime >= executionDurationInMillis) {
         break;
       }
       try {
