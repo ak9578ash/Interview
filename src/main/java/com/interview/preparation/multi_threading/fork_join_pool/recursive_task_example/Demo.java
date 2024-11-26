@@ -1,14 +1,15 @@
 package com.interview.preparation.multi_threading.fork_join_pool.recursive_task_example;
 
-import com.interview.preparation.multi_threading.fork_join_pool.recursive_action_example.CustomRecursiveAction;
 import java.util.concurrent.ForkJoinPool;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Demo {
   public static void main(String[] args) {
     ForkJoinPool commonPool = ForkJoinPool.commonPool();
-    CustomRecursiveAction customRecursiveAction = new CustomRecursiveAction("akash");
-    commonPool.execute(customRecursiveAction);
+    CustomRecursiveTask customRecursiveTask = new CustomRecursiveTask("akash");
+    commonPool.execute(customRecursiveTask);
 
-    System.out.println("Outcome of ForkJoinPool: " + customRecursiveAction.join());
+    System.out.println("Outcome of ForkJoinPool: " + customRecursiveTask.join());
   }
 }

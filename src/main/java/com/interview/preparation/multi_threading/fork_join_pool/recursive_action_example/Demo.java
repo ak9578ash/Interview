@@ -8,7 +8,6 @@ public class Demo {
     CustomRecursiveAction customRecursiveAction = new CustomRecursiveAction("akash");
 
     commonPool.execute(customRecursiveAction);
-    customRecursiveAction.join();
-
+    System.out.println("Outcome of ForkJoinPool: " + customRecursiveAction.join());
   }
 }
