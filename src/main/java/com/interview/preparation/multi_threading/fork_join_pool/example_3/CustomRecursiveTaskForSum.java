@@ -21,7 +21,9 @@ public class CustomRecursiveTaskForSum extends RecursiveTask<Integer> {
       return ForkJoinTask.invokeAll(createSubtasks(workload))
           .stream()
           .map(ForkJoinTask::join)
-          .reduce(0, Integer::sum);
+          .reduce(0, (a,b) -> {
+            return a+b;
+          });
     } else {
       return computeHelper(workload);
     }
