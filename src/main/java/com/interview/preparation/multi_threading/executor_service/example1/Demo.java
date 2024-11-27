@@ -15,16 +15,16 @@ import lombok.extern.slf4j.Slf4j;
 public class Demo {
   public static void main(String[] args) {
     ExecutorService executorService =
-        new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+        new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>());
 
 
     Runnable runnableTask = () -> {
-      System.out.println("Runnable is running");
-
+      log.info("Runnable is running");
     };
 
     Callable<String> callableTask = () -> {
+      log.info(Thread.currentThread().getName());
       TimeUnit.MILLISECONDS.sleep(300);
       return "Task's execution";
     };
