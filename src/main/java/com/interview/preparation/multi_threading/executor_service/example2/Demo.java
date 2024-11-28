@@ -33,6 +33,7 @@ public class Demo {
     executorService.shutdown();
     try {
       if (!executorService.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+        log.info("ShutdownNow is called");
         executorService.shutdownNow();
       }
     } catch (InterruptedException e) {
