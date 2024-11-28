@@ -13,12 +13,13 @@ public class Worker implements Runnable {
 
   @Override
   public void run() {
-    try{
+    try {
       Thread.sleep(10000); // To mimic some heavy processing
-    }catch (InterruptedException e) {
+    } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
+    } finally {
+      log.info("Counted Down");
+      countDownLatch.countDown();
     }
-    log.info("Counted Down");
-    countDownLatch.countDown();
   }
 }
