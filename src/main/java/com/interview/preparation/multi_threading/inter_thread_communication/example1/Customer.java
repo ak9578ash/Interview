@@ -1,26 +1,29 @@
 package com.interview.preparation.multi_threading.inter_thread_communication.example1;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Customer {
-    int amount = 10000;
+  private int balance;
 
-    synchronized void withdraw(int amount) {
-        System.out.println("going to withdraw...");
+  public Customer(int balance) {
+    this.balance = balance;
+  }
 
-        if (this.amount < amount) {
-            System.out.println("Less balance; waiting for deposit...");
-            try {
-                wait();
-            } catch (Exception e) {
-            }
-        }
-        this.amount -= amount;
-        System.out.println("withdraw completed...");
+  public synchronized void withdraw(int withdrawAmount) throws InterruptedException {
+    log.info("going to withdraw...");
+    while (balance < withdrawAmount) {
+      log.info("Less balance; waiting for deposit...");
+      this.wait();
     }
+    this.balance -= withdrawAmount;
+    log.info("withdraw completed...");
+  }
 
-    synchronized void deposit(int amount) {
-        System.out.println("going to deposit...");
-        this.amount += amount;
-        System.out.println("deposit completed... ");
-        notify();
-    }
+  public synchronized void deposit(int amount) {
+    log.info("going to deposit...");
+    this.balance += amount;
+    log.info("deposit completed... ");
+    notifyAll();
+  }
 }
