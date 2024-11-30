@@ -1,5 +1,8 @@
 package com.interview.preparation.multi_threading.inter_thread_communication.example2;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Data {
     private String packet;
 
@@ -10,14 +13,13 @@ public class Data {
     public synchronized String receive() {
         while (transfer) {
             try {
-                wait();
+                this.wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.err.println("Thread Interrupted");
+                log.info("Thread Interrupted");
             }
         }
         transfer = true;
-
         String returnPacket = packet;
         notifyAll();
         return returnPacket;

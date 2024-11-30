@@ -9,8 +9,8 @@ public class Demo {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     );
 
-    CustomRecursiveTaskForSum customRecursiveTaskForSum = new CustomRecursiveTaskForSum(testList);
-    ForkJoinPool forkJoinPool = new ForkJoinPool(3);
+    CustomRecursiveTaskForArraySum customRecursiveTaskForSum = new CustomRecursiveTaskForArraySum(testList);
+    ForkJoinPool forkJoinPool = new ForkJoinPool(2);
 
     forkJoinPool.execute(customRecursiveTaskForSum);
     System.out.println("Final Outcome of ForkJoinPool: " + customRecursiveTaskForSum.join());

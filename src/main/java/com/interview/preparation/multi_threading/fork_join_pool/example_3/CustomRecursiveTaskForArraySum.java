@@ -7,11 +7,11 @@ import java.util.concurrent.RecursiveTask;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CustomRecursiveTaskForSum extends RecursiveTask<Integer> {
+public class CustomRecursiveTaskForArraySum extends RecursiveTask<Integer> {
   private static final int THRESHOLD = 3;
   private final List<Integer> workload;
 
-  public CustomRecursiveTaskForSum(List<Integer> workload) {
+  public CustomRecursiveTaskForArraySum(List<Integer> workload) {
     this.workload = workload;
   }
 
@@ -29,12 +29,12 @@ public class CustomRecursiveTaskForSum extends RecursiveTask<Integer> {
     }
   }
 
-  private List<CustomRecursiveTaskForSum> createSubtasks(List<Integer> workload) {
-    List<CustomRecursiveTaskForSum> subtasks = new ArrayList<>();
+  private List<CustomRecursiveTaskForArraySum> createSubtasks(List<Integer> workload) {
+    List<CustomRecursiveTaskForArraySum> subtasks = new ArrayList<>();
 
-    CustomRecursiveTaskForSum subtask1 = new CustomRecursiveTaskForSum(workload.subList(0, workload.size() / 2));
-    CustomRecursiveTaskForSum subtask2 =
-        new CustomRecursiveTaskForSum(workload.subList(workload.size() / 2, workload.size()));
+    CustomRecursiveTaskForArraySum subtask1 = new CustomRecursiveTaskForArraySum(workload.subList(0, workload.size() / 2));
+    CustomRecursiveTaskForArraySum subtask2 =
+        new CustomRecursiveTaskForArraySum(workload.subList(workload.size() / 2, workload.size()));
 
     subtasks.add(subtask1);
     subtasks.add(subtask2);

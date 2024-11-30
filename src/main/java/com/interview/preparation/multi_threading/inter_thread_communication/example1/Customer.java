@@ -24,6 +24,6 @@ public class Customer {
     log.info("going to deposit...");
     this.balance += amount;
     log.info("deposit completed... ");
-    notifyAll();
+    this.notifyAll();
   }
 }
