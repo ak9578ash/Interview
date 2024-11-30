@@ -52,7 +52,8 @@ public class CustomRecursiveTaskForArraysSorting extends RecursiveTask<List<Inte
 
   private List<Integer> merge(List<Integer> a, List<Integer> b) {
     List<Integer> mergedArray = new ArrayList<>();
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
     while (i < a.size() && j < b.size()) {
       if (a.get(i) < b.get(j)) {
         mergedArray.add(a.get(i));
