@@ -6,25 +6,36 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Demo {
   public static void main(String[] args) {
     Add add = new Add();
     List<Integer> list1 = List.of(1, 2, 3);
     List<Integer> list2 = List.of(1, 2, 3);
 
-    ThreadFactory threadFactory = Thread.ofVirtual().factory();
+    ThreadFactory threadFactory = Thread.ofVirtual().name("VirtualThread-", 0).factory();
     ExecutorService executorService = Executors.newThreadPerTaskExecutor(threadFactory);
 
     CompletableFuture<Integer> cf1 = CompletableFuture.supplyAsync(
-        () -> add.add(list1.get(0), list2.get(0)), executorService
+        () -> {
+          log.info("Adding first element");
+          return add.add(list1.get(0), list2.get(0));
+        }, executorService
     );
 
     CompletableFuture<Integer> cf2 = CompletableFuture.supplyAsync(
-        () -> add.add(list1.get(1), list2.get(1)), executorService
+        () -> {
+          log.info("Adding second element");
+          return add.add(list1.get(1), list2.get(1));
+        }, executorService
     );
     CompletableFuture<Integer> cf3 = CompletableFuture.supplyAsync(
-        () -> add.add(list1.get(2), list2.get(2)), executorService
+        () -> {
+          log.info("Adding third element");
+          return add.add(list1.get(2), list2.get(2));
+        }, executorService
     );
 
     CompletableFuture.allOf(cf1, cf2, cf3);
@@ -33,6 +44,6 @@ public class Demo {
         .map(CompletableFuture::join)
         .toList();
 
-    System.out.println(finalArrays);
+    log.info(finalArrays.toString());
   }
 }
