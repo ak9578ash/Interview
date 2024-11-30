@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.print_even_odd;
+package com.interview.preparation.multi_threading.questions.print_even_odd;
 
 public class EvenOddTask implements Runnable {
   private final int max;

@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.sum.using_completable_future;
+package com.interview.preparation.multi_threading.questions.sum.using_completable_future;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

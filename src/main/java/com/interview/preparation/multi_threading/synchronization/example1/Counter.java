@@ -9,7 +9,7 @@ public class Counter {
     }
   }
 
-  public  Integer getCounter() {
+  public synchronized Integer getCounter() {
     return this.count;
   }
 }

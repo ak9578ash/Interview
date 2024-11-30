@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.foo_and_bar;
+package com.interview.preparation.multi_threading.questions.foo_and_bar;
 
 public class Demo {
   public static void main(String[] args) {

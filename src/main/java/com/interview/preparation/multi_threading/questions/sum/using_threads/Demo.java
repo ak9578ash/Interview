@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.sum.using_threads;
+package com.interview.preparation.multi_threading.questions.sum.using_threads;
 
 import java.util.ArrayList;
 import java.util.List;
