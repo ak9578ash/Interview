@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Implements a multithreaded approach to sorting an array using the Fork/Join framework.
+ */
 @Slf4j
 public class Demo {
   public static void main(String[] args) {

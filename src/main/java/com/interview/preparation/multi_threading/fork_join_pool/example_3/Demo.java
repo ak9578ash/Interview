@@ -3,6 +3,9 @@ package com.interview.preparation.multi_threading.fork_join_pool.example_3;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Implements a multithreaded approach to summing an array using the Fork/Join framework.
+ */
 public class Demo {
   public static void main(String[] args) {
     List<Integer> testList = List.of(
