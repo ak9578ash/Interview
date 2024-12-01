@@ -1,16 +1,18 @@
-package com.interview.preparation.multi_threading.semaphore;
+package com.interview.preparation.multi_threading.mutex;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BoundedSemaphore {
+public class CustomMutex {
   private final int bound;
   private int signals;
+  private Thread lockedBy;
 
 
-  public BoundedSemaphore(int upperBound) {
-    this.bound = upperBound;
+  public CustomMutex() {
+    this.bound = 1;
     this.signals = 0;
+    this.lockedBy = null;
   }
 
   public synchronized void take() throws InterruptedException {
@@ -18,17 +20,24 @@ public class BoundedSemaphore {
       log.info("Thread is waiting to acquire semaphore");
       this.wait();
     }
-    log.info("Semaphore is acquired");
+    log.info("Mutex is acquired");
     this.signals++;
+    this.lockedBy = Thread.currentThread();
   }
 
   public synchronized void release() throws IllegalStateException {
+    Thread callingThread = Thread.currentThread();
+    if (lockedBy != callingThread) {
+      throw new IllegalStateException("Calling thread has not acquired the mutex");
+    }
+
     if (this.signals == 0) {
       throw new IllegalStateException("No signal to release");
     }
 
-    log.info("Semaphore is released");
+    log.info("Mutex is released");
     this.signals--;
+    this.lockedBy = null;
     this.notifyAll();
   }
 }

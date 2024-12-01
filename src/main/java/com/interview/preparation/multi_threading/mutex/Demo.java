@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.semaphore;
+package com.interview.preparation.multi_threading.mutex;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Demo {
   public static void main(String[] args) {
     Counter counter = new Counter();
-    BoundedSemaphore semaphore = new BoundedSemaphore(1);
+    CustomMutex customMutex = new CustomMutex();
 
     Thread th1 = Thread
         .ofPlatform()
@@ -14,13 +14,12 @@ public class Demo {
         .start(
             () -> {
               try {
-                semaphore.take();
-                Thread.sleep(2000);
+                customMutex.take();
                 counter.incrementCounter();
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                customMutex.release();
               }
             }
         );
@@ -31,13 +30,13 @@ public class Demo {
         .start(
             () -> {
               try {
-                semaphore.take();
+                customMutex.take();
                 counter.incrementCounter();
                 Thread.sleep(2000);
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                customMutex.release();
               }
             }
         );
@@ -48,12 +47,12 @@ public class Demo {
         .start(
             () -> {
               try {
-                semaphore.take();
+                customMutex.take();
                 counter.incrementCounter();
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                customMutex.release();
               }
             }
         );
