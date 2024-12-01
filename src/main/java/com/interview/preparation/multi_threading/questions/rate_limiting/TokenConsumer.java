@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.questions.rate_limiting.first_implementation;
+package com.interview.preparation.multi_threading.questions.rate_limiting;
 
 public class TokenConsumer implements Runnable{
   private final TokenBucket tokenBucket;

@@ -1,4 +1,4 @@
-package com.interview.preparation.multi_threading.questions.rate_limiting.first_implementation;
+package com.interview.preparation.multi_threading.questions.rate_limiting;
 public class Demo {
   public static void main(String[] args) {
     TokenBucket tokenBucket = new TokenBucket(5);
