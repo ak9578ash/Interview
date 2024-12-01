@@ -22,6 +22,13 @@ public class Demo {
         );
 
     tokenProducerThread.start();
+
+    try {
+      Thread.sleep(5000);
+    }catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+
     tokenConsumerThread1.start();
     tokenConsumerThread2.start();
   }

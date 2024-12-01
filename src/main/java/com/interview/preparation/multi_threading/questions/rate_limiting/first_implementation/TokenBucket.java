@@ -13,7 +13,7 @@ public class TokenBucket {
   }
 
   public synchronized void addToken() throws InterruptedException {
-    if (currentToken == maxTokens) {
+    while (currentToken == maxTokens) {
       log.info("Token bucket is full. Waiting for consumer to consume token");
       this.wait();
     }
@@ -24,7 +24,7 @@ public class TokenBucket {
   }
 
   public synchronized void getToken() throws InterruptedException {
-    if (currentToken == 0) {
+    while(currentToken == 0) {
       log.info("Token bucket is empty. Waiting for producer to add token");
       this.wait();
     }

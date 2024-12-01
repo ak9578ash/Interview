@@ -12,7 +12,7 @@ public class TokenConsumer implements Runnable{
     while (true) {
       try {
         tokenBucket.getToken();
-        Thread.sleep(5000); // to simulate some heavy processing
+        Thread.sleep(2000); // to simulate heavy processing
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
