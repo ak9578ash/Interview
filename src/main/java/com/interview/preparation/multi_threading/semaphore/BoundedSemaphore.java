@@ -2,6 +2,9 @@ package com.interview.preparation.multi_threading.semaphore;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * BoundedSemaphore is a semaphore that has an upper bound on the number of permits it can issue or the number of threads that can access a resource at a time.
+ */
 @Slf4j
 public class BoundedSemaphore {
   private final int bound;
@@ -20,11 +23,13 @@ public class BoundedSemaphore {
     }
     log.info("Semaphore is acquired");
     this.signals++;
+    this.notifyAll();
   }
 
-  public synchronized void release() throws IllegalStateException {
-    if (this.signals == 0) {
-      throw new IllegalStateException("No signal to release");
+  public synchronized void release() throws InterruptedException {
+    while (this.signals == 0) {
+      log.info("Thread is waiting to release semaphore");
+      this.wait();
     }
 
     log.info("Semaphore is released");

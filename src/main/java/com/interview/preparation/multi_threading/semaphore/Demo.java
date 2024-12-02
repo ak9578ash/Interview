@@ -20,7 +20,11 @@ public class Demo {
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                try {
+                  semaphore.release();
+                } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                }
               }
             }
         );
@@ -37,7 +41,11 @@ public class Demo {
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                try {
+                  semaphore.release();
+                } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                }
               }
             }
         );
@@ -53,7 +61,11 @@ public class Demo {
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
               } finally {
-                semaphore.release();
+                try {
+                  semaphore.release();
+                } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                }
               }
             }
         );
