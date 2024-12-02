@@ -8,7 +8,6 @@ public class CustomMutex {
   private int signals;
   private Thread lockedBy;
 
-
   public CustomMutex() {
     this.bound = 1;
     this.signals = 0;
