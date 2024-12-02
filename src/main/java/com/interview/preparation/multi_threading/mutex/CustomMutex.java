@@ -16,7 +16,7 @@ public class CustomMutex {
 
   public synchronized void take() throws InterruptedException {
     while (this.signals == bound) {
-      log.info("Thread is waiting to acquire semaphore");
+      log.info("Thread is waiting to acquire mutex");
       this.wait();
     }
     log.info("Mutex is acquired");
@@ -26,12 +26,12 @@ public class CustomMutex {
 
   public synchronized void release() throws IllegalStateException {
     Thread callingThread = Thread.currentThread();
-    if (lockedBy != callingThread) {
+    if (lockedBy != callingThread) { // here we are checking the thread ownership
       throw new IllegalStateException("Calling thread has not acquired the mutex");
     }
 
     if (this.signals == 0) {
-      throw new IllegalStateException("No signal to release");
+      throw new IllegalStateException("No mutex to release");
     }
 
     log.info("Mutex is released");
