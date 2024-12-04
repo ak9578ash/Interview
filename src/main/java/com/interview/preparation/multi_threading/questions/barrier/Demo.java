@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Demo {
-  public static void main(String[] args) throws InterruptedException {
-    Barrier barrier = new Barrier(2);
+  public static void main(String[] args) {
+    Barrier barrier = new Barrier(3);
 
     Thread t1 = Thread.ofPlatform().name("t1").unstarted(
         () -> {
@@ -19,7 +19,7 @@ public class Demo {
         }
     );
 
-    Thread t2 =  Thread.ofPlatform().name("t2").unstarted(
+    Thread t2 = Thread.ofPlatform().name("t2").unstarted(
         () -> {
           log.info("Thread 2 is waiting");
           try {
@@ -34,5 +34,13 @@ public class Demo {
 
     t1.start();
     t2.start();
+
+    try{
+      log.info("Main thread is waiting");
+      barrier.await();
+    }catch (InterruptedException e){
+      Thread.currentThread().interrupt();
+    }
+    log.info("Main thread is released");
   }
 }

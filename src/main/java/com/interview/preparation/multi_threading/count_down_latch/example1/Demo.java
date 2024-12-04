@@ -27,11 +27,11 @@ public class Demo {
     th3.start();
 
     try {
+      log.info("Main thread is waiting");
       countDownLatch.await();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
-
     log.info("All the workers have completed their work");
   }
 }
