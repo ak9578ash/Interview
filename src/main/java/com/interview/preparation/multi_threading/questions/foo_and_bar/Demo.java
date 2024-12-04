@@ -7,12 +7,24 @@ public class Demo {
     Thread fooThread = Thread
         .ofPlatform()
         .name("FooThread")
-        .unstarted(new PrinterHelper(printer, "FOO"));
+        .unstarted(
+            () -> {
+              for (int i = 0; i < 5; i++) {
+                printer.printFoo();
+              }
+            }
+        );
 
     Thread barThread = Thread
         .ofPlatform()
         .name("BarThread")
-        .unstarted(new PrinterHelper(printer, "BAR"));
+        .unstarted(
+            () -> {
+              for (int i = 0; i < 5; i++) {
+                printer.printBar();
+              }
+            }
+        );
 
     fooThread.start();
     barThread.start();

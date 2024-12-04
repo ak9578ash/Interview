@@ -1,5 +1,8 @@
 package com.interview.preparation.multi_threading.questions.foo_and_bar;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Printer {
   private boolean isFoo;
 
@@ -15,8 +18,8 @@ public class Printer {
         Thread.currentThread().interrupt();
       }
     }
-    String threadName = Thread.currentThread().getName();
-    System.out.println(threadName + ": " + "FOO");
+
+    log.info("FOO");
     this.isFoo = false;
     this.notifyAll();
   }
@@ -29,8 +32,8 @@ public class Printer {
         Thread.currentThread().interrupt();
       }
     }
-    String threadName = Thread.currentThread().getName();
-    System.out.println(threadName + ": " + "BAR");
+
+    log.info("BAR");
     this.isFoo = true;
     this.notifyAll();
   }
