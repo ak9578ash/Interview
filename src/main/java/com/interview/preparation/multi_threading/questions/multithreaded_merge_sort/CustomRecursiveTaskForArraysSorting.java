@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CustomRecursiveTaskForArraysSorting extends RecursiveTask<List<Integer>> {
-  private static final int THRESHOLD = 2;
+  private static final int THRESHOLD = 3;
   private final List<Integer> workload;
 
   public CustomRecursiveTaskForArraysSorting(List<Integer> workload) {
@@ -21,7 +21,7 @@ public class CustomRecursiveTaskForArraysSorting extends RecursiveTask<List<Inte
 
   @Override
   protected List<Integer> compute() {
-    if (workload.size() > THRESHOLD) {
+    if (workload.size() >= THRESHOLD) {
       return ForkJoinTask.invokeAll(createSubtasks(workload))
           .stream()
           .map((forkJoinSubtask) -> forkJoinSubtask.join())

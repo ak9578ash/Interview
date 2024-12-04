@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Demo {
   public static void main(String[] args) {
     ForkJoinPool commonPool = new ForkJoinPool(5);
-    List<Integer> tempArray = new ArrayList<>(List.of(11, 123, 0, -1, -2));
+    List<Integer> tempArray = new ArrayList<>(List.of(11, 123, 0, -1, -2,1,10,-2,-4,-8,90,123));
 
     CustomRecursiveTaskForArraysSorting
         sortArrayRecursiveTask = new CustomRecursiveTaskForArraysSorting(tempArray);
