@@ -1,5 +1,6 @@
-package com.interview.preparation.multi_threading.semaphore;
+package com.interview.preparation.multi_threading.semaphore.example2;
 
+import com.interview.preparation.multi_threading.semaphore.BoundedSemaphore;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
