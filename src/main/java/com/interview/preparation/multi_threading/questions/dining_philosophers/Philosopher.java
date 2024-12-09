@@ -2,9 +2,9 @@ package com.interview.preparation.multi_threading.questions.dining_philosophers;
 
 public class Philosopher implements Runnable {
   private final int id;
-  private final DiningPhilosophers diningPhilosophers;
+  private final DiningPhilosophers1 diningPhilosophers;
 
-  public Philosopher(DiningPhilosophers diningPhilosophers, int id) {
+  public Philosopher(DiningPhilosophers1 diningPhilosophers, int id) {
     this.diningPhilosophers = diningPhilosophers;
     this.id = id;
   }
