@@ -2,7 +2,7 @@ package com.interview.preparation.multi_threading.questions.dining_philosophers;
 
 public class Demo {
   public static void main(String[] args) {
-    DiningPhilosophers1 diningPhilosophers = new DiningPhilosophers1();
+    DiningPhilosophers2 diningPhilosophers = new DiningPhilosophers2();
 
     Thread philosopher0 = Thread.ofPlatform()
         .name("philosopher0")
