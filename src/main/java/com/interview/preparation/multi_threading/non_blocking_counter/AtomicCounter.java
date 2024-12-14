@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <a href="https://jenkov.com/tutorials/java-concurrency/non-blocking-algorithms.html">Ref: </a>
  */
 public class AtomicCounter {
-  private final AtomicLong count ;
+  private final AtomicLong count;
 
   public AtomicCounter() {
     this.count = new AtomicLong(0);
@@ -15,7 +15,7 @@ public class AtomicCounter {
 
   public void inc() {
     boolean updated = false;
-    while(!updated){
+    while (!updated) {
       long prevCount = this.count.get();
       updated = this.count.compareAndSet(prevCount, prevCount + 1);
     }

@@ -1,19 +1,26 @@
 package com.interview.preparation.multi_threading.non_blocking_counter;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Demo {
   public static void main(String[] args) {
 
     AtomicCounter atomicCounter = new AtomicCounter();
-    Thread th1 = Thread.ofPlatform()
+    Thread th1 = Thread.ofVirtual()
         .name("Thread1")
         .start(
-            atomicCounter::inc
+            () -> {
+              atomicCounter.inc();
+            }
         );
 
-    Thread th2 = Thread.ofPlatform()
+    Thread th2 = Thread.ofVirtual()
         .name("Thread2")
         .start(
-            atomicCounter::inc
+            () -> {
+              atomicCounter.inc();
+            }
         );
 
     try {
@@ -22,6 +29,6 @@ public class Demo {
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
-    System.out.println("Final Count: " + atomicCounter.count());
+    log.info("Final Count: " + atomicCounter.count());
   }
 }
