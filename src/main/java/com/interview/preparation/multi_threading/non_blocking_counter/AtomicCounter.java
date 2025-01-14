@@ -1,11 +1,13 @@
 package com.interview.preparation.multi_threading.non_blocking_counter;
 
 import java.util.concurrent.atomic.AtomicLong;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This locking technique is also called Optimistic Locking
  * <a href="https://jenkov.com/tutorials/java-concurrency/non-blocking-algorithms.html">Ref: </a>
  */
+@Slf4j
 public class AtomicCounter {
   private final AtomicLong count;
 
