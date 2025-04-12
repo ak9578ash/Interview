@@ -1,20 +1,19 @@
 package com.interview.preparation.designpatterns.observer;
 
+// https://www.digitalocean.com/community/tutorials/observer-design-pattern-in-java
 public class ObserverMain {
     public static void main(String[] args) {
-        CricketDataSubjectImpl cricketDataSubject = new CricketDataSubjectImpl(12,12);
+        Topic topic = new Topic("PUBSUB_TOPIC");
 
-        ObserverImpl1 observerImpl1 = new ObserverImpl1();
-        ObserverImpl2 observerImpl2 = new ObserverImpl2();
+        Subscriber1 subscriber1 = new Subscriber1(topic);
+        Subscriber2 subscriber2 = new Subscriber2(topic);
 
-        cricketDataSubject.addObserver(observerImpl1);
-        cricketDataSubject.addObserver(observerImpl2);
+        topic.addObserver(subscriber1);
+        topic.addObserver(subscriber2);
 
-        cricketDataSubject.changeData();
+        topic.changeData();
 
-        cricketDataSubject.removeObserver(observerImpl1);
-
-        cricketDataSubject.changeData();
-
+        topic.removeObserver(subscriber1);
+        topic.changeData();
     }
 }

@@ -6,14 +6,13 @@ import com.interview.preparation.low_level_design.interview.otp_generator_valida
 import com.interview.preparation.low_level_design.interview.otp_generator_validator.repository.OtpRepository;
 import com.interview.preparation.low_level_design.interview.otp_generator_validator.service.impl.OtpServiceImpl;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
+
 
 public class OtpServiceImplTest {
     @Mock

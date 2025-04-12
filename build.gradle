@@ -26,7 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.projectlombok:lombok:latest.release'
-	annotationProcessor 'org.projectlombok:lombok:latest.release'
+    testImplementation 'junit:junit:4.13.1'
+    annotationProcessor 'org.projectlombok:lombok:latest.release'
 	implementation 'org.postgresql:postgresql:42.2.24'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
