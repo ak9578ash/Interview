@@ -1,6 +1,5 @@
 package com.interview.preparation.low_level_design.messaging_app.service.impl;
 
-import com.interview.preparation.design_patterns.observer.Observer;
 import com.interview.preparation.low_level_design.messaging_app.exception.GroupNotFoundException;
 import com.interview.preparation.low_level_design.messaging_app.exception.UserNotFoundException;
 import com.interview.preparation.low_level_design.messaging_app.models.Group;
