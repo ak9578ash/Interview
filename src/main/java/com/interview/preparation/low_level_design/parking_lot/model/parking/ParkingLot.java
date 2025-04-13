@@ -15,54 +15,64 @@ import static com.interview.preparation.low_level_design.parking_lot.model.parki
 @Setter
 @Getter
 public class ParkingLot {
-    private String parkingLotId;
-    private Address address;
-    private List<ParkingFloor> parkingFloors;
-    private List<EntranceGate> entranceGates;
-    private List<ExitGate> exitGates;
+  private static ParkingLot instance;
+  private String parkingLotId;
+  private Address address;
+  private List<ParkingFloor> parkingFloors;
+  private List<EntranceGate> entranceGates;
+  private List<ExitGate> exitGates;
 
+  private ParkingLot(Address address) {
+    this.parkingLotId = UUID.randomUUID().toString();
+    this.address = address;
+    this.parkingFloors = new ArrayList<>();
+    this.entranceGates = new ArrayList<>();
+    this.exitGates = new ArrayList<>();
+  }
 
-    public ParkingLot(Address address) {
-        this.parkingLotId = UUID.randomUUID().toString();
-        this.address = address;
-        this.parkingFloors = new ArrayList<>();
-        this.entranceGates = new ArrayList<>();
-        this.exitGates = new ArrayList<>();
+  public static synchronized ParkingLot getInstance(Address address) {
+    if (instance == null) {
+        instance = new ParkingLot(address);
     }
+    return instance;
+  }
 
-    public boolean isFull() {
-        for (ParkingFloor parkingFloor : this.parkingFloors) {
-            if (!parkingFloor.isFloorFull()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean canPark(VehicleType vehicleType) {
-        for (ParkingFloor parkingFloor : this.parkingFloors) {
-            if (parkingFloor.canPark(getSpotTypeForVehicle(vehicleType)))
-                return true;
-        }
+  public boolean isFull() {
+    for (ParkingFloor parkingFloor : this.parkingFloors) {
+      if (!parkingFloor.isFloorFull()) {
         return false;
+      }
     }
+    return true;
+  }
 
-    public ParkingSpot getParkingSpot(VehicleType vehicleType) throws NoParkingSpotAvailableException {
-        for (ParkingFloor parkingFloor : this.parkingFloors) {
-            ParkingSpot parkingSpot = parkingFloor.getSpot(vehicleType);
-            if (parkingSpot != null) {
-                return parkingSpot;
-            }
+  public boolean canPark(VehicleType vehicleType) {
+    for (ParkingFloor parkingFloor : this.parkingFloors) {
+        if (parkingFloor.canPark(getSpotTypeForVehicle(vehicleType))) {
+            return true;
         }
-        throw new NoParkingSpotAvailableException(String.format("Parking Spot Not Available for %s vehicle type", vehicleType.toString()));
     }
+    return false;
+  }
 
-    public ParkingSpot vacateParkingSpot(String parkingSpotId) {
-        for (ParkingFloor parkingFloor : this.parkingFloors) {
-            ParkingSpot parkingSpot = parkingFloor.vacateParkingSpot(parkingSpotId);
-            if (parkingSpot != null)
-                return parkingSpot;
-        }
-        return null;
+  public ParkingSpot getParkingSpot(VehicleType vehicleType) throws NoParkingSpotAvailableException {
+    for (ParkingFloor parkingFloor : this.parkingFloors) {
+      ParkingSpot parkingSpot = parkingFloor.getSpot(vehicleType);
+      if (parkingSpot != null) {
+        return parkingSpot;
+      }
     }
+    throw new NoParkingSpotAvailableException(
+        String.format("Parking Spot Not Available for %s vehicle type", vehicleType.toString()));
+  }
+
+  public ParkingSpot vacateParkingSpot(String parkingSpotId) {
+    for (ParkingFloor parkingFloor : this.parkingFloors) {
+      ParkingSpot parkingSpot = parkingFloor.vacateParkingSpot(parkingSpotId);
+        if (parkingSpot != null) {
+            return parkingSpot;
+        }
+    }
+    return null;
+  }
 }

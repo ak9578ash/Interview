@@ -1,13 +1,16 @@
 package com.interview.preparation.designpatterns.factory;
 
-public class Square implements Shape{
-    @Override
-    public void draw() {
-        System.out.println("Inside Square::draw() method.");
-    }
+import lombok.extern.slf4j.Slf4j;
 
-    @Override
-    public void getArea() {
+@Slf4j
+public class Square implements Shape {
+  @Override
+  public void draw() {
+    log.info("Inside Square::draw() method.");
+  }
 
-    }
+  @Override
+  public void getArea() {
+
+  }
 }

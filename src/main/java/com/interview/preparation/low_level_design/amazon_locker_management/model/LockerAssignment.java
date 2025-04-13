@@ -1,11 +1,13 @@
 package com.interview.preparation.low_level_design.amazon_locker_management.model;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class LockerAssignment {
   private final String lockerId;
   private final String userId;

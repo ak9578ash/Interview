@@ -1,11 +1,14 @@
 package com.interview.preparation.low_level_design.amazon_locker_management.model;
 
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
+
 @Getter
+@Builder
+@AllArgsConstructor
 public class Locker {
   private final String id;
   private final Location location;

@@ -74,8 +74,7 @@ public class ParkingFloor {
         ParkingSpot parkingSpot = usedParkingSpot.get(parkingSpotId);
         if (parkingSpot != null) {
             parkingSpot.freeSpot();
-            parkingSpots.get(parkingSpot.getParkingSpotType())
-                    .addFirst(parkingSpot);
+            parkingSpots.get(parkingSpot.getParkingSpotType()).addFirst(parkingSpot);
             return parkingSpot;
         }
         return null;

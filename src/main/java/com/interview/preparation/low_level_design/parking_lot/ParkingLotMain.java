@@ -54,7 +54,7 @@ public class ParkingLotMain {
         // parkingLot creation
         Address parkingLot1Address = new Address("Parking Lot Address", "", "",
                 "BG Road", "Bangalore", "Karnataka", "560075");
-        ParkingLot parkingLot1 = new ParkingLot(parkingLot1Address);
+        ParkingLot parkingLot1 = ParkingLot.getInstance(parkingLot1Address);
 
         // added the parkingLot to the list by admin
         ((Admin) adminAccount).addParkingLot(parkingLot1);

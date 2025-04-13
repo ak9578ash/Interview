@@ -17,6 +17,7 @@ public abstract class ParkingSpot {
     }
 
     public void assignVehicleToSpot(String vehicleId) {
+        this.isFree = false;
         this.assignedVehicleId = vehicleId;
     }
 
