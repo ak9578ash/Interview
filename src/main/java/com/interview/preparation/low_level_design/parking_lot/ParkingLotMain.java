@@ -6,6 +6,7 @@ import com.interview.preparation.low_level_design.parking_lot.exception.InvalidP
 import com.interview.preparation.low_level_design.parking_lot.exception.NoParkingSpotAvailableException;
 import com.interview.preparation.low_level_design.parking_lot.model.account.*;
 import com.interview.preparation.low_level_design.parking_lot.model.parking.*;
+import com.interview.preparation.low_level_design.parking_lot.model.strategy.DefaultCostStrategy;
 import com.interview.preparation.low_level_design.parking_lot.model.vehicle.*;
 import com.interview.preparation.low_level_design.parking_lot.repository.AdminRepository;
 import com.interview.preparation.low_level_design.parking_lot.repository.ParkingLotRepository;
@@ -24,7 +25,6 @@ public class ParkingLotMain {
     static AdminService adminService;
     static PaymentRepository paymentRepository;
     static PaymentService paymentService;
-
     public static void main(String[] args) throws InvalidParkingFloorException, InvalidParkingLotException, NoParkingSpotAvailableException, InvalidParkingSpotException {
         parkingLotRepository = new ParkingLotRepository();
         parkingLotService = new ParkingLotService(parkingLotRepository);
@@ -34,6 +34,8 @@ public class ParkingLotMain {
 
         paymentRepository = new PaymentRepository();
         paymentService = new PaymentService(paymentRepository);
+
+
 
         Address adminAddress = new Address("Admin Address", "", "",
                 "BG Road", "Bangalore", "Karnataka", "560075");
@@ -67,7 +69,7 @@ public class ParkingLotMain {
         ((Admin) adminAccount).addEntranceGate(parkingLot1.getParkingLotId(), new EntranceGate("entrance_gate1"));
 
         // adding the exit gate to parkingLot by admin --> TEST CASE 4
-        ((Admin) adminAccount).addExitGate(parkingLot1.getParkingLotId(), new ExitGate("exit_gate1"));
+        ((Admin) adminAccount).addExitGate(parkingLot1.getParkingLotId(), new ExitGate("exit_gate1", new DefaultCostStrategy()));
 
         // adding the multiple parking spots by admin --> TEST CASE 5
         String parkingFloorId = parkingLot1.getParkingFloors().get(0).getParkingFloorId();
