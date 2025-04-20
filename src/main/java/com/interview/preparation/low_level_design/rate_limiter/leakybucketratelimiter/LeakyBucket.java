@@ -1,4 +1,4 @@
-package com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter;
+package com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter;
 
 import com.interview.preparation.low_level_design.rate_limiter.RateLimiter;
 

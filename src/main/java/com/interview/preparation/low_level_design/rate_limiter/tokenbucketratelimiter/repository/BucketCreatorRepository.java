@@ -1,6 +1,6 @@
-package com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter.repository;
+package com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter.repository;
 
-import com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter.TokenBucket;
+import com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter.TokenBucket;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
 
 import java.util.HashMap;

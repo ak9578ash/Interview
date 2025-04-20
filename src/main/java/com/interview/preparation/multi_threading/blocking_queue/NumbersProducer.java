@@ -2,7 +2,9 @@ package com.interview.preparation.multi_threading.blocking_queue;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NumbersProducer implements Runnable {
   private final BlockingQueue<Integer> numbersQueue;
 
@@ -16,7 +18,7 @@ public class NumbersProducer implements Runnable {
        while (num > 0) {
            int number = ThreadLocalRandom.current().nextInt();
            numbersQueue.put(number);
-           System.out.println(Thread.currentThread().getName() + " is producing");
+           log.info(Thread.currentThread().getName() + " is producing");
            num--;
        }
    }catch (InterruptedException e) {

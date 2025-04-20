@@ -1,10 +1,12 @@
-package com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter.service;
+package com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter.service;
 
 
-import com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter.TokenBucket;
-import com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter.repository.BucketCreatorRepository;
+import com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter.TokenBucket;
+import com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter.repository.BucketCreatorRepository;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BucketCreatorService {
     private final BucketCreatorRepository bucketCreatorRepository;
 
@@ -27,9 +29,9 @@ public class BucketCreatorService {
     public void accessApplication(String userId) throws UserNotFoundException {
         TokenBucket userBucket = getUserBucket(userId);
         if (userBucket.grantAccess()) {
-            System.out.println(" able to access the application");
+            log.info("{} able to access the application", userId);
         } else {
-            System.out.println(" Too many request, Please try after some time");
+            log.info(" Too many request from {}, Please try after some time", userId);
         }
         updateUserBucket(userId , userBucket);
     }

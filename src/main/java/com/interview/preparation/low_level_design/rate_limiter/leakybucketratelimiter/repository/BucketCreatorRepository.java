@@ -1,6 +1,6 @@
-package com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter.repository;
+package com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.repository;
 
-import com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter.LeakyBucket;
+import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.LeakyBucket;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
 
 import java.util.HashMap;

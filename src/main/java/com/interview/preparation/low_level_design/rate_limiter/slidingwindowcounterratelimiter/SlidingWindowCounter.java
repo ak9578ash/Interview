@@ -1,6 +1,5 @@
-package com.interview.preparation.low_level_design.rate_limiter.SlidingWindowCounterRateLimiter;
+package com.interview.preparation.low_level_design.rate_limiter.slidingwindowcounterratelimiter;
 
-import ch.qos.logback.core.model.INamedModel;
 import com.interview.preparation.low_level_design.rate_limiter.RateLimiter;
 
 import java.util.Map;

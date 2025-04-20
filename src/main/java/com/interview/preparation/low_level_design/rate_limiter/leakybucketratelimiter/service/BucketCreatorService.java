@@ -1,8 +1,8 @@
-package com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter.service;
+package com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.service;
 
-import com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter.LeakyBucket;
+import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.LeakyBucket;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
-import com.interview.preparation.low_level_design.rate_limiter.LeakyBucketRateLimiter.repository.BucketCreatorRepository;
+import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.repository.BucketCreatorRepository;
 
 public class BucketCreatorService {
     private final BucketCreatorRepository bucketCreatorRepository;

@@ -1,6 +1,6 @@
-package com.interview.preparation.low_level_design.rate_limiter.SlidingLogRateLimiter.Repository;
+package com.interview.preparation.low_level_design.rate_limiter.slidinglogratelimiter.repository;
 
-import com.interview.preparation.low_level_design.rate_limiter.SlidingLogRateLimiter.SlidingLog;
+import com.interview.preparation.low_level_design.rate_limiter.slidinglogratelimiter.SlidingLog;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
 
 import java.util.HashMap;

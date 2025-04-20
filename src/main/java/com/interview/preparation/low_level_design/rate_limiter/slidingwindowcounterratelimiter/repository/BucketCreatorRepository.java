@@ -1,9 +1,7 @@
-package com.interview.preparation.low_level_design.rate_limiter.SlidingWindowCounterRateLimiter.Repository;
+package com.interview.preparation.low_level_design.rate_limiter.slidingwindowcounterratelimiter.repository;
 
-import com.interview.preparation.low_level_design.rate_limiter.SlidingLogRateLimiter.SlidingLog;
-import com.interview.preparation.low_level_design.rate_limiter.SlidingWindowCounterRateLimiter.SlidingWindowCounter;
+import com.interview.preparation.low_level_design.rate_limiter.slidingwindowcounterratelimiter.SlidingWindowCounter;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
-import jdk.dynalink.linker.support.SimpleLinkRequest;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

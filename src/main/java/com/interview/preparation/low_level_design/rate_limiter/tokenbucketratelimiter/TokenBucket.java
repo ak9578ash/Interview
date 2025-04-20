@@ -1,8 +1,12 @@
-package com.interview.preparation.low_level_design.rate_limiter.TokenBucketRateLimiter;
+package com.interview.preparation.low_level_design.rate_limiter.tokenbucketratelimiter;
 
 import com.interview.preparation.low_level_design.rate_limiter.RateLimiter;
 import lombok.Getter;
 
+/**
+ * windowTime and noOfRequest will be stored in rule cache like redis
+ * token and lastUpdatedAt for a particular user will be stored in counter cache like redis
+ */
 @Getter
 public class TokenBucket implements RateLimiter {
     private final long windowTime; // in seconds
@@ -20,7 +24,7 @@ public class TokenBucket implements RateLimiter {
 
     @Override
     public boolean grantAccess() {
-        Long currentTimeOfRequest = System.currentTimeMillis();
+        long currentTimeOfRequest = System.currentTimeMillis();
 
         if ((currentTimeOfRequest - lastUpdatedAt) / 1000 < 1 && token > 0) {
             // request is passed
@@ -36,6 +40,7 @@ public class TokenBucket implements RateLimiter {
             token = token - 1;
             return true;
         }
+
         return false;
     }
 }

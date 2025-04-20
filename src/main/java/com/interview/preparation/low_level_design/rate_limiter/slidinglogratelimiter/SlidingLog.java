@@ -1,11 +1,15 @@
-package com.interview.preparation.low_level_design.rate_limiter.SlidingLogRateLimiter;
+package com.interview.preparation.low_level_design.rate_limiter.slidinglogratelimiter;
 
 import com.interview.preparation.low_level_design.rate_limiter.RateLimiter;
 
+import java.time.LocalDateTime;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * windowTime and noOfRequest will be stored in rule cache like Redis
+ * slidingWindow will be stored in counter cache like Redis in the form of sorted list
+ */
 public class SlidingLog implements RateLimiter {
     private final Queue<Long> slidingWindow;
     private final long windowTime; // in seconds;
@@ -20,7 +24,7 @@ public class SlidingLog implements RateLimiter {
     public boolean grantAccess() {
         Long currentTimeOfRequest = System.currentTimeMillis();
         updateSlidingWindow(currentTimeOfRequest);
-        if(slidingWindow.size() < noOfRequest){
+        if(slidingWindow.size() + 1 <= noOfRequest){
             slidingWindow.offer(currentTimeOfRequest);
             return true;
         }

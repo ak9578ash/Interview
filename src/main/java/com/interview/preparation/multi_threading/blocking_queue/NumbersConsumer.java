@@ -1,7 +1,9 @@
 package com.interview.preparation.multi_threading.blocking_queue;
 
 import java.util.concurrent.BlockingQueue;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 
 public class NumbersConsumer implements Runnable {
   private final BlockingQueue<Integer> numberQueue;
@@ -15,7 +17,7 @@ public class NumbersConsumer implements Runnable {
       int num = 5;
       while (num > 0) {
         numberQueue.take();
-        System.out.println(Thread.currentThread().getName() + " is consuming");
+        log.info(Thread.currentThread().getName() + " is consuming");
         num--;
       }
     } catch (InterruptedException e) {
