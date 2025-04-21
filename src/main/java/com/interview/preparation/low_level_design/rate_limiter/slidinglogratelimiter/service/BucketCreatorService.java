@@ -24,12 +24,17 @@ public class BucketCreatorService {
     }
 
     public void accessApplication(String userId) throws UserNotFoundException {
+        // we should also fetch rule config from rule cache but in this case we have hard coded those config
         SlidingLog userBucket = getUserBucket(userId);
         if (userBucket.grantAccess()) {
             log.info("able to access the application");
         } else {
             log.info("Too many request, Please try after some time");
         }
+        /*
+           we need to add optimistic concurrency control mechanism while updating to prevent race condition
+           in distributed environment
+        */
         updateUserBucket(userId , userBucket);
     }
 }

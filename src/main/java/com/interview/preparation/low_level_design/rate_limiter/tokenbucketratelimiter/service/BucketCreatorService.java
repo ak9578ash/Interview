@@ -33,6 +33,10 @@ public class BucketCreatorService {
         } else {
             log.info(" Too many request from {}, Please try after some time", userId);
         }
+        /*
+           we need to add optimistic concurrency control mechanism while updating to prevent race condition
+           in distributed environment
+        */
         updateUserBucket(userId , userBucket);
     }
 }

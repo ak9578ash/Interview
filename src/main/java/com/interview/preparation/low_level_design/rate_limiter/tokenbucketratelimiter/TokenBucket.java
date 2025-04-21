@@ -26,7 +26,7 @@ public class TokenBucket implements RateLimiter {
     public boolean grantAccess() {
         long currentTimeOfRequest = System.currentTimeMillis();
 
-        if ((currentTimeOfRequest - lastUpdatedAt) / 1000 < 1 && token > 0) {
+        if ((currentTimeOfRequest - lastUpdatedAt) / 1000 < windowTime && token > 0) {
             // request is passed
             token = token - 1;
             lastUpdatedAt = currentTimeOfRequest;

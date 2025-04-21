@@ -8,11 +8,12 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * windowTime and noOfRequest will be stored in rule cache like Redis
- * slidingWindow will be stored in counter cache like Redis in the form of sorted list
+ * slidingWindow will be stored in counter cache like Redis in the form of sorted set
  */
 public class SlidingLog implements RateLimiter {
     private final Queue<Long> slidingWindow;
-    private final long windowTime; // in seconds;
+    // in seconds
+    private final long windowTime;
     private final long noOfRequest;
 
     public SlidingLog(long windowTime , long noOfRequest){
