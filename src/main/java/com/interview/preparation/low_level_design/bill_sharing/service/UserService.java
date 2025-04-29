@@ -36,6 +36,7 @@ public class UserService {
         if (expense.getExpenseStatus() == ExpenseStatus.SETTLED) {
             throw new ExpenseSettledException("Expense is already settled.");
         }
+
         UserShare userShare = expenseGroup.getUserContributions().get(emailId);
         if (contribution.getContributionValue() > userShare.getShare()) {
             throw new ContributionExceededException(
@@ -43,28 +44,5 @@ public class UserService {
                             emailId, contribution.getContributionValue(), userShare.getShare()));
         }
         userShare.getContributions().add(contribution);
-    }
-
-    public void contributeToExpense(String expenseId, String fromEmailId, String toEmailId, Contribution contribution)
-            throws InvalidExpenseStateException, ExpenseSettledException, ContributionExceededException {
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
-        if(expense == null){
-            throw new InvalidExpenseStateException("expense does not exist");
-        }
-        ExpenseGroup expenseGroup = expense.getExpenseGroup();
-        if (expense.getExpenseStatus() == ExpenseStatus.CREATED) {
-            throw new InvalidExpenseStateException("Invalid expense State");
-        }
-        if (expense.getExpenseStatus() == ExpenseStatus.SETTLED) {
-            throw new ExpenseSettledException("Expense is already settled.");
-        }
-        UserShare fromUserShare = expenseGroup.getUserContributions().get(fromEmailId);
-        UserShare destUserShare = expenseGroup.getUserContributions().get(toEmailId);
-        if (contribution.getContributionValue() > destUserShare.getShare()) {
-            throw new ContributionExceededException(String.format("User %s contribution %f exceeded the share %f of %s",
-                    fromEmailId, contribution.getContributionValue(), destUserShare.getShare(), toEmailId));
-        }
-
-        fromUserShare.getContributions().add(contribution);
     }
 }

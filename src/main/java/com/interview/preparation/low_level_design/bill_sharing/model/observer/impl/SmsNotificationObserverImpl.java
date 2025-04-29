@@ -2,10 +2,12 @@ package com.interview.preparation.low_level_design.bill_sharing.model.observer.i
 
 import com.interview.preparation.low_level_design.bill_sharing.model.User;
 import com.interview.preparation.low_level_design.bill_sharing.model.observer.NotificationObserver;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SmsNotificationObserverImpl implements NotificationObserver {
     @Override
     public void notifyObserver(User user) {
-        System.out.println(user.getName() + " is notified vai SMS");
+        log.info(user.getName() + " is notified vai SMS");
     }
 }

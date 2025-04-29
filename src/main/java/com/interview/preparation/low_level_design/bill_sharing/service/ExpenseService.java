@@ -24,7 +24,7 @@ public class ExpenseService implements ExpenseServiceSubject{
     }
 
     public Expense createExpense(String description, LocalDateTime expenseDate, double expenseAmount, String userId) {
-        Expense expense = Expense.builder()
+        return Expense.builder()
                 .id(UUID.randomUUID().toString())
                 .description(description)
                 .expenseDate(expenseDate)
@@ -33,8 +33,6 @@ public class ExpenseService implements ExpenseServiceSubject{
                 .expenseStatus(ExpenseStatus.CREATED)
                 .expenseGroup(new ExpenseGroup())
                 .build();
-        expenseRepository.addExpense(expense);
-        return expense;
     }
 
     public void addUsersToExpense(String expenseId, User user) throws ExpenseDoesNotExistsException {
@@ -46,14 +44,16 @@ public class ExpenseService implements ExpenseServiceSubject{
         notifyAllObserver(user);
     }
 
-    public void doBifurcation(Expense expense , List<User> users , BifurcateStrategy bifurcateStrategy) throws ExpenseDoesNotExistsException, BadRequestException {
+    public void doBifurcation(Expense expense , List<User> users , BifurcateStrategy bifurcateStrategy)
+        throws ExpenseDoesNotExistsException {
         List<UserBifurcateShare> userBifurcateShares = bifurcateStrategy.bifurcate(expense , users);
         for (UserBifurcateShare userBifurcateShare : userBifurcateShares) {
             assignExpenseShare(expense.getId(), userBifurcateShare.getUser(), userBifurcateShare.getShare());
         }
     }
 
-    public void assignExpenseShare(String expenseId, User user, double share) throws ExpenseDoesNotExistsException, BadRequestException {
+    public void assignExpenseShare(String expenseId, User user, double share)
+        throws ExpenseDoesNotExistsException {
         Expense expense = expenseRepository.getExpenseById(expenseId);
         if (expense == null) {
             throw new ExpenseDoesNotExistsException("Better create expense and come here....");
@@ -110,7 +110,7 @@ public class ExpenseService implements ExpenseServiceSubject{
 
     @Override
     public void notifyAllObserver(User user) {
-        for(int i=0;i<this.notificationObserverList.size();i++){
+        for (int i=0;i<this.notificationObserverList.size();i++) {
             this.notificationObserverList.get(i).notifyObserver(user);
         }
     }

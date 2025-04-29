@@ -20,7 +20,7 @@ public class ExactBifurcateStrategyImpl implements BifurcateStrategy {
     public List<UserBifurcateShare> bifurcate(Expense expense, List<User> users) {
         List<UserBifurcateShare>userBifurcateShares = new ArrayList<>();
         for(int i=0;i<users.size();i++){
-            userBifurcateShares.add(new UserBifurcateShare(exactSplits.get(i).getUser(),exactSplits.get(i).getAmount()));
+            userBifurcateShares.add(new UserBifurcateShare(exactSplits.get(i).getUser(), exactSplits.get(i).getAmount()));
         }
         return userBifurcateShares;
     }

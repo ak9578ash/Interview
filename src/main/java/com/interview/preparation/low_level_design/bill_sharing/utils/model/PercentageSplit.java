@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PercentageSplit {
      User user;
-     Expense expense;
      Double percentage;
 }

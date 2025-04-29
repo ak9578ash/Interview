@@ -32,7 +32,6 @@ public class BillSharingMain {
     public static UserService userService;
     public static ExpenseRepository expenseRepository;
     public static ExpenseService expenseService;
-//    public static SplittingStrategy splittingStrategy;
 
     public static void main(String[] args) throws ContributionExceededException, ExpenseSettledException,
             ExpenseDoesNotExistsException, InvalidExpenseStateException, BadRequestException {
@@ -43,7 +42,6 @@ public class BillSharingMain {
         userRepository = new UserRepository();
         userService = new UserService(userRepository, expenseService);
 
-//        splittingStrategy = new SplittingStrategyImpl(expenseService);
 
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -106,7 +104,7 @@ public class BillSharingMain {
             expenseService.addUsersToExpense(expense.getId(), user);
         }
 
-        if(bifurcationStatus == BifurcationStatus.EXACT){
+        if (bifurcationStatus == BifurcationStatus.EXACT) {
             List<ExactSplit> amountList = new ArrayList<>();
             amountList.add(new ExactSplit(userList.get(0), 200.0));
             amountList.add(new ExactSplit(userList.get(1), 50.0));
@@ -114,15 +112,15 @@ public class BillSharingMain {
             amountList.add(new ExactSplit(userList.get(3), 100.0));
 
             expenseService.doBifurcation(expense , userList , new ExactBifurcateStrategyImpl(amountList));
-        }else if (bifurcationStatus == BifurcationStatus.PERCENTAGE){
+        } else if (bifurcationStatus == BifurcationStatus.PERCENTAGE) {
             List<PercentageSplit> percentageList = new ArrayList<>();
-            percentageList.add(new PercentageSplit(userList.get(0), expense, 10.0));
-            percentageList.add(new PercentageSplit(userList.get(1), expense, 20.0));
-            percentageList.add(new PercentageSplit(userList.get(2), expense, 30.0));
-            percentageList.add(new PercentageSplit(userList.get(3), expense, 40.0));
+            percentageList.add(new PercentageSplit(userList.get(0), 10.0));
+            percentageList.add(new PercentageSplit(userList.get(1), 20.0));
+            percentageList.add(new PercentageSplit(userList.get(2), 30.0));
+            percentageList.add(new PercentageSplit(userList.get(3), 40.0));
 
             expenseService.doBifurcation(expense , userList , new PercentageBifurcateStrategyImpl(percentageList));
-        }else{
+        } else {
             expenseService.doBifurcation(expense , userList , new EqualBifurcateStrategyImpl());
         }
     }
@@ -139,18 +137,5 @@ public class BillSharingMain {
 
         userService.contributeToExpense(expenseId, user.getEmailId(), contribution);
 
-    }
-
-    private static void contributeToOtherExpense(String expenseId, User fromUser, User toUser) throws ExpenseSettledException, InvalidExpenseStateException, ContributionExceededException {
-        Expense expense = ExpenseRepository.expenseMap.get(expenseId);
-        ExpenseGroup expenseGroup = expense.getExpenseGroup();
-
-        Contribution contribution = new Contribution(UUID.randomUUID().toString(), 200.0, "through UPI", LocalDateTime.now());
-
-        try {
-            userService.contributeToExpense(expenseId, fromUser.getEmailId(), toUser.getEmailId(), contribution);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }

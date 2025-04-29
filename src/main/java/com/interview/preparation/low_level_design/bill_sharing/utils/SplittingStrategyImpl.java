@@ -37,8 +37,8 @@ public class SplittingStrategyImpl implements SplittingStrategy {
     @Override
     public void bifurcateInPercentage(Expense expense, List<PercentageSplit> amountList) throws ExpenseDoesNotExistsException, BadRequestException {
         for (PercentageSplit split : amountList) {
-            Double userShare = (split.getPercentage() / 100) * split.getExpense().getExpenseAmount();
-            expenseService.assignExpenseShare(split.getExpense().getId(), split.getUser(), userShare);
+            Double userShare = (split.getPercentage() / 100) * expense.getExpenseAmount();
+            expenseService.assignExpenseShare(expense.getId(), split.getUser(), userShare);
         }
     }
 }
