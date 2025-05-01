@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.tic_tac_toe.model;
 
+import com.interview.preparation.low_level_design.tic_tac_toe.model.win_strategy.WinStrategy;
 import java.util.ArrayDeque;
 import java.util.Scanner;
 
@@ -14,12 +15,25 @@ public class Game {
     this.players = new ArrayDeque<>(2);
   }
 
+  private Game(int boardSize, WinStrategy strategy) {
+    this.board = new Board(boardSize,strategy);
+    this.players = new ArrayDeque<>(2);
+  }
+
   public static synchronized Game getInstance() {
     if (instance == null) {
       instance = new Game(3);
     }
     return instance;
   }
+
+  public static synchronized Game getInstance(WinStrategy strategy) {
+    if (instance == null) {
+      instance = new Game(3, strategy);
+    }
+    return instance;
+  }
+
 
   public void addPlayers(Player player) {
     this.players.add(player);
