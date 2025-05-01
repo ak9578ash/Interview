@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.snake_and_ladder.model;
 
+import com.interview.preparation.low_level_design.snake_and_ladder.model.dice_roll_strategy.DefaultRollStrategy;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
@@ -9,6 +10,7 @@ import java.util.*;
 @Getter
 @Slf4j
 public class Game {
+  private static Game instance = null;
   private final int noOfSnakes;
   private final int noOfLadders;
   private final Queue<Player> players;
@@ -16,7 +18,6 @@ public class Game {
   private final List<Ladder> ladders;
   private final Board board;
   private final Dice dice;
-  private static Game instance = null;
 
   private Game(int noOfSnakes, int noOfLadders, int boardSize) {
     this.noOfSnakes = noOfSnakes;
@@ -27,7 +28,7 @@ public class Game {
     this.ladders = new ArrayList<>(noOfLadders);
 
     this.board = new Board(boardSize);
-    this.dice = new Dice(1, 6, 2);
+    this.dice = new Dice(1, 6, 2, new DefaultRollStrategy());
 
     initBoard();
   }
