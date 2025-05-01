@@ -16,8 +16,9 @@ public class Game {
   private final List<Ladder> ladders;
   private final Board board;
   private final Dice dice;
+  private static Game instance = null;
 
-  public Game(int noOfSnakes, int noOfLadders, int boardSize) {
+  private Game(int noOfSnakes, int noOfLadders, int boardSize) {
     this.noOfSnakes = noOfSnakes;
     this.noOfLadders = noOfLadders;
 
@@ -29,6 +30,13 @@ public class Game {
     this.dice = new Dice(1, 6, 2);
 
     initBoard();
+  }
+
+  public static synchronized Game getInstance(int noOfSnakes, int noOfLadders, int boardSize) {
+    if (instance == null) {
+      instance = new Game(noOfSnakes, noOfLadders, boardSize);
+    }
+    return instance;
   }
 
   private void initBoard() {

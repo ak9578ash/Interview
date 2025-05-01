@@ -14,7 +14,7 @@ public class SnakeAndLadderMain {
         int noOfLadders = 4;
         int boardSize = 100;
 
-        Game game = new Game(noOfSnakes ,noOfLadders , boardSize);
+        Game game = Game.getInstance(noOfSnakes ,noOfLadders , boardSize);
         game.addPlayer(p1);
         game.addPlayer(p2);
         game.addPlayer(p3);
