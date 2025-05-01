@@ -19,6 +19,7 @@ public class SnakeAndLadderMain {
         game.addPlayer(p2);
         game.addPlayer(p3);
         game.addPlayer(p4);
+
         game.playGame();
     }
 }
