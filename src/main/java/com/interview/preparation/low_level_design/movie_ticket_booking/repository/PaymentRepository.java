@@ -11,8 +11,12 @@ public class PaymentRepository {
     private static Map<Booking, Integer> bookingFailureMap = new HashMap<>();
 
     public Payment makePayment(Booking booking ,Payment payment){
-        paymentMap.putIfAbsent(booking.getId(),payment);
+        paymentMap.putIfAbsent(booking.getId(), payment);
         return payment;
+    }
+
+    public Payment getPaymentByBookingId(String bookingId){
+        return paymentMap.get(bookingId);
     }
 
     public void addToFailureBooking(Booking booking){

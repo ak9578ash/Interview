@@ -6,6 +6,9 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.model.acc
 import com.interview.preparation.low_level_design.movie_ticket_booking.model.account.UserProfile;
 import com.interview.preparation.low_level_design.movie_ticket_booking.repository.*;
 import com.interview.preparation.low_level_design.movie_ticket_booking.service.*;
+import com.interview.preparation.low_level_design.movie_ticket_booking.service.observer.EmailNotificationObserver;
+import com.interview.preparation.low_level_design.movie_ticket_booking.service.observer.NotificationObserver;
+import com.interview.preparation.low_level_design.movie_ticket_booking.service.observer.SmsNotificationObserver;
 import com.interview.preparation.low_level_design.movie_ticket_booking.utils.InMemorySeatLockProvider;
 import com.interview.preparation.low_level_design.movie_ticket_booking.utils.SeatLockProvider;
 
@@ -34,7 +37,13 @@ public class MovieTicketBookingMain {
     public static PaymentRepository paymentRepository;
     public static PaymentService paymentService;
 
-    public static void main(String[] args) throws InvalidTheatreException, InvalidScreenException, SeatsPermanentlyUnavailableException, SeatTemporarilyUnavailableException, InvalidBookingStatus, BadRequestException {
+    public static void main(String[] args)
+        throws InvalidTheatreException, InvalidScreenException, SeatsPermanentlyUnavailableException,
+        SeatTemporarilyUnavailableException, InvalidBookingStatus, BadRequestException, PaymentException {
+
+        NotificationObserver emailNotificationObserver =  new EmailNotificationObserver();
+        NotificationObserver smsNotificationObserver = new SmsNotificationObserver();
+
         userRepository = new UserRepository();
         userService = new UserService(userRepository);
 
@@ -46,13 +55,16 @@ public class MovieTicketBookingMain {
 
         seatLockProvider = new InMemorySeatLockProvider(1000);
 
+        paymentRepository = new PaymentRepository();
+        paymentService = new PaymentService(paymentRepository,0,seatLockProvider);
+
         bookingRepository = new BookingRepository();
-        bookingService = new BookingService(bookingRepository , seatLockProvider);
+        bookingService = new BookingService(bookingRepository , seatLockProvider, paymentService);
+        bookingService.addNotificationObserver(emailNotificationObserver);
+        bookingService.addNotificationObserver(smsNotificationObserver);
 
         seatAvailabilityService = new SeatAvailabilityService(bookingService , seatLockProvider);
 
-        paymentRepository = new PaymentRepository();
-        paymentService = new PaymentService(paymentRepository,0,seatLockProvider);
 
         Address user1Address = new Address("82 A Madhav kunj",
                 "Pratap Nagar","Agra","UP","282002");
@@ -104,7 +116,7 @@ public class MovieTicketBookingMain {
         showService.addShow(show1);
         showService.addShow(show2);
 
-//        printAllShowsGroupByTheatre();
+//      printAllShowsGroupByTheatre();
 
         // TEST CASE 1
 //        List<Seat> user1AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show1);
@@ -116,7 +128,7 @@ public class MovieTicketBookingMain {
 //        Booking user1Booking = bookingService.addBooking(user1 , show1 , user1SelectedSeats);
 //        Payment user1Payment = generatePayment(user1Booking);
 //        paymentService.makePayment(user1Booking, user1Payment);
-//        bookingService.confirmBooking(user1Booking ,user1);
+//        bookingService.confirmBooking(user1Booking, user1);
 //
 //        List<Seat> user2AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show1);
 //        System.out.println("-----------");
