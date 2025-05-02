@@ -7,13 +7,13 @@ import java.util.UUID;
 
 @Getter
 public class User {
-    private String id;
-    private Address address;
-    private UserProfile userProfile;
+  private final String id;
+  private final Address address;
+  private final UserProfile userProfile;
 
-    public User(Address address , UserProfile userProfile){
-        this.id = UUID.randomUUID().toString();
-        this.address = address;
-        this.userProfile = userProfile;
-    }
+  public User(Address address, UserProfile userProfile) {
+    this.id = UUID.randomUUID().toString();
+    this.address = address;
+    this.userProfile = userProfile;
+  }
 }

@@ -12,6 +12,7 @@ import com.interview.preparation.low_level_design.movie_ticket_booking.utils.Sea
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MovieTicketBookingMain {
     public static UserRepository userRepository;
@@ -67,48 +68,59 @@ public class MovieTicketBookingMain {
         User user2 = new User(user2Address , user2Profile);
         userService.addUser(user2);
 
-        Address theatreAddress = new Address("line1",
-                "","agra","UP","282003");
+        Address theatreAddress = new Address("line_1",
+                "line_2","agra","UP","282003");
 
-        Movie movie = new Movie("insidious");
+        Movie movie1 = new Movie("insidious");
+        Movie movie2 = new Movie("Avengers");
 
-        Theatre theatre = new Theatre("Talkies" ,theatreAddress);
+        Theatre theatre1 = new Theatre("Talkies", theatreAddress);
+        Screen screen1 = new Screen("SCREEN 1");
+        Screen screen2 = new Screen("SCREEN 2");
 
-        Screen screen = new Screen("Audi 1");
+        Seat seat1 = new Seat("1","A", 100.0, SeatType.PREMIUM);
+        Seat seat2 = new Seat("1","B", 50.0, SeatType.ECONOMY);
+        Seat seat3 = new Seat("2","A", 50.0, SeatType.ECONOMY);
+        Seat seat4 = new Seat("2","B", 20.0, SeatType.NORMAL);
 
-        Seat seat1 = new Seat("1","A");
-        Seat seat2 = new Seat("1","B");
-        Seat seat3 = new Seat("2","A");
-        Seat seat4 = new Seat("2","B");
-
-        theatreService.addTheatre(theatre);
-        theatreService.addScreen(screen);
+        theatreService.addTheatre(theatre1);
+        theatreService.addScreen(screen1);
+        theatreService.addScreen(screen2);
         theatreService.addSeat(seat1);
         theatreService.addSeat(seat2);
         theatreService.addSeat(seat3);
         theatreService.addSeat(seat4);
 
-        theatreService.addScreenInTheatre(theatre ,screen);
-        theatreService.addSeatInScreen(screen , seat1);
-        theatreService.addSeatInScreen(screen , seat2);
-        theatreService.addSeatInScreen(screen , seat3);
-        theatreService.addSeatInScreen(screen , seat4);
+        theatreService.addScreenInTheatre(theatre1, screen1);
+        theatreService.addScreenInTheatre(theatre1, screen2);
+        theatreService.addSeatInScreen(screen1, seat1);
+        theatreService.addSeatInScreen(screen1, seat2);
+        theatreService.addSeatInScreen(screen1, seat3);
+        theatreService.addSeatInScreen(screen1, seat4);
 
-        Show show = new Show(movie , screen ,theatre ,  LocalDateTime.now(),2*60);
-        showService.addShow(show);
+        Show show1 = new Show(movie1, screen1, theatre1, LocalDateTime.now(),2*60);
+        Show show2 = new Show(movie2, screen2, theatre1, LocalDateTime.now().plusHours(2),2*60);
+
+        showService.addShow(show1);
+        showService.addShow(show2);
+
+//        printAllShowsGroupByTheatre();
 
         // TEST CASE 1
-//        List<Seat> user1AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show);
+//        List<Seat> user1AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show1);
+//        printAvailableSeats(user1AvailableSeats);
 //        List<Seat> user1SelectedSeats = new ArrayList<>();
 //        user1SelectedSeats.add(user1AvailableSeats.get(0));
 //        user1SelectedSeats.add(user1AvailableSeats.get(1));
 //
-//        Booking user1Booking = bookingService.addBooking(user1 , show , user1SelectedSeats);
-//        Payment user1Payment = new Payment(user1Booking,100.0);
-//        paymentService.makePayment(user1Booking,user1Payment);
+//        Booking user1Booking = bookingService.addBooking(user1 , show1 , user1SelectedSeats);
+//        Payment user1Payment = generatePayment(user1Booking);
+//        paymentService.makePayment(user1Booking, user1Payment);
 //        bookingService.confirmBooking(user1Booking ,user1);
 //
-//        List<Seat> user2AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show);
+//        List<Seat> user2AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show1);
+//        System.out.println("-----------");
+//        printAvailableSeats(user2AvailableSeats);
 
         // TEST CASE 2
 //        List<Seat> user1AvailableSeats = seatAvailabilityService.getAvailableSeatsOfShow(show);
@@ -143,5 +155,34 @@ public class MovieTicketBookingMain {
 //
 //        Booking user2Booking = bookingService.addBooking(user2 , show , user2SelectedSeats);
 
+    }
+
+    private static void printAllShowsGroupByTheatre() {
+        Map<Theatre, List<Show>> theatreToShowMap = showService.getShowGroupByTheatre();
+        for(Map.Entry<Theatre, List<Show>> entry : theatreToShowMap.entrySet()){
+            System.out.println("Theatre: " + entry.getKey().getName());
+            List<Show> shows = entry.getValue();
+            for(Show show : shows) {
+                System.out.println("Movie: " + show.getMovie().getName());
+                System.out.println("Show Time: " + show.getShowTime());
+                System.out.println("Duration: " + show.getShowDuration() + " minutes");
+                System.out.println("Screen: " + show.getScreen().getName());
+                System.out.println("-----------------------------");
+            }
+        }
+    }
+
+    private static Payment generatePayment(Booking userBooking) {
+        Double charges = 0.0;
+        for(int i=0;i<userBooking.getBookedSeats().size();i++) {
+            charges += userBooking.getBookedSeats().get(i).getPrice();
+        }
+        return new Payment(userBooking, charges);
+    }
+
+    private static void printAvailableSeats(List<Seat> seats) {
+        for(int i=0;i<seats.size();i++) {
+            System.out.println(seats.get(i).getRowId() + " " + (seats.get(i).getSeatNo()));
+        }
     }
 }

@@ -25,4 +25,8 @@ public class ShowRepository {
         }
         return show;
     }
+
+    public List<Show> getAllShows() {
+        return showList;
+    }
 }

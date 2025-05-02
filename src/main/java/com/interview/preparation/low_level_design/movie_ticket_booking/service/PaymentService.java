@@ -18,8 +18,8 @@ public class PaymentService {
         this.seatLockProvider = seatLockProvider;
     }
 
-    public Payment makePayment(Booking booking, Payment payment){
-        return paymentRepository.makePayment(booking,payment);
+    public Payment makePayment(Booking booking, Payment payment) {
+        return paymentRepository.makePayment(booking, payment);
     }
 
     public void addToFailureBooking(Booking booking){

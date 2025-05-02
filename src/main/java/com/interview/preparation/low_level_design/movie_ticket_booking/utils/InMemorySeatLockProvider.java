@@ -17,7 +17,7 @@ public class InMemorySeatLockProvider implements SeatLockProvider {
     }
 
     @Override
-    synchronized public void lockSeats(Show show, List<Seat> seats, String user) throws SeatTemporarilyUnavailableException {
+    public synchronized void lockSeats(Show show, List<Seat> seats, String user) throws SeatTemporarilyUnavailableException {
         for (Seat seat : seats) {
             if (isSeatLocked(show, seat)) {
                 throw new SeatTemporarilyUnavailableException("selected seat is not available at the moment");
