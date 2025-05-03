@@ -39,10 +39,10 @@ public class TripService {
             throw new CabTemporarilyUnavailable("selected cab is not available");
         }
         cabLockProvider.lockCabs(cabs, user.getId());
-        List<Cab> cab = cabMatchingStrategy.matchCabToRider(cabs, toLocation, MAX_ALLOWED_TRIP_MATCHING_DISTANCE);
-        Double charges = priceStrategy.getPrice(fromLocation, toLocation) * cab.size();
+        List<Cab> matchedCabToRider = cabMatchingStrategy.matchCabToRider(cabs, toLocation, MAX_ALLOWED_TRIP_MATCHING_DISTANCE);
+        Double charges = priceStrategy.getPrice(fromLocation, toLocation, matchedCabToRider);
 
-        Trip trip = new Trip(user, cab, charges, fromLocation, toLocation);
+        Trip trip = new Trip(user, matchedCabToRider, charges, fromLocation, toLocation);
 
         return tripRepository.addTrip(trip);
     }
@@ -85,7 +85,12 @@ public class TripService {
         if (payment == null) {
             throw new BadRequestException("Payment is not completed by the user");
         }
+
         trip.confirmTrip();
+        /*
+           1.when trip is confirmed we can notify the users by different channels like Email and Sms using observer pattern
+           2.Check Movie ticket booking LLD for #1 implementation
+        */
     }
 
     public void endTrip(Trip trip,User user) throws BadRequestException {
