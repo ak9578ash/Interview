@@ -20,7 +20,6 @@ import com.interview.preparation.low_level_design.cab_booking.strategies.Default
 import com.interview.preparation.low_level_design.cab_booking.strategies.PriceStrategy;
 import com.interview.preparation.low_level_design.cab_booking.utils.CabLockProvider;
 import com.interview.preparation.low_level_design.cab_booking.utils.InMemoryCabLockProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +57,14 @@ public class CabBookingMain {
 
         priceStrategy = new DefaultPricingStrategy();
 
-        tripRepository = new TripRepository();
-        tripService = new TripService(tripRepository, cabLockProvider, cabMatchingStrategy, priceStrategy);
-
-        cabAvailabilityService = new CabAvailabilityService(tripService , cabLockProvider,cabService);
-
         paymentRepository = new PaymentRepository();
         paymentService = new PaymentService(paymentRepository , 0 ,cabLockProvider);
+
+        tripRepository = new TripRepository();
+        tripService = new TripService(tripRepository, cabLockProvider, cabMatchingStrategy, priceStrategy,
+            paymentService);
+
+        cabAvailabilityService = new CabAvailabilityService(tripService , cabLockProvider,cabService);
 // ---------------------------------------------------------------------------------------------------------------------
         Address user1Address = new Address("82 A Madhav kunj",
                 "Pratap Nagar", "Agra", "UP", "282002");
@@ -82,28 +82,28 @@ public class CabBookingMain {
 // ---------------------------------------------------------------------------------------------------------------------
         Address driverAddress1 = new Address("63 B Keshav kunj",
                 "Jaipur Houser", "Agra", "UP", "282002");
-        UserProfile driverProfile1 = new UserProfile("xyz", "",
+        UserProfile driverProfile1 = new UserProfile("Akash", "",
                 "abc", "xyzabc@gmail.com", "999999999");
         User driver1 = new User(driverAddress1, driverProfile1);
         userService.addUser(driver1);
 
         Address driverAddress2 = new Address("63 B Keshav kunj",
                 "Jaipur Houser", "Agra", "UP", "282002");
-        UserProfile driverProfile2 = new UserProfile("xyz", "",
+        UserProfile driverProfile2 = new UserProfile("Anuj", "",
                 "abc", "xyzabc@gmail.com", "999999999");
         User driver2 = new User(driverAddress2, driverProfile2);
         userService.addUser(driver2);
 
         Address driverAddress3 = new Address("63 B Keshav kunj",
                 "Jaipur Houser", "Agra", "UP", "282002");
-        UserProfile driverProfile3 = new UserProfile("xyz", "",
+        UserProfile driverProfile3 = new UserProfile("Apoorv", "",
                 "abc", "xyzabc@gmail.com", "999999999");
         User driver3 = new User(driverAddress3, driverProfile3);
         userService.addUser(driver3);
 
         Address driverAddress4 = new Address("63 B Keshav kunj",
                 "Jaipur Houser", "Agra", "UP", "282002");
-        UserProfile driverProfile4 = new UserProfile("xyz", "",
+        UserProfile driverProfile4 = new UserProfile("Arpit", "",
                 "abc", "xyzabc@gmail.com", "999999999");
         User driver4 = new User(driverAddress4, driverProfile4);
         userService.addUser(driver4);
@@ -126,21 +126,24 @@ public class CabBookingMain {
         cabService.addCab(cab4);
 
         // TEST CASE 1
-//        List<Cab> user1AvailableCabs = cabAvailabilityService.getAvailableCabs();
-//        List<Cab> user1SelectedCabs = new ArrayList<>();
-//        user1SelectedCabs.add(user1AvailableCabs.get(0));
-//        user1SelectedCabs.add(user1AvailableCabs.get(1));
-//
-//        Trip user1Trip = tripService.addTrip(user1 , user1SelectedCabs,
-//                new Location(1.0,1.0) ,new Location(2.0,2.0));
-//        Payment user1Payment = new Payment(user1Trip);
-//        paymentService.makePayment(user1Payment , user1);
-//        tripService.confirmTrip(user1Trip,user1);
-//
-//       // after some time user1 can end his/her trip
-//        tripService.endTrip(user1Trip,user1);
-//
-//        List<Cab> user2AvailableCabs = cabAvailabilityService.getAvailableCabs();
+        List<Cab> user1AvailableCabs = cabAvailabilityService.getAvailableCabs();
+        printAllAvailableCabs(user1AvailableCabs);
+        System.out.println("-----------------------------");
+        List<Cab> user1SelectedCabs = new ArrayList<>();
+        user1SelectedCabs.add(user1AvailableCabs.get(0));
+        user1SelectedCabs.add(user1AvailableCabs.get(1));
+
+        Trip user1Trip = tripService.addTrip(user1 , user1SelectedCabs,
+                new Location(1.0,1.0) ,new Location(2.0,2.0));
+        Payment user1Payment = new Payment(user1Trip);
+        paymentService.makePayment(user1Payment);
+        tripService.confirmTrip(user1Trip,user1);
+
+       // after some time user1 can end his/her trip
+       // tripService.endTrip(user1Trip,user1);
+
+        List<Cab> user2AvailableCabs = cabAvailabilityService.getAvailableCabs();
+        printAllAvailableCabs(user2AvailableCabs);
 
         // TEST CASE 2
 //        List<Cab> user1AvailableCabs = cabAvailabilityService.getAvailableCabs();
@@ -174,5 +177,12 @@ public class CabBookingMain {
 //        Trip user2Trip = tripService.addTrip(user2 , user2SelectedCabs,
 //                new Location(1.0,1.0) ,new Location(2.0,2.0));
 
+    }
+
+    private static void printAllAvailableCabs(List<Cab> cabs) {
+        for(int i = 0; i < cabs.size(); i++) {
+            Cab cab = cabs.get(i);
+            System.out.println("Cab " + ": " + cab.getId() + ", Driver: " + cab.getDriver().getUserProfile().getFirstName());
+        }
     }
 }

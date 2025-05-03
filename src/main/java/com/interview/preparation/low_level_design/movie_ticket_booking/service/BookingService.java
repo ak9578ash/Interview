@@ -68,7 +68,6 @@ public class BookingService {
     }
 
     booking.confirmBooking();
-
     notifyAllObserver(user);
   }
 

@@ -6,9 +6,6 @@ import com.interview.preparation.low_level_design.cab_booking.utils.CabLockProvi
 import com.interview.preparation.low_level_design.cab_booking.model.Payment;
 import com.interview.preparation.low_level_design.cab_booking.repository.PaymentRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final Integer allowedRetry ;
@@ -19,9 +16,14 @@ public class PaymentService {
         this.cabLockProvider = cabLockProvider;
     }
 
-    public Payment makePayment(Payment payment , User user){
-        return paymentRepository.addPayment(payment , user);
+    public Payment makePayment(Payment payment){
+        return paymentRepository.addPayment(payment);
     }
+
+    public Payment getPaymentByTripId(String tripId) {
+        return paymentRepository.getPaymentByTripId(tripId);
+    }
+
 
     public void addToPaymentFailure(Payment payment){
         paymentRepository.addToFailurePayment(payment);

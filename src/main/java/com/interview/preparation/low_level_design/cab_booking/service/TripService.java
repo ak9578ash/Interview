@@ -4,6 +4,7 @@ import com.interview.preparation.low_level_design.cab_booking.exception.BadReque
 import com.interview.preparation.low_level_design.cab_booking.exception.CabTemporarilyUnavailable;
 import com.interview.preparation.low_level_design.cab_booking.model.Cab;
 import com.interview.preparation.low_level_design.cab_booking.model.Location;
+import com.interview.preparation.low_level_design.cab_booking.model.Payment;
 import com.interview.preparation.low_level_design.cab_booking.model.Trip;
 import com.interview.preparation.low_level_design.cab_booking.model.TripStatus;
 import com.interview.preparation.low_level_design.cab_booking.model.account.User;
@@ -14,7 +15,6 @@ import com.interview.preparation.low_level_design.cab_booking.utils.CabLockProvi
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TripService {
     public static final Double MAX_ALLOWED_TRIP_MATCHING_DISTANCE = 10.0;
@@ -22,17 +22,20 @@ public class TripService {
     private final CabLockProvider cabLockProvider;
     private final CabMatchingStrategy cabMatchingStrategy;
     private final PriceStrategy priceStrategy;
+    private final PaymentService paymentService;
 
     public TripService(TripRepository tripRepository, CabLockProvider cabLockProvider,
-                       CabMatchingStrategy cabMatchingStrategy, PriceStrategy priceStrategy) {
+                       CabMatchingStrategy cabMatchingStrategy, PriceStrategy priceStrategy,
+                       PaymentService paymentService) {
         this.tripRepository = tripRepository;
         this.cabLockProvider = cabLockProvider;
         this.cabMatchingStrategy = cabMatchingStrategy;
         this.priceStrategy = priceStrategy;
+        this.paymentService = paymentService;
     }
 
     public Trip addTrip(User user, List<Cab> cabs, Location fromLocation, Location toLocation) throws CabTemporarilyUnavailable {
-        if (isAnyCabAlreadyBooked(cabs)) {
+        if (Boolean.TRUE.equals(isAnyCabAlreadyBooked(cabs))) {
             throw new CabTemporarilyUnavailable("selected cab is not available");
         }
         cabLockProvider.lockCabs(cabs, user.getId());
@@ -60,7 +63,7 @@ public class TripService {
                 .filter(trip -> trip.getTripStatus() == TripStatus.CONFIRM)
                 .map(Trip::getCab)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Trip>getUserTrips(User user){
@@ -70,6 +73,17 @@ public class TripService {
     public void confirmTrip(Trip trip , User user) throws BadRequestException {
         if(!trip.getUser().equals(user)){
             throw new BadRequestException();
+        }
+
+        for(Cab cab : trip.getCab()){
+            if(Boolean.FALSE.equals(cabLockProvider.validateLock(cab,user.getId()))){
+                throw new BadRequestException("Cab is not locked by given user");
+            }
+        }
+
+        Payment payment = paymentService.getPaymentByTripId(trip.getId());
+        if (payment == null) {
+            throw new BadRequestException("Payment is not completed by the user");
         }
         trip.confirmTrip();
     }
