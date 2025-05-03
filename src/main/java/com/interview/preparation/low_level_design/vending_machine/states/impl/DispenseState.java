@@ -25,12 +25,12 @@ public class DispenseState implements State {
 
     @Override
     public void clickOnStartProductSelectionButton(VendingMachine machine) throws Exception {
-        throw new Exception("product selection buttion can not be clicked in Dispense state");
+        throw new Exception("product selection button can not be clicked in Dispense state");
     }
 
     @Override
     public void chooseProduct(VendingMachine machine, int codeNumber) throws Exception {
-        throw new Exception("product can not be choosen in Dispense state");
+        throw new Exception("product can not be chosen in Dispense state");
     }
 
     @Override

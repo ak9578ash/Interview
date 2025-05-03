@@ -1,24 +1,28 @@
 package com.interview.preparation.low_level_design.vending_machine.model;
 
 import com.interview.preparation.low_level_design.vending_machine.exception.BadRequestException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class Inventory {
-    private final ItemShelf[] inventory;
+    private List<ItemShelf> inventory;
+    private int itemCount;
 
     public Inventory(int itemCount) {
-        inventory = new ItemShelf[itemCount];
+        this.itemCount = itemCount;
+        this.inventory = new ArrayList<>();
         initializeShelf();
     }
 
     private void initializeShelf() {
         int startCode = 101;
-        for (int i = 0; i < inventory.length; i++) {
+        for (int i = 0; i < itemCount; i++) {
             ItemShelf itemShelf = new ItemShelf(startCode);
-            inventory[i] = itemShelf;
+            inventory.add(itemShelf);
             startCode++;
         }
     }
