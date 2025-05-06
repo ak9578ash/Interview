@@ -14,7 +14,7 @@ public class CabService {
     this.cabPositionToCabsMap = new HashMap<>();
   }
 
-  public int lowerBound(LinkedList<Integer> list, int key) {
+  private int lowerBound(LinkedList<Integer> list, int key) {
     int low = 0;
     int high = list.size() - 1;
     int ans = list.size();
@@ -51,13 +51,15 @@ public class CabService {
         cabPositionSet.add(cabPosition);
       }
     }
+
+    // after doing all the above operations, we need to persist those fields in database
   }
 
   public List<Integer> getAllCabsPositions() { // should not use getter because these values will be fetched from DAO layer
     return this.cabPositions;
   }
 
-  public Map<Integer, List<Cab>> getCabPositionToCabsMap() {
+  public Map<Integer, List<Cab>> getAllCabPositionToCabsMap() { // should not use getter because these values will be fetched from DAO layer
     return this.cabPositionToCabsMap;
   }
 }

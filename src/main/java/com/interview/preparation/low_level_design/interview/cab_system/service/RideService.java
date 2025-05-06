@@ -21,7 +21,7 @@ public class RideService {
 
     for (int i = 0; i < potentialNearestCabs.size(); i++) {
       Integer cabPosition = potentialNearestCabs.get(i);
-      Map<Integer, List<Cab>> cabPositionToCabsMap = cabService.getCabPositionToCabsMap();
+      Map<Integer, List<Cab>> cabPositionToCabsMap = cabService.getAllCabPositionToCabsMap();
       List<Cab> cabs = cabPositionToCabsMap.get(cabPosition);
 
       for(Cab cab: cabs) {
