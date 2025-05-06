@@ -44,6 +44,7 @@ public class CabService {
 
     if (cabPositions.isEmpty()) {
       cabPositions.add(cabPosition);
+      cabPositionSet.add(cabPosition);
     } else {
       if (!cabPositionSet.contains(cabPosition)) {
         int lowerBoundIndex = lowerBound(cabPositions, cabPosition);
@@ -53,6 +54,19 @@ public class CabService {
     }
 
     // after doing all the above operations, we need to persist those fields in database
+  }
+
+  public void removeCab(Cab cab) {
+    cabPositionToCabsMap.get(cab.getPosition()).remove(cab);
+
+    if (cabPositionToCabsMap.get(cab.getPosition()).isEmpty()) {
+      cabPositionToCabsMap.remove(cab.getPosition());
+      cabPositions.remove(cab.getPosition());
+      cabPositionSet.remove(cab.getPosition());
+    }
+
+    // after doing all the above operations, we need to persist those fields in database
+
   }
 
   public List<Integer> getAllCabsPositions() { // should not use getter because these values will be fetched from DAO layer

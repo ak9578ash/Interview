@@ -26,7 +26,7 @@ public class RideService {
 
       for(Cab cab: cabs) {
         if (cab.getCabStatus() == CabStatus.AVAILABLE) {
-          cabPositionToCabsMap.get(cabPosition).remove(cab);
+          cabService.removeCab(cab);
           cab.setCabStatus(CabStatus.BOOKED);
           return cab;
         }
