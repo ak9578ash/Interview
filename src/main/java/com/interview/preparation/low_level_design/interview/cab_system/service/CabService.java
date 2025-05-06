@@ -1,17 +1,15 @@
 package com.interview.preparation.low_level_design.interview.cab_system.service;
 
 import com.interview.preparation.low_level_design.interview.cab_system.model.Cab;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CabService {
   private final LinkedList<Integer> cabPositions;
+  private final Set<Integer> cabPositionSet; // to maintain uniqueness in cabPositions
   private final Map<Integer, List<Cab>> cabPositionToCabsMap;
 
   public CabService() {
+    this.cabPositionSet = new HashSet<>();
     this.cabPositions = new LinkedList<>();
     this.cabPositionToCabsMap = new HashMap<>();
   }
@@ -47,8 +45,11 @@ public class CabService {
     if (cabPositions.isEmpty()) {
       cabPositions.add(cabPosition);
     } else {
-      int lowerBoundIndex = lowerBound(cabPositions, cabPosition);
-      cabPositions.add(lowerBoundIndex, cabPosition);
+      if (!cabPositionSet.contains(cabPosition)) {
+        int lowerBoundIndex = lowerBound(cabPositions, cabPosition);
+        cabPositions.add(lowerBoundIndex, cabPosition);
+        cabPositionSet.add(cabPosition);
+      }
     }
   }
 
