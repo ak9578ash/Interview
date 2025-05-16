@@ -8,7 +8,7 @@ import com.interview.preparation.low_level_design.chess_game.model.strategy.Move
 
 public class WhiteBishop extends Piece {
   public WhiteBishop(MoveStrategy bishopMoveStrategy) {
-    super("BB", PieceType.BISHOP, ColorType.WHITE, false, bishopMoveStrategy);
+    super("WB", PieceType.BISHOP, ColorType.WHITE, false, bishopMoveStrategy);
   }
 
   public boolean isValidMove(Box startBox, Box endbox) {

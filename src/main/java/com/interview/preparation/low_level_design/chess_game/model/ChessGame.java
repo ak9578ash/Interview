@@ -33,8 +33,8 @@ public class ChessGame {
   private final Scanner scanner;
   private GameStatus gameStatus;
 
-  public ChessGame(MoveStrategy pawnMoveStrategy, MoveStrategy knightMoveStrategy, MoveStrategy bishopMoveStrategy,
-                   MoveStrategy kingMoveStrategy, MoveStrategy queenMoveStrategy, MoveStrategy rookMoveStrategy) {
+  private ChessGame(MoveStrategy pawnMoveStrategy, MoveStrategy knightMoveStrategy, MoveStrategy bishopMoveStrategy,
+                    MoveStrategy kingMoveStrategy, MoveStrategy queenMoveStrategy, MoveStrategy rookMoveStrategy) {
     this.pawnMoveStrategy = pawnMoveStrategy;
     this.knightMoveStrategy = knightMoveStrategy;
     this.bishopMoveStrategy = bishopMoveStrategy;
@@ -48,13 +48,15 @@ public class ChessGame {
 
   }
 
-//  public static synchronized ChessGame getInstance() {
-//    if (instance == null) {
-//      return new ChessGame(pawnMoveStrategy, knightMoveStrategy, bishopMoveStrategy,
-//           kingMoveStrategy, queenMoveStrategy, rookMoveStrategy);
-//    }
-//    return instance;
-//  }
+  public static synchronized ChessGame getInstance(MoveStrategy pawnMoveStrategy, MoveStrategy knightMoveStrategy,
+                                                   MoveStrategy bishopMoveStrategy, MoveStrategy kingMoveStrategy,
+                                                   MoveStrategy queenMoveStrategy, MoveStrategy rookMoveStrategy) {
+    if (instance == null) {
+      return new ChessGame(pawnMoveStrategy, knightMoveStrategy, bishopMoveStrategy,
+          kingMoveStrategy, queenMoveStrategy, rookMoveStrategy);
+    }
+    return instance;
+  }
 
   private List<List<Box>> createBoard() {
     List<List<Box>> board = new ArrayList<>();

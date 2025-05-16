@@ -8,7 +8,7 @@ import com.interview.preparation.low_level_design.chess_game.model.strategy.Move
 
 public class WhiteRook extends Piece {
   public WhiteRook(MoveStrategy rookMoveStrategy) {
-    super("BR", PieceType.ROOK, ColorType.WHITE, false, rookMoveStrategy);
+    super("WR", PieceType.ROOK, ColorType.WHITE, false, rookMoveStrategy);
   }
 
   public boolean isValidMove(Box startBox, Box endbox) {

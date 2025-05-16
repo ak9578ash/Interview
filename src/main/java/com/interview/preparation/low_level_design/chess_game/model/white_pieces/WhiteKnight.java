@@ -8,7 +8,7 @@ import com.interview.preparation.low_level_design.chess_game.model.strategy.Move
 
 public class WhiteKnight extends Piece {
   public WhiteKnight(MoveStrategy knightMoveStrategy) {
-    super("BN", PieceType.KNIGHT, ColorType.WHITE, false, knightMoveStrategy);
+    super("WN", PieceType.KNIGHT, ColorType.WHITE, false, knightMoveStrategy);
   }
 
   public boolean isValidMove(Box startBox, Box endbox) {

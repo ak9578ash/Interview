@@ -8,7 +8,7 @@ import com.interview.preparation.low_level_design.chess_game.model.strategy.Move
 
 public class WhiteQueen extends Piece {
     public WhiteQueen(MoveStrategy queenMoveStrategy) {
-        super("BQ", PieceType.QUEEN, ColorType.WHITE, false, queenMoveStrategy);
+        super("WQ", PieceType.QUEEN, ColorType.WHITE, false, queenMoveStrategy);
     }
 
     @Override

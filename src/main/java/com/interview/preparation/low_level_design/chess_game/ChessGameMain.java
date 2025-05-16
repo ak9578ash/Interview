@@ -15,9 +15,8 @@ public class ChessGameMain {
     MoveStrategy queenMoveStrategy = new DefaultPawnMoveStrategy();
     MoveStrategy rookMoveStrategy = new DefaultPawnMoveStrategy();
 
-    ChessGame chessGame =
-        new ChessGame(pawnMoveStrategy, knightMoveStrategy, bishopMoveStrategy, kingMoveStrategy, queenMoveStrategy,
-            rookMoveStrategy);
+    ChessGame chessGame = ChessGame.getInstance(pawnMoveStrategy, knightMoveStrategy,
+        bishopMoveStrategy, kingMoveStrategy, queenMoveStrategy, rookMoveStrategy);
 
     Player blackPlayer = new Player("Alok", ColorType.BLACK);
     Player whitePlayer = new Player("Apoorv", ColorType.WHITE);

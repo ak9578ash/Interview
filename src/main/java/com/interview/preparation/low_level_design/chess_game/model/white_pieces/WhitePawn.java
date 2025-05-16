@@ -13,6 +13,6 @@ public class WhitePawn extends Piece {
 
   @Override
   public boolean isValidMove(Box startBox, Box endbox) {
-    return true;
+    return super.getMoveStrategy().isValidMove(startBox, endbox);
   }
 }
