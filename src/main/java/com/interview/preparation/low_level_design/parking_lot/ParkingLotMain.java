@@ -41,7 +41,7 @@ public class ParkingLotMain {
                 "BG Road", "Bangalore", "Karnataka", "560075");
 
         // admin creation --> TEST CASE1
-        Account adminAccount = new Admin(parkingLotService);
+        Admin adminAccount = new Admin(parkingLotService);
         adminAccount.setId(UUID.randomUUID().toString());
         adminAccount.setEmail("admin@gmail.com");
         adminAccount.setUserName("admin");
@@ -50,33 +50,34 @@ public class ParkingLotMain {
         adminAccount.setContact(new Contact("1234567890", adminAddress,
                 new PersonalInfo("Akash", "Gupta", "", "Mr.", "14-02-1998")));
 
-        // added the admin to the list of admin
-        adminService.addAdmin((Admin) adminAccount);
+        // added the admin to the list of admins
+        adminService.addAdmin(adminAccount);
 
         // parkingLot creation
         Address parkingLot1Address = new Address("Parking Lot Address", "", "",
                 "BG Road", "Bangalore", "Karnataka", "560075");
         ParkingLot parkingLot1 = ParkingLot.getInstance(parkingLot1Address);
 
+        Admin admin = adminService.getAdminById(adminAccount.getId());
         // added the parkingLot to the list by admin
-        ((Admin) adminAccount).addParkingLot(parkingLot1);
+        admin.addParkingLot(parkingLot1);
 
         // adding the multiple floors to parkingLot by admin --> TEST CASE2
-        ((Admin) adminAccount).addParkingFloor(parkingLot1.getParkingLotId(), new ParkingFloor("floor_id1"));
-        ((Admin) adminAccount).addParkingFloor(parkingLot1.getParkingLotId(), new ParkingFloor("floor_id2"));
+        admin.addParkingFloor(parkingLot1.getParkingLotId(), new ParkingFloor("floor_id1"));
+        admin.addParkingFloor(parkingLot1.getParkingLotId(), new ParkingFloor("floor_id2"));
 
         // adding the entrance gate to parkingLot by admin --> TEST CASE 3
-        ((Admin) adminAccount).addEntranceGate(parkingLot1.getParkingLotId(), new EntranceGate("entrance_gate1"));
+        admin.addEntranceGate(parkingLot1.getParkingLotId(), new EntranceGate("entrance_gate1"));
 
         // adding the exit gate to parkingLot by admin --> TEST CASE 4
-        ((Admin) adminAccount).addExitGate(parkingLot1.getParkingLotId(), new ExitGate("exit_gate1", new DefaultCostStrategy()));
+        admin.addExitGate(parkingLot1.getParkingLotId(), new ExitGate("exit_gate1", new DefaultCostStrategy()));
 
         // adding the multiple parking spots by admin --> TEST CASE 5
         String parkingFloorId = parkingLot1.getParkingFloors().get(0).getParkingFloorId();
-        ((Admin) adminAccount).addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new CarParkingSpot("car1"));
-        ((Admin) adminAccount).addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new CarParkingSpot("car2"));
-        ((Admin) adminAccount).addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new ElectricBikeParkingSpot("electric_bike1"));
-        ((Admin) adminAccount).addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new LargeVehicleParkingSpot("large_vehicle1"));
+        admin.addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new CarParkingSpot("car1"));
+        admin.addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new CarParkingSpot("car2"));
+        admin.addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new ElectricBikeParkingSpot("electric_bike1"));
+        admin.addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId, new LargeVehicleParkingSpot("large_vehicle1"));
 
         //check for the availability of CAR parking in the parking lot --> TEST CASE 6
         System.out.println(parkingLot1.canPark(VehicleType.CAR));
@@ -112,7 +113,7 @@ public class ParkingLotMain {
 
         // should be able to get the parkingTicket --> TEST CASE 12
         String parkingFloorId1 = parkingLot1.getParkingFloors().get(1).getParkingFloorId();
-        ((Admin) adminAccount).addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId1, new CarParkingSpot("car3"));
+        admin.addParkingSpot(parkingLot1.getParkingLotId(), parkingFloorId1, new CarParkingSpot("car3"));
         ParkingTicket parkingTicketCar1 = parkingLot1.getEntranceGates().get(0).getParkingTicket(parkingLot1, car1);
         System.out.println(parkingTicketCar1.getAllocatedSpotId());
 
