@@ -7,7 +7,7 @@ public class UrlContentDeDuplicator {
   private final Set<String> visitedUrls = new HashSet<>();
   private final Set<Integer> contentHashes = new HashSet<>();
 
-  //TODO: could add the strategy pattern to allow different de-duplication strategies rather then using the default hashCode
+  //TODO:could add the strategy pattern to allow different de-duplication strategies rather then using the default hashCode
   boolean isDuplicate(String url, String content) {
     int hash = content.hashCode();
     if (visitedUrls.contains(url) || contentHashes.contains(hash)) {

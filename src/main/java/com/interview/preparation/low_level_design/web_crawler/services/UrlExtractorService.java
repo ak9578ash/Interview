@@ -16,15 +16,10 @@ import org.jsoup.select.Elements;
 @Slf4j
 @AllArgsConstructor
 public class UrlExtractorService {
-  private final PolitenessManager politenessManager;
   private final RawHtmlStore htmlStore;
   private final UrlContentDeDuplicator deDuplicator;
 
   public Optional<String> fetchAndStore(String url) {
-    if (!politenessManager.isPolite(url)) {
-      return Optional.empty();
-    }
-
     try {
       Document doc = Jsoup.connect(url).get();
       String html = doc.html();
@@ -55,6 +50,6 @@ public class UrlExtractorService {
   }
 
   private boolean isValidWikiLink(String url) {
-    return url.startsWith("https://en.wikipedia.org/wiki/") && !url.contains(":");
+    return url.startsWith("https://en.wikipedia.org/wiki/");
   }
 }

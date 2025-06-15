@@ -15,7 +15,7 @@ public class PolitenessManager {
     this.crawlDelayMillis = crawlDelayMillis;
   }
 
-  boolean isPolite(String url) {
+  public boolean isPolite(String url) {
     try {
       URI uri = new URI(url);
       String host = uri.getHost();

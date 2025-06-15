@@ -2,6 +2,7 @@ package com.interview.preparation.low_level_design.web_crawler.services;
 
 import com.interview.preparation.low_level_design.web_crawler.repository.RawHtmlStore;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -13,15 +14,16 @@ public class UrlParserService {
     this.htmlStore = htmlStore;
   }
 
-  public void parse(String url) {
+  public String parse(String url) {
     String html = htmlStore.get(url);
     if (html == null) {
-      return;
+      return Strings.EMPTY;
     }
 
     Document doc = Jsoup.parse(html);
     String text = doc.body().text();
     log.info("Parsed content for: " + url);
-    log.info("Snippet: " + text.substring(0, Math.min(100, text.length())) + "...\n");
+    log.info("Snippet: {}", text.substring(0, Math.min(100, text.length())) + "...\n");
+    return text;
   }
 }

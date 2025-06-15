@@ -14,16 +14,16 @@ import java.util.Queue;
 public class WebCrawlerMain {
   public static void main(String[] args) {
     String seed = "https://en.wikipedia.org/wiki/Web_crawler";
-    int maxDepth = 2;
+    int maxDepth = 3;
 
     Queue<Link> queue = new LinkedList<>();
     queue.add(new Link(seed, 0));
 
-    PolitenessManager politeness = new PolitenessManager(2000); // 2s delay
+    PolitenessManager politenessManager = new PolitenessManager(2000); // 2s delay
     RawHtmlStore htmlStore = new RawHtmlStore();
-    UrlContentDeDuplicator deDup = new UrlContentDeDuplicator();
-    UrlExtractorService extractor = new UrlExtractorService(politeness, htmlStore, deDup);
-    UrlParserService parser = new UrlParserService(htmlStore);
+    UrlContentDeDuplicator urlContentDeDuplicator = new UrlContentDeDuplicator();
+    UrlExtractorService urlExtractorService = new UrlExtractorService(htmlStore, urlContentDeDuplicator);
+    UrlParserService urlParserService = new UrlParserService(htmlStore);
 
     while (!queue.isEmpty()) {
       Link link = queue.poll();
@@ -35,12 +35,19 @@ public class WebCrawlerMain {
         continue;
       }
 
-      Optional<String> htmlOpt = extractor.fetchAndStore(link.getUrl());
-      htmlOpt.ifPresent(html -> {
-        parser.parse(link.getUrl());
-        List<Link> newLinks = extractor.extractLinks(link.getUrl(), html, link.getDepth());
+      if (!politenessManager.isPolite(link.getUrl())) {
+        continue;
+      }
+
+      Optional<String> rawHtml = urlExtractorService.fetchAndStore(link.getUrl());
+
+      rawHtml.ifPresent(html -> {
+        //TODO:store the rawHtmlText in the RawHtmlTextStore
+        String rawHtmlText = urlParserService.parse(link.getUrl());
+        List<Link> newLinks = urlExtractorService.extractLinks(link.getUrl(), html, link.getDepth());
         queue.addAll(newLinks);
       });
+
     }
   }
 }
