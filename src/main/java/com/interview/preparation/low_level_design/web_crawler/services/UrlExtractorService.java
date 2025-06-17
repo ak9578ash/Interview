@@ -42,9 +42,10 @@ public class UrlExtractorService {
     Elements anchorTags = doc.select("a[href]");
     for (Element a : anchorTags) {
       String href = a.attr("abs:href");
-      if (isValidWikiLink(href)) {
-        links.add(new Link(href, depth + 1));
-      }
+      links.add(new Link(href, depth + 1));
+//      if (isValidWikiLink(href)) {
+//        links.add(new Link(href, depth + 1));
+//      }
     }
     return links;
   }

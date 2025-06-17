@@ -1,18 +1,26 @@
 package com.interview.preparation.low_level_design.web_crawler.services;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class PolitenessManager {
   private final Map<String, LocalDateTime> hostToLastCrawlTime;
-  private final long crawlDelayMillis;
+  private final Map<String, Long>hostToCrawlDelay;
+  private final long defaultCrawlDelaySeconds;
 
-  public PolitenessManager(long crawlDelayMillis) {
-    this.hostToLastCrawlTime = new HashMap<>();
-    this.crawlDelayMillis = crawlDelayMillis;
+  public PolitenessManager(long defaultCrawlDelaySeconds) {
+    this.hostToLastCrawlTime = new ConcurrentHashMap<>();
+    this.hostToCrawlDelay = new ConcurrentHashMap<>();
+    this.defaultCrawlDelaySeconds = defaultCrawlDelaySeconds;
   }
 
   public boolean isPolite(String url) {
@@ -20,19 +28,28 @@ public class PolitenessManager {
       URI uri = new URI(url);
       String host = uri.getHost();
       if (hostToLastCrawlTime.containsKey(host)) {
-        // If the host is already in the map, check the last crawl time
         LocalDateTime lastCrawlTime = hostToLastCrawlTime.get(host);
         LocalDateTime currentTime = LocalDateTime.now();
-        if (currentTime.getSecond() - lastCrawlTime.getSecond() >= crawlDelayMillis / 1000) {
+        Long crawlDelay = hostToCrawlDelay.get(host);
+        if (currentTime.getSecond() - lastCrawlTime.getSecond() >= crawlDelay) {
           hostToLastCrawlTime.put(host, currentTime);
           return true;
         }
         return false;
       } else {
-        //TODO: Fetch the politeness of the host using the robots.txt file
+        String robotsUrl = "https://" + uri.getHost() + "/robots.txt";
+        String doc = Jsoup.connect(robotsUrl).get().body().text();
+        Matcher m = Pattern.compile("(?i)Crawl-delay:\\s*(\\d+)").matcher(doc);
+        if (m.find()) {
+          long crawlDelay = Long.parseLong(m.group(1));
+          hostToCrawlDelay.put(host, crawlDelay);
+        } else {
+          hostToCrawlDelay.put(host, defaultCrawlDelaySeconds);
+        }
+        hostToLastCrawlTime.put(host, LocalDateTime.now());
         return true;
       }
-    } catch (URISyntaxException e) {
+    } catch (URISyntaxException | IOException e) {
       return false;
     }
   }
