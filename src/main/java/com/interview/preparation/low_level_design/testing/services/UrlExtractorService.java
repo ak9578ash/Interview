@@ -1,7 +1,7 @@
-package com.interview.preparation.low_level_design.web_crawler.services;
+package com.interview.preparation.low_level_design.testing.services;
 
-import com.interview.preparation.low_level_design.web_crawler.models.Link;
-import com.interview.preparation.low_level_design.web_crawler.repository.RawHtmlStore;
+import com.interview.preparation.low_level_design.testing.models.Link;
+import com.interview.preparation.low_level_design.testing.repository.RawHtmlStore;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package com.interview.preparation.low_level_design.web_crawler;
+package com.interview.preparation.low_level_design.testing;
 
-import com.interview.preparation.low_level_design.web_crawler.models.Link;
-import com.interview.preparation.low_level_design.web_crawler.repository.RawHtmlStore;
-import com.interview.preparation.low_level_design.web_crawler.services.PolitenessManager;
-import com.interview.preparation.low_level_design.web_crawler.services.UrlContentDeDuplicator;
-import com.interview.preparation.low_level_design.web_crawler.services.UrlExtractorService;
-import com.interview.preparation.low_level_design.web_crawler.services.UrlParserService;
+import com.interview.preparation.low_level_design.testing.models.Link;
+import com.interview.preparation.low_level_design.testing.repository.RawHtmlStore;
+import com.interview.preparation.low_level_design.testing.services.PolitenessManager;
+import com.interview.preparation.low_level_design.testing.services.UrlContentDeDuplicator;
+import com.interview.preparation.low_level_design.testing.services.UrlExtractorService;
+import com.interview.preparation.low_level_design.testing.services.UrlParserService;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -34,8 +34,7 @@ public class WebCrawlerMain {
     ExecutorService executorService = Executors.newThreadPerTaskExecutor(threadFactory);
 
     for (int i = 0; i < NUM_CRAWLERS; i++) {
-      executorService.submit(
-          () -> {
+      executorService.submit(() -> {
             while (!queue.isEmpty()) {
               Link link = queue.poll();
               if (link == null) {
@@ -69,8 +68,7 @@ public class WebCrawlerMain {
                 queue.addAll(newLinks);
               });
             }
-          }
-      );
+      });
     }
 
     Thread.sleep(10000000); // Wait for all tasks to complete

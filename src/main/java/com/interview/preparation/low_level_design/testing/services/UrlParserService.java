@@ -1,6 +1,6 @@
-package com.interview.preparation.low_level_design.web_crawler.services;
+package com.interview.preparation.low_level_design.testing.services;
 
-import com.interview.preparation.low_level_design.web_crawler.repository.RawHtmlStore;
+import com.interview.preparation.low_level_design.testing.repository.RawHtmlStore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.Jsoup;

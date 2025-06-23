@@ -1,4 +1,4 @@
-package com.interview.preparation.low_level_design.web_crawler.models;
+package com.interview.preparation.low_level_design.testing.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
