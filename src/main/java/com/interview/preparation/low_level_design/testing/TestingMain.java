@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-public class WebCrawlerMain {
+public class TestingMain {
   private static final int NUM_CRAWLERS = 5;
 
   public static void main(String[] args) throws InterruptedException {
