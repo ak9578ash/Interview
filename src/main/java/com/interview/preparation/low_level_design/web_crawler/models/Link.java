@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class Link {
-  private String url;
-  private Integer depth;
+  private final String url;
+  private final Integer depth;
 }

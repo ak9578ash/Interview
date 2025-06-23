@@ -43,14 +43,7 @@ public class UrlExtractorService {
     for (Element a : anchorTags) {
       String href = a.attr("abs:href");
       links.add(new Link(href, depth + 1));
-//      if (isValidWikiLink(href)) {
-//        links.add(new Link(href, depth + 1));
-//      }
     }
     return links;
-  }
-
-  private boolean isValidWikiLink(String url) {
-    return url.startsWith("https://en.wikipedia.org/wiki/");
   }
 }

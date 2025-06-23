@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public class PolitenessManager {
   private final Map<String, LocalDateTime> hostToLastCrawlTime;

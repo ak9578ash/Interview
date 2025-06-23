@@ -6,7 +6,6 @@ import com.interview.preparation.low_level_design.web_crawler.services.Politenes
 import com.interview.preparation.low_level_design.web_crawler.services.UrlContentDeDuplicator;
 import com.interview.preparation.low_level_design.web_crawler.services.UrlExtractorService;
 import com.interview.preparation.low_level_design.web_crawler.services.UrlParserService;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -19,7 +18,7 @@ public class WebCrawlerMain {
   private static final int NUM_CRAWLERS = 5;
 
   public static void main(String[] args) throws InterruptedException {
-    String seed = "https://www.geeksforgeeks.org/what-is-a-webcrawler-and-where-is-it-used/";
+    String seed = "https://medium.com/@hnasr/postgresql-process-architecture-f21e16459907";
     int maxDepth = 3;
 
     Queue<Link> queue = new ConcurrentLinkedQueue<>();
@@ -40,12 +39,6 @@ public class WebCrawlerMain {
             while (!queue.isEmpty()) {
               Link link = queue.poll();
               if (link == null) {
-                try {
-                  Thread.sleep(500); // Backoff
-                } catch (InterruptedException e) {
-                  Thread.currentThread().interrupt();
-                  break;
-                }
                 continue;
               }
 
