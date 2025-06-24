@@ -1,5 +1,6 @@
 package com.interview.preparation.low_level_design.testing;
 
+import com.interview.preparation.low_level_design.testing.exception.UrlFetchException;
 import com.interview.preparation.low_level_design.testing.models.Link;
 import com.interview.preparation.low_level_design.testing.repository.RawHtmlStore;
 import com.interview.preparation.low_level_design.testing.services.PolitenessManager;
@@ -13,7 +14,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TestingMain {
   private static final int NUM_CRAWLERS = 5;
 
@@ -27,7 +30,7 @@ public class TestingMain {
     PolitenessManager politenessManager = new PolitenessManager(2);
     RawHtmlStore htmlStore = new RawHtmlStore();
     UrlContentDeDuplicator urlContentDeDuplicator = new UrlContentDeDuplicator();
-    UrlExtractorService urlExtractorService = new UrlExtractorService(htmlStore, urlContentDeDuplicator);
+    UrlExtractorService urlExtractorService = new UrlExtractorService(htmlStore);
     UrlParserService urlParserService = new UrlParserService(htmlStore);
 
     ThreadFactory threadFactory = Thread.ofVirtual().name("crawler-", 0).factory();
@@ -44,9 +47,6 @@ public class TestingMain {
               if (link.getDepth() > maxDepth) {
                 continue;
               }
-              if (htmlStore.has(link.getUrl())) {
-                continue;
-              }
 
               if (!politenessManager.isPolite(link.getUrl())) {
                 try {
@@ -59,12 +59,25 @@ public class TestingMain {
                 continue;
               }
 
-              Optional<String> rawHtml = urlExtractorService.fetchAndStore(link.getUrl());
+              //URL extractor
+              Optional<String> rawHtmlOptional;
+              try {
+                rawHtmlOptional = urlExtractorService.fetchAndStore(link.getUrl());
+              } catch (UrlFetchException e) {
+                continue;
+              }
 
-              rawHtml.ifPresent(html -> {
+
+              if (rawHtmlOptional.isPresent() && urlContentDeDuplicator.isDuplicate(link.getUrl(), rawHtmlOptional.get())) {
+                log.info("Duplicate content or url found for: {}", link.getUrl());
+                continue;
+              }
+
+              //URL parser
+              rawHtmlOptional.ifPresent(html -> {
                 //TODO:store the rawHtmlText in the RawHtmlTextStore
                 String rawHtmlText = urlParserService.parse(link.getUrl());
-                List<Link> newLinks = urlExtractorService.extractLinks(link.getUrl(), html, link.getDepth());
+                List<Link> newLinks = urlParserService.extractLinks(link.getUrl(), html, link.getDepth());
                 queue.addAll(newLinks);
               });
             }
