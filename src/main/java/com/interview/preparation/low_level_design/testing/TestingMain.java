@@ -19,10 +19,10 @@
 //@Slf4j
 //public class TestingMain {
 //  private static final int NUM_CRAWLERS = 5;
-//
+//  private static final int MAX_DEPTH = 3;
 //  public static void main(String[] args) throws InterruptedException {
 //    String seed = "https://medium.com/@hnasr/postgresql-process-architecture-f21e16459907";
-//    int maxDepth = 3;
+//
 //
 //    Queue<Link> queue = new ConcurrentLinkedQueue<>();
 //    queue.add(new Link(seed, 0));
@@ -44,7 +44,7 @@
 //                continue;
 //              }
 //
-//              if (link.getDepth() > maxDepth) {
+//              if (link.getDepth() > MAX_DEPTH) {
 //                continue;
 //              }
 //
