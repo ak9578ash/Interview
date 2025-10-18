@@ -8,14 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 @Slf4j
 @Component
 public class FixedWindowStrategy implements RateLimiterStrategy {
-    private final HashMap<String, FixedWindowInfo> state = new LinkedHashMap<>();
+    private final Map<String, FixedWindowInfo> state = new ConcurrentHashMap<>();
     private final UserRateLimitRepository userRateLimitRepository;
 
     @Override
@@ -41,8 +41,6 @@ public class FixedWindowStrategy implements RateLimiterStrategy {
             win.setCounter(0);
         }
 
-        // Increment the counter for this window
-        win.setCounter(win.getCounter() + 1);
 
         // Check if the user is still within the limit
         if (win.getCounter() <= cfg.getLimit()) {
@@ -52,6 +50,33 @@ public class FixedWindowStrategy implements RateLimiterStrategy {
             win.setCounter(win.getCounter() - 1);
             return false;
         }
+
+        // Synchronize on the per-user object so only one thread updates this user's counters at a time.
+//        synchronized (win) {
+//            long observedWindow = win.getWindowStartEpochSec();
+//            // If new time window has started, reset counter and windowStart atomically
+//            if (observedWindow < currentWindowStart) {
+//                win.setWindowStartEpochSec(currentWindowStart);
+//                win.setCounter(0);
+//            }
+//
+//            // If within allowed limit, increment and allow
+//            if (win.getCounter() < cfg.getLimit()) {
+//                win.setCounter(win.getCounter() + 1);
+//                return true;
+//            } else {
+//                // Already at or above limit — reject.
+//                return false;
+//            }
+//        }
+
+        /*
+
+                  For distributed/high-throughput:
+                  1.Use Redis with atomic commands/Lua scripts or use a DB with OCC + retries.
+                  2.If you use DB + OCC, be aware of retry/backoff logic and test under contention.
+                  3.For token-bucket style, Redis-based atomic scripts are typical.
+         */
     }
 
     @Override

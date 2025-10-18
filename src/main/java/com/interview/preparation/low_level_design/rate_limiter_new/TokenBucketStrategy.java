@@ -42,6 +42,24 @@ public class TokenBucketStrategy implements RateLimiterStrategy {
         } else {
             return false;
         }
+//        synchronized (b) {
+//            long now = System.currentTimeMillis();
+//            long elapsedMillis = now - b.getLastRefill();
+//
+//            if (elapsedMillis > 0) {
+//                double tokensToAdd = (elapsedMillis / 1000.0) * cfg.getRefillPerSecond();
+//                double newTokenCount = Math.min(cfg.getBucketCapacity(), b.getTokens() + tokensToAdd);
+//                b.setTokens(newTokenCount);
+//                b.setLastRefill(now);
+//            }
+//
+//            if (b.getTokens() >= 1.0) {
+//                b.setTokens(b.getTokens() - 1.0);
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
     }
 
     @Override

@@ -30,19 +30,36 @@ public class SlidingWindowLogStrategy implements RateLimiterStrategy {
 
         ConcurrentLinkedDeque<Long> deque = logs.computeIfAbsent(userId, k -> new ConcurrentLinkedDeque<>());
         // Prune old timestamps
-        while (true) {
-            Long head = deque.peekFirst();
-            if (head == null || head >= cutoff) {
-                break;
-            }
-            deque.pollFirst();
-        }
+//        while (true) {
+//            Long head = deque.peekFirst();
+//            if (head == null || head >= cutoff) {
+//                break;
+//            }
+//            deque.pollFirst();
+//        }
+//
+//        if (deque.size() < cfg.getLimit()) {
+//            deque.addLast(now);
+//            return true;
+//        } else {
+//            return false;
+//        }
 
-        if (deque.size() < cfg.getLimit()) {
-            deque.addLast(now);
-            return true;
-        } else {
-            return false;
+        synchronized (deque) {
+            while (true) {
+                Long head = deque.peekFirst();
+                if (head == null || head >= cutoff) {
+                    break;
+                }
+                deque.pollFirst();
+            }
+
+            if (deque.size() < cfg.getLimit()) {
+                deque.addLast(now);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

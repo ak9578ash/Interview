@@ -22,143 +22,114 @@ public class RateLimiterMain {
         rateLimiterService.createOrUpdateUser(user_1);
         rateLimiterService.createOrUpdateUser(user_2);
 
-        rateLimiterService.setAlgorithm(RateLimitAlgorithmEnum.TOKEN_BUCKET);
 
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        Thread.sleep(60000);
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-        if (rateLimiterService.allowRequest("user_1")) {
-            log.info("Request allowed for user_1");
-        } else {
-            log.error("Request denied for user_1");
-        }
-
-
-
-//        Thread thread1 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        Thread thread2 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        Thread thread3 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        Thread thread4 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        Thread thread5 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        Thread thread6 = Thread.ofVirtual()
-//                .unstarted(() -> {
-//                    if (rateLimiterService.allowRequest("user_1")) {
-//                        log.info("Request allowed for user_1");
-//                    } else {
-//                        log.error("Request denied for user_1");
-//                    }
-//                });
-//
-//        thread1.start();
-//        thread2.start();
-//        thread3.start();
-//        thread4.start();
-//        thread5.start();
-//        thread6.start();
-//
-//        try {
-//            thread1.join();
-//            thread2.join();
-//            thread3.join();
-//            thread4.join();
-//            thread5.join();
-//            thread6.join();
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
+//        if (rateLimiterService.allowRequest("user_1")) {
+//            log.info("Request allowed for user_1");
+//        } else {
+//            log.error("Request denied for user_1");
 //        }
-//        Thread.sleep(60000); // wait for 60 seconds to reset the window
 //
 //        if (rateLimiterService.allowRequest("user_1")) {
 //            log.info("Request allowed for user_1");
 //        } else {
 //            log.error("Request denied for user_1");
 //        }
+//
+//        if (rateLimiterService.allowRequest("user_1")) {
+//            log.info("Request allowed for user_1");
+//        } else {
+//            log.error("Request denied for user_1");
+//        }
+//
+//        if (rateLimiterService.allowRequest("user_1")) {
+//            log.info("Request allowed for user_1");
+//        } else {
+//            log.error("Request denied for user_1");
+//        }
+//
+//        if (rateLimiterService.allowRequest("user_1")) {
+//            log.info("Request allowed for user_1");
+//        } else {
+//            log.error("Request denied for user_1");
+//        }
+//
+//        if (rateLimiterService.allowRequest("user_1")) {
+//            log.info("Request allowed for user_1");
+//        } else {
+//            log.error("Request denied for user_1");
+//        }
+
+
+        Thread thread1 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        Thread thread2 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        Thread thread3 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        Thread thread4 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        Thread thread5 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        Thread thread6 = Thread.ofVirtual()
+                .unstarted(() -> {
+                    if (rateLimiterService.allowRequest("user_1")) {
+                        log.info("Request allowed for user_1");
+                    } else {
+                        log.error("Request denied for user_1");
+                    }
+                });
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        thread5.start();
+        thread6.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+            thread4.join();
+            thread5.join();
+            thread6.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
