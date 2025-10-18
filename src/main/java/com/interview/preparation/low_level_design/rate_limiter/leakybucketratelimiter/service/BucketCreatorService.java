@@ -3,7 +3,9 @@ package com.interview.preparation.low_level_design.rate_limiter.leakybucketratel
 import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.LeakyBucket;
 import com.interview.preparation.low_level_design.rate_limiter.exception.UserNotFoundException;
 import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.repository.BucketCreatorRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BucketCreatorService {
     private final BucketCreatorRepository bucketCreatorRepository;
 

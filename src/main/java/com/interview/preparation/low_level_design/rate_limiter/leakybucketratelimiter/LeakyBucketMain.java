@@ -5,6 +5,7 @@ import com.interview.preparation.low_level_design.rate_limiter.leakybucketrateli
 import com.interview.preparation.low_level_design.rate_limiter.leakybucketratelimiter.service.BucketCreatorService;
 import com.interview.preparation.low_level_design.rate_limiter.model.User;
 import com.interview.preparation.low_level_design.rate_limiter.model.UserProfile;
+import lombok.AllArgsConstructor;
 
 public class LeakyBucketMain {
     public static BucketCreatorRepository  bucketCreatorRepository ;
