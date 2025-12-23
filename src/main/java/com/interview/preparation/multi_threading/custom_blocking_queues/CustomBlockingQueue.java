@@ -19,18 +19,18 @@ public class CustomBlockingQueue<T> {
       log.info("Queue is full. " + Thread.currentThread().getName() + " is waiting....");
       this.wait();
     }
-    log.info("Queue is not full. " + Thread.currentThread().getName() + " is producing ");
+    log.info("Queue is not full. {} is producing ", Thread.currentThread().getName());
     q.add(t);
     this.notifyAll();
   }
 
   public synchronized T deQueue() throws InterruptedException {
     while (q.isEmpty()) {
-      log.info("Queue is empty. " + Thread.currentThread().getName() + " is waiting....");
-      this.wait();
+        log.info("Queue is empty. {} is waiting....", Thread.currentThread().getName());
+        this.wait();
     }
     T t = q.remove();
-    log.info("Queue is not empty. " + Thread.currentThread().getName() + " is consuming ");
+    log.info("Queue is not empty. {} is consuming ", Thread.currentThread().getName());
     this.notifyAll();
     return t;
   }

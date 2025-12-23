@@ -11,6 +11,7 @@ public class Demo {
     List<Integer>l3 = List.of(7,8,9);
 
     AtomicInteger count = new AtomicInteger(0);
+
     Thread th1 = Thread.ofPlatform().start(
         () -> arraySum.sum(l1, count)
     );

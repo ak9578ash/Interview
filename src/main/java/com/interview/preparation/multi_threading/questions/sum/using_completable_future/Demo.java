@@ -15,7 +15,10 @@ public class Demo {
     List<Integer> list1 = List.of(1, 2, 3);
     List<Integer> list2 = List.of(1, 2, 3);
 
-    ThreadFactory threadFactory = Thread.ofVirtual().name("VirtualThread-", 0).factory();
+    ThreadFactory threadFactory = Thread
+            .ofVirtual()
+            .name("VirtualThread-", 0)
+            .factory();
     ExecutorService executorService = Executors.newThreadPerTaskExecutor(threadFactory);
 
     CompletableFuture<Integer> cf1 = CompletableFuture.supplyAsync(

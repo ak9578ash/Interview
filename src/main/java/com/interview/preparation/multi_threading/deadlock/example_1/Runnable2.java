@@ -12,7 +12,7 @@ public class Runnable2 implements Runnable {
   @Override
   public void run() {
     synchronized (r2) {
-      System.out.println(Thread.currentThread().getName() + ": "+"locked resource 1");
+      System.out.println(Thread.currentThread().getName() + ": "+"locked resource 2");
       r2.print();
       synchronized (r1) {
         System.out.println("Thread 2: locked resource 1");
