@@ -1,0 +1,86 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+	void solve(vector<vector<int>>edges, int n, int src, int dst) {
+		vector<vector<int>>adj(n);
+		for(int i=0; i<edges.size(); i++) {
+			int u = edges[i][0];
+			int v = edges[i][1];
+
+			adj[u].push_back(v);
+			adj[v].push_back(u);
+		}
+
+		queue<int>q;
+		vector<bool>visited(n, false);
+		vector<int>parent(n, 0);
+
+		q.push(src);
+		visited[src] = true;
+		parent[src] = -1;
+		while(!q.empty()) {
+			int size = q.size();
+			int flag = 0;
+			while(size--) {
+				int u = q.front();
+				q.pop();
+
+				if (u==dst) {
+					flag = 1;
+					break;
+				}
+
+				for(int i=0; i<adj[u].size(); i++) {
+					int nu = adj[u][i];
+					if (!visited[nu]) {
+						visited[nu] = true;
+						q.push(nu);
+						parent[nu] = u;
+					}
+				}
+			}
+			if (flag == 1) {
+				break;
+			}
+		}
+
+		vector<int>path;
+		int node = dst;
+
+		while(1) {
+			path.push_back(node);
+			node = parent[node];
+			if (node == -1) {
+				break;
+			}
+		}
+
+		reverse(path.begin(), path.end());
+		for(int i=0; i<path.size(); i++) {
+			cout<<path[i]<<" ";
+		}
+	}
+};
+
+int main() {
+	// int n = 8;
+	// vector<vector<int>>edges = {{0, 1}, {1, 2}, {0, 3}, {3, 4}, {4, 7}, {3, 7}, {6, 7}, {4, 5}, {4, 6}, {5, 6}};
+	// int src = 0, dst = 7;
+
+	int n = 8;
+	vector<vector<int>>edges = {{{0, 1}, {1, 2}, {0, 3}, {3, 4}, {4, 7}, {3, 7}, {6, 7}, {4, 5}, {4, 6}, {5, 6}}};
+	int src = 2, dst = 6;
+
+	Solution* solution = new Solution();
+	solution->solve(edges, n, src, dst);
+}
