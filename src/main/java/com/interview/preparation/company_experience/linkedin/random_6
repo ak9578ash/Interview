@@ -1,0 +1,82 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+class Solution {
+    // This question is valid for DAG only
+  public:
+    vector<vector<int>> solve(vector<vector<int>> edges, int n) {
+        vector<vector<int>> adj(n);
+        vector<int> outDegree(n, 0);
+
+        // Build adjacency list and out-degree count
+        for (const auto& edge : edges) {
+            int u = edge[0], v = edge[1];
+            adj[v].push_back(u); // Reverse adjacency list for efficiency
+            outDegree[u]++;
+        }
+
+        queue<int> q;
+        for (int i = 0; i < n; i++) {
+            if (outDegree[i] == 0) { // Nodes with no outgoing edges
+                q.push(i);
+            }
+        }
+
+        vector<vector<int>> leaves;
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> temp;
+            while (size--) {
+                int u = q.front();
+                q.pop();
+                temp.push_back(u);
+
+                // Decrease out-degree of parents
+                for (int i = 0; i < adj[u].size(); i++) {
+                    int parent = adj[u][i];
+                    outDegree[parent]--;
+                    if (outDegree[parent] == 0) {
+                        q.push(parent);
+                    }
+                }
+            }
+            leaves.push_back(temp);
+        }
+        return leaves;
+    }
+};
+
+int main() {
+     vector<vector<int>>edges = {{0,1}, {1,2}, {0,3}, {3,4}, {4,5}, {4,1}, {4,2}};
+     int n = 6;
+
+    // vector<vector<int>>edges = {{0,1}, {1,2}, {3,2}};
+    // int n = 4;
+
+    // vector<vector<int>>edges = {{0,1}};
+    // int n = 2;
+
+    // vector<vector<int>>edges = {{0,1}, {0,2}};
+    // int n = 3;
+
+
+
+  Solution* solution = new Solution();
+  vector<vector<int>>leaves = solution->solve(edges, n);
+
+  for(int i=0;i<leaves.size();i++) {
+      for(int j=0;j<leaves[i].size();j++) {
+          cout<<leaves[i][j]<<" ";
+      }
+      cout<<endl;
+  }
+}
