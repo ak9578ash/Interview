@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minCost(vector<vector<int>>& costs) {
+        int red = costs[0][0];
+        int blue = costs[0][1];
+        int green = costs[0][2];
+
+        for(int i=1;i<costs.size();i++) {
+            int tempRed = min(costs[i][0] + blue , costs[i][0] + green);
+            int tempBlue = min(costs[i][1] + red, costs[i][1] + green);
+            int tempGreen = min(costs[i][2] + red, costs[i][2] + blue);
+
+            red = tempRed;
+            blue = tempBlue;
+            green = tempGreen;
+        }
+
+        return min({red, blue, green});
+    }
+};

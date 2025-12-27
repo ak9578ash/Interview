@@ -1,0 +1,40 @@
+class Solution {
+private:
+    vector<int>getPrefixMin(vector<int> &dp) {
+        vector<int>v(dp.size(), 0);
+        v[0] = dp[0];
+        for(int i=1;i<dp.size();i++) {
+            v[i] = min(dp[i], v[i-1]);
+        }
+        return v;
+    }
+
+    vector<int>getSuffixMin(vector<int> &dp) {
+        reverse(dp.begin(), dp.end());
+        vector<int>v = getPrefixMin(dp);
+
+        reverse(dp.begin(), dp.end());
+        reverse(v.begin(), v.end());
+        return v;
+    }
+public:
+    int minCostII(vector<vector<int>>& costs) {
+        int n = costs.size();
+        int k = costs[0].size();
+
+        vector<int> dp = costs[0];
+        for (int i = 1; i < n; i++) {
+            vector<int>prefixMin = getPrefixMin(dp);
+            vector<int>suffixMin = getSuffixMin(dp);
+            vector<int>tempDp(k, 0);
+            for(int j = 0; j < k; j++) {
+                int prefix = (j-1) >= 0 ? prefixMin[j-1] : INT_MAX;
+                int suffix = (j+1) < k ? suffixMin[j+1] : INT_MAX;
+                tempDp[j]= costs[i][j] + min(prefix, suffix);
+            }
+            dp = tempDp;
+        }
+
+        return *min_element(dp.begin(), dp.end());
+    }
+};

@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+	int solve(vector<int>v, int k) {
+	    int n = v.size();
+	    int len = 0;
+	    int i = 0, j;
+	    for(j = 0; j < 2*v.size(); j++) {
+	        if (v[j%n] == 0) {
+	            k--;
+	        }
+
+	        if (k < 0) {
+	            if (j-i > n) {
+	                len = n;
+	            } else {
+	                len = max(len, j-i);
+	            }
+
+	            while(k < 0) {
+	                if (v[i%n] == 0) {
+	                    k++;
+	                }
+	                i++;
+	            }
+	        }
+
+	    }
+
+	    if (j-i > n) {
+	        len = n;
+	    } else {
+	        len = max(len, j-i);
+	    }
+	    return len;
+	}
+
+};
+
+int main() {
+//   vector<int>v = {1,1,1,1,0,0,1,1,1};
+//   int k = 2;
+
+//   vector<int>v = {1,1,1,1,0,0,1,1,1};
+//   int k = 1;
+
+//   vector<int>v = {1,1,1,1,0,0,1,1,1};
+//   int k = 4;
+
+//   vector<int>v = {1,1,0,0,1,0,1,0,1,1,1,1};
+//   int k = 2;
+
+//   vector<int>v = {1,1,0,0,1,0,1,0,1,1,1,1};
+//   int k = 4;
+
+//   vector<int>v = {1,0,1,1};
+//   int k = 0;
+
+//   vector<int>v = {1,0,1,1};
+//   int k = 4;
+
+//   vector<int> v = {1, 1, 1, 0, 0, 1, 1};
+//   int k = 1;
+
+//   vector<int>v = {1, 0, 0, 1, 1, 0, 1};
+//   int k = 2;
+
+//   vector<int>v = {0, 0, 1};
+//   int k = 0;
+
+//   vector<int>v = {0,0,0};
+//   int k = 1;
+
+//   vector<int>v = {1,1,1,0,0,0,1,1,1,1,0};
+//   int k = 2;
+
+//   vector<int>v = {0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1};
+//   int k = 3;
+
+//   vector<int>v = {0,1,1,1};
+//   int k = 1;
+
+//   vector<int>v = {1,0,1,0,1};
+//   int k = 1;
+
+    // vector<int>v = {0,1,0};
+    // int k = 1;
+
+    // vector<int>v = {1,0,0,1};
+    // int k = 1;
+
+    // vector<int>v = {0,1,1,0,1};
+    // int k = 1;
+
+    // vector<int>v = {0,1,0,1,1,0};
+    // int k = 2;
+
+	Solution* solution = new Solution();
+
+	cout<<solution->solve(v, k);
+}

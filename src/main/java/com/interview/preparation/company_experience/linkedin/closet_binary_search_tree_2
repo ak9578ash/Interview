@@ -1,0 +1,120 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+private:
+    priority_queue<pair<double, int>>pq;
+    void closestKValuesHelper_1(TreeNode* root, double target, int k) {// TC: O(nlogk) SC: O(k)
+        if (root == NULL) {
+            return;
+        }
+        closestKValuesHelper_1(root->left, target, k);
+        pq.push({abs((double)root->val - target), root->val});
+        if (pq.size() > k) {
+            pq.pop();
+        }
+        closestKValuesHelper_1(root->right, target, k);
+    }
+
+    queue<int>q;
+    void closestKValuesHelper_2(TreeNode* root, double target, int k) { // TC: O(n) SC: O(k)
+        if (root == NULL) {
+            return;
+        }
+
+        closestKValuesHelper_2(root->left, target, k);
+        if (q.size() < k) {
+            q.push(root->val);
+        }else {
+            if (abs(q.front() - target) > abs(root->val - target)) {
+                q.pop();
+                q.push(root->val);
+            }
+        }
+        closestKValuesHelper_2(root->right, target, k);
+    }
+
+    void nextPredecessor(stack<TreeNode*>& predStack) {
+        TreeNode* node = predStack.top();
+        predStack.pop();
+
+        if (node == NULL) {
+            return;
+        }
+
+        node = node->left;
+        while(node != NULL) {
+            predStack.push(node);
+            node = node->right;
+        }
+    }
+
+    void nextSuccessor(stack<TreeNode*>& succStack) {
+        TreeNode* node = succStack.top();
+        succStack.pop();
+
+        if (node == NULL) {
+            return;
+        }
+
+        node = node->right;
+        while(node != NULL) {
+            succStack.push(node);
+            node = node->left;
+        }
+    }
+
+    vector<int> closestKValuesHelper_3(TreeNode* root, double target, int k) { // TC: O(logn) SC: O(logn)
+        stack<TreeNode*>predStack, succStack;
+        vector<int>ans;
+
+        while(root != NULL) {
+            if (root->val > target) {
+                succStack.push(root);
+                root = root->left;
+            } else {
+                predStack.push(root);
+                root = root->right;
+            }
+        }
+
+        while(k > 0 && !predStack.empty() && !succStack.empty()) {
+            if (abs(predStack.top()->val - target) < abs(succStack.top()->val - target)) {
+                ans.push_back(predStack.top()->val);
+                nextPredecessor(predStack);
+            } else {
+                ans.push_back(succStack.top()->val);
+                nextSuccessor(succStack);
+            }
+            k--;
+        }
+
+        while(k > 0 && !predStack.empty()) {
+            ans.push_back(predStack.top()->val);
+            nextPredecessor(predStack);
+            k--;
+        }
+
+        while(k > 0 && !succStack.empty()) {
+            ans.push_back(succStack.top()->val);
+            nextSuccessor(succStack);
+            k--;
+        }
+
+        return ans;
+    }
+
+public:
+    vector<int> closestKValues(TreeNode* root, double target, int k) {
+        return closestKValuesHelper_3(root, target, k);
+    }
+};
