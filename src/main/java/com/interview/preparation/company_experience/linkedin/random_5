@@ -1,0 +1,70 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+    private:
+        unordered_map<char, char>reverseMap;
+        unordered_map<string, vector<string>>numberToWordMap;
+
+        void createReverseMap() {
+            reverseMap['a'] = '2'; reverseMap['b'] = '2'; reverseMap['c'] = '2';
+            reverseMap['d'] = '3'; reverseMap['e'] = '3'; reverseMap['f'] = '3';
+            reverseMap['g'] = '4'; reverseMap['h'] = '4'; reverseMap['i'] = '4';
+            reverseMap['j'] = '5'; reverseMap['k'] = '5'; reverseMap['l'] = '5';
+            reverseMap['m'] = '6'; reverseMap['n'] = '6'; reverseMap['o'] = '6';
+            reverseMap['p'] = '7'; reverseMap['q'] = '7'; reverseMap['r'] = '7'; reverseMap['s'] = '7';
+            reverseMap['t'] = '8'; reverseMap['u'] = '8'; reverseMap['v'] = '8';
+            reverseMap['w'] = '9'; reverseMap['x'] = '9'; reverseMap['y'] = '9'; reverseMap['z'] = '9';
+        }
+
+        void createNumberToWordsMap(vector<string>& knowWords) {
+            for(int i=0;i<knowWords.size();i++) {
+                string word = knowWords[i];
+                string number;
+
+                for(int j=0;j<word.size();j++) {
+                    number.push_back(reverseMap[word[j]]);
+                }
+
+                numberToWordMap[number].push_back(word);
+            }
+        }
+
+    public:
+        Solution(vector<string>& knowWords) {
+            createReverseMap();
+            createNumberToWordsMap(knowWords);
+        }
+
+        vector<string>solve(string inputNumber) {
+            if (numberToWordMap.find(inputNumber) == numberToWordMap.end()) {
+                return {};
+            }
+            return numberToWordMap[inputNumber];
+        }
+};
+
+
+int main() {
+    // vector<string>words = {"linkedin", "jimldfhm", "leetcode", "morning"};
+    // string inputNumber = "54653346";
+
+    // vector<string>words = {"aa", "ab"};
+    // string inputNumber = "22";
+    // string inputNumber = "1234";
+
+    Solution* solution = new Solution(words);
+    vector<string>v = solution->solve(inputNumber);
+
+    for(int i=0;i<v.size();i++) {
+        cout<<v[i]<<" ";
+    }
+}
