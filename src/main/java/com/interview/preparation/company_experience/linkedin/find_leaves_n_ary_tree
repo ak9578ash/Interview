@@ -1,0 +1,90 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+        int val;
+        vector<TreeNode*>children;
+        TreeNode(int val) {
+            this->val = val;
+        }
+};
+
+class Solution {
+  private:
+    vector<vector<int>>ans;
+
+    int dfs(TreeNode* root) {
+        if (root->children.size() == 0) {
+            ans.push_back({});
+            ans[0].push_back(root->val);
+            return 0;
+        }
+        vector<int>childrenHeight;
+        for(int i=0;i<root->children.size();i++) {
+            TreeNode* child = root->children[i];
+            childrenHeight.push_back(dfs(child));
+        }
+
+        int rootHeight = 1 + *max_element(childrenHeight.begin(), childrenHeight.end());
+        while(ans.size() <= rootHeight) {
+            ans.push_back({});
+        }
+        ans[rootHeight].push_back(root->val);
+        return rootHeight;
+    }
+  public:
+    vector<vector<int>>solve(TreeNode* root) {
+        if (root==NULL) {
+            return {};
+        }
+
+        dfs(root);
+        return ans;
+    }
+};
+
+int main() {
+    TreeNode* root1 = new TreeNode(1);
+    TreeNode* root2 = new TreeNode(2);
+    TreeNode* root3 = new TreeNode(3);
+    TreeNode* root4 = new TreeNode(4);
+    TreeNode* root5 = new TreeNode(5);
+    TreeNode* root6 = new TreeNode(6);
+    TreeNode* root7 = new TreeNode(7);
+    TreeNode* root8 = new TreeNode(8);
+    TreeNode* root9 = new TreeNode(9);
+    TreeNode* root10 = new TreeNode(10);
+    TreeNode* root11 = new TreeNode(11);
+    TreeNode* root12 = new TreeNode(12);
+    TreeNode* root13 = new TreeNode(13);
+    TreeNode* root14 = new TreeNode(14);
+    TreeNode* root15 = new TreeNode(15);
+    TreeNode* root16 = new TreeNode(16);
+
+    root1->children = {root2, root3, root4};
+    root2->children = {root5, root6, root7};
+    root3->children = {root8, root9};
+    root8->children = {root10, root11, root12};
+    root9->children = {root13};
+    root11->children = {root14, root15, root16};
+
+
+    Solution* solution = new Solution();
+    vector<vector<int>>ans = solution->solve(root1);
+
+    for(int i=0;i<ans.size();i++) {
+        for(int j=0;j<ans[i].size();j++) {
+            cout<<ans[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}

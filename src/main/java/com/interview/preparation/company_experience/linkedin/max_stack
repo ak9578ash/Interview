@@ -1,0 +1,102 @@
+class Node{
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node(int val) {
+        this->val = val;
+        this->prev = NULL;
+        this->next = NULL;
+    }
+};
+
+class MaxStack {
+private:
+    Node* head;
+    Node* tail;
+    map<int, vector<Node*>>m;
+    void print(Node* node) {
+        while(node!=NULL) {
+            cout<<node->val<<" ";
+            node = node->next;
+        }
+        cout<<endl;
+    }
+public:
+    MaxStack() {
+        this->head = new Node(-1);
+        this->tail = new Node(-1);
+
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    void push(int x) {
+        Node* node = new Node(x);
+        Node* prevNode = tail->prev;
+
+        prevNode->next = node;
+        node->next = tail;
+        node->prev = prevNode;
+        tail->prev = node;
+
+        m[x].push_back(node);
+
+    }
+
+    int pop() {
+        Node* node = tail->prev;
+        Node* prevNode = node->prev;
+
+        int x = node->val;
+        m[x].pop_back();
+        if (m[x].size() == 0) {
+            m.erase(x);
+        }
+
+        prevNode->next = tail;
+        tail->prev = prevNode;
+
+        delete(node);
+        return x;
+    }
+
+    int top() {
+        Node* node = tail->prev;
+        int x = node->val;
+        return x;
+    }
+
+    int peekMax() {
+        Node* node = m.rbegin()->second.back();
+        int x = node->val;
+        return x;
+    }
+
+    int popMax() {
+        Node* node = m.rbegin()->second.back();
+        int x = node->val;
+
+        m[x].pop_back();
+        if (m[x].size() == 0){
+            m.erase(x);
+        }
+
+        Node* prevNode = node->prev;
+        prevNode->next = node->next;
+        node->next->prev = prevNode;
+
+        delete(node);
+        return x;
+    }
+};
+
+/**
+ * Your MaxStack object will be instantiated and called as such:
+ * MaxStack* obj = new MaxStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->peekMax();
+ * int param_5 = obj->popMax();
+ */

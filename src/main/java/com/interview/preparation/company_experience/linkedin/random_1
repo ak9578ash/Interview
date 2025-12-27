@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution{
+    private:
+        int dfs(vector<int>&dims, vector<int>&indices, int dim) {
+            if (dim == dims.size()) {
+                return M.get(indices);
+            }
+
+            int sum = 0;
+            for(int i=0;i<dims[dim];i++) {
+                indices[dim] = i;
+                sum = sum + dfs(dims, indices, dim+1);
+            }
+            return sum;
+        }
+    public:
+        int solve(vector<int>&dims) {
+            vector<int>indices(dims.size(), 0);
+            int dim = 0;
+            return dfs(dims, indices, dim);
+        }
+}
+
+int main() {
+   vector<int>dims = M.getDims();
+   Solution* solution = new Solution();
+   cout<<solution->solve(dims);
+}
