@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int minSumOfMaxes(vector<int>& nums, int k) {
+    int n = nums.size();
+    // dp[i][j]: minimum cost to split first j elements into i subarrays
+    vector<vector<int>> dp(k + 1, vector<int>(n + 1, INT_MAX));
+
+    dp[0][0] = 0;  // Base case: 0 cost for 0 elements and 0 partitions
+
+    for (int i = 1; i <= k; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            int currentMax = 0;
+            for (int p = j - 1; p >= i - 1; --p) {
+                currentMax = max(currentMax, nums[p]);
+                if (dp[i - 1][p] != INT_MAX) {
+                    dp[i][j] = min(dp[i][j], dp[i - 1][p] + currentMax);
+                }
+            }
+        }
+    }
+
+    return dp[k][n];
+}
+
+int main() {
+    vector<int>nums = {1, 5, 3, 4, 2};
+    int k = 2;
+    cout<<minSumOfMaxes(nums, k);
+}
