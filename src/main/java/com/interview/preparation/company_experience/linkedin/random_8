@@ -39,7 +39,12 @@ class Solution {
 };
 
 int main() {
-    vector<int>nums = {1, 1, 1, 1, 2};
+    // vector<int>nums = {1, 1, 1, 1, 2};
+    // vector<int>nums = {-1};
+    // vector<int>nums = {1, 1};
+    // vector<int>nums = {1, 1, 2};
+    // vector<int>nums = {1, 10, 1, 1, 1, 1};
+    // vector<int>nums = {1, 4, 1};
 
     Solution* solution = new Solution();
     cout<<solution->solve(nums);
