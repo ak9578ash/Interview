@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Solution {
+  public:
+    int solve(vector<int>& nums) {
+        vector<int>prefix(nums.size(), 0);
+        vector<int>suffix(nums.size(), 0);
+
+        prefix[0] = 1;
+        for(int i=1;i<nums.size();i++) {
+            if (nums[i] >= nums[i-1]) {
+                prefix[i] = prefix[i-1] + 1;
+            } else {
+                prefix[i] = 1;
+            }
+        }
+
+        reverse(nums.begin(), nums.end());
+        suffix[0] = 1;
+        for(int i=1;i<nums.size();i++) {
+            if (nums[i] <= nums[i-1]) {
+                suffix[i] = suffix[i-1] + 1;
+            } else {
+                suffix[i] = 1;
+            }
+        }
+        reverse(nums.begin(), nums.end());
+        reverse(suffix.begin(), suffix.end());
+
+        for(int i=0;i<prefix.size(); i++) {
+            cout<<prefix[i]<<" ";
+        }
+        cout<<endl;
+        for(int i=0;i<suffix.size();i++) {
+            cout<<suffix[i]<<" ";
+        }
+        cout<<endl;
+
+        int ans = 0;
+
+        ans = *max_element(prefix.begin(), prefix.end()); // no-flip case
+
+        for(int i=0;i<nums.size();i++) {
+            int leftLen = i-1 >= 0 ? prefix[i-1] : 0;
+            int leftVal = i-1 >= 0 ? nums[i-1] : INT_MIN;
+
+            int rightLen = i+1 < nums.size() ? suffix[i+1] : 0;
+            int rightVal = i+1 < nums.size() ? nums[i+1] : INT_MAX;
+
+            int combined = 0;
+            if (i > 0 && i + 1 < nums.size()) {
+                if (nums[i - 1] <= nums[i + 1]) {
+                    combined = leftLen + 1 + rightLen;
+                } else {
+                    combined = max(leftLen + 1, rightLen + 1);
+                }
+            } else {
+                combined = leftLen + 1 + rightLen;
+            }
+
+            ans = max(ans, combined);
+        }
+
+        return ans;
+    }
+};
+
+int main() {
+    // vector<int>nums = {8, 1, 2, 3, 4};
+    // vector<int>nums = {2, 3, 4, 1, 10};
+    // vector<int>nums = {2, 3, 4, 10};
+    // vector<int>nums = {10, 9, 8, 7};
+    // vector<int>nums = {1};
+    Solution* solution = new Solution();
+    cout<<solution->solve(nums);
+}
