@@ -1,0 +1,23 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* parent;
+};
+*/
+
+class Solution {
+public:
+    Node* lowestCommonAncestor(Node* n1, Node* n2) {
+        Node* p1 = n1;
+        Node* p2 = n2;
+        while (p1 != p2) {
+            p1 = (p1 == NULL) ? n2 : p1->parent;
+            p2 = (p2 == NULL) ? n1 : p2->parent;
+        }
+        return p1;
+    }
+};
