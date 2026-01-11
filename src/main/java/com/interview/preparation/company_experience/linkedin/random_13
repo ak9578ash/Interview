@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+  private:
+    int countSubsets(int idx, int target, vector<int>& arr, unordered_map<int, unordered_map<int,int>>&dp) {
+        if (idx == 0 && target == 0) {
+            return 1;
+        }
+
+        if (idx == 0 && target != 0) {
+            return 0;
+        }
+
+
+        if (dp.find(idx) != dp.end() && dp[idx].find(target) != dp[idx].end()) {
+            return dp[idx][target];
+        }
+
+        int take = countSubsets(idx - 1, target - arr[idx-1], arr, dp);
+        int notTake = countSubsets(idx - 1, target, arr, dp);
+
+        return dp[idx][target] = take + notTake;
+    }
+
+  public:
+    int perfectSum(vector<int>& arr, int target) {
+        unordered_map<int, unordered_map<int,int>>dp;
+        return countSubsets(arr.size(), target, arr, dp);
+    }
+};
+
+
+int main() {
+    Solution* solution = new Solution();
+
+    // vector<int> arr1 = {-1, 1, 2};
+    // cout << solution->perfectSum(arr1, 1) << endl; // subsets: {-1,2}, {1}
+
+    // vector<int> arr2 = {2, 2, 2, 3};
+    // cout << solution->perfectSum(arr2, 4) << endl; // subsets: {2,2} (3 ways)
+
+    // vector<int> arr3 = {0, 0, 0};
+    // cout << solution->perfectSum(arr3, 0) << endl; // subsets: 8 (all combinations)
+
+    // vector<int> arr4 = {-1, -1, 2, 2};
+    // cout << solution->perfectSum(arr4, 2) << endl; // subsets: {-1,2,1}, etc.
+
+    // vector<int> arr5 = {-1, -1, 2, 2};
+    // cout << solution->perfectSum(arr5, 0) << endl; // subsets summing to 0
+
+}
