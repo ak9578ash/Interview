@@ -1,0 +1,110 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+private:
+    vector<vector<int>>paths;
+
+    void dfs(vector<int>&path, vector<vector<int>>&parents, int u, int v) {
+        path.push_back(u);
+        if (u==v) {
+            reverse(path.begin(), path.end());
+            paths.push_back(path);
+            reverse(path.begin(), path.end());
+            path.pop_back();
+            return;
+        }
+
+        for(int i=0;i<parents[u].size();i++) {
+            int nu = parents[u][i];
+            dfs(path, parents, nu, v);
+        }
+
+        path.pop_back();
+        return;
+    }
+    vector<vector<int>> findAllPaths(vector<vector<int>>&parents, int src, int dst) {
+        vector<int>path;
+        dfs(path, parents, dst, src);
+
+        // for(int i=0;i<paths.size();i++) {
+        //     paths[i].pop_back();
+        //     reverse(paths[i].begin(), paths[i].end());
+        // }
+        return paths;
+    }
+public:
+    vector<vector<int>>solve(vector<vector<int>>&edges, int src, int dst) {
+        vector<vector<int>>adj(8);
+        for(int i=0;i<edges.size();i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        queue<int>q;
+        vector<vector<int>>parents(8);
+        vector<int>dist(8, INT_MAX);
+
+        q.push(src);
+        parents[src].push_back(-1);
+        dist[src] = 0;
+        while(!q.empty()) {
+            int size = q.size();
+            while(size--) {
+                int u = q.front();
+                q.pop();
+
+                for(int i=0; i<adj[u].size(); i++) {
+                    int nu = adj[u][i];
+                    if (dist[nu] == INT_MAX) {
+                        dist[nu] = dist[u] + 1;
+                        parents[nu].push_back(u);
+                        q.push(nu);
+                    } else if (dist[u] + 1 == dist[nu]) {
+                        parents[nu].push_back(u);
+                    }
+                }
+            }
+        }
+
+        // for(int i=0;i<parents.size();i++) {
+        //     cout<<i<<"-->";
+        //     for(int j=0;j<parents[i].size();j++) {
+        //         cout<<parents[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+
+        return findAllPaths(parents, src, dst);
+    }
+};
+
+int main() {
+    Solution* solution = new Solution();
+    vector<vector<int>>edges = {
+        { 0, 1 },
+        { 1, 2 },
+        { 0, 3 },
+        { 3, 4 },
+        { 4, 7 },
+        { 3, 7 },
+        { 6, 7 },
+        { 4, 5 },
+        { 4, 6 },
+        { 5, 6 }
+    };
+    int src = 2;
+    int dst = 6;
+
+    vector<vector<int>>paths = solution->solve(edges, src, dst);
+
+    for(int i=0;i<paths.size(); i++) {
+        for(int j=0; j<paths[i].size(); j++) {
+            cout<<paths[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
