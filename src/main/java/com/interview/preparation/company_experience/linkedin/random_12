@@ -1,0 +1,144 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class TreeNode {
+    public:
+        string key;
+        int value;
+        unordered_map<string, TreeNode*>children;
+};
+
+class Solution {
+  public:
+    TreeNode* solve(TreeNode* root1, TreeNode* root2) {
+        if (root1 == NULL && root2 == NULL) {
+            return NULL;
+        }
+
+        if (root1 == NULL && root2 != NULL) {
+            return root2;
+        }
+
+        if (root1 != NULL && root2 == NULL) {
+            return root1;
+        }
+
+        TreeNode* root = new TreeNode();
+        unordered_map<string, TreeNode*>children;
+        root->key = root1->key;
+        root->value = root1->value + root2->value;
+
+
+        unordered_map<string, TreeNode*>root1Children = root1->children;
+        unordered_map<string, TreeNode*>root2Children = root2->children;
+
+        for(auto it = root1Children.begin(); it!=root1Children.end(); it++) {
+            string key1 = it->first;
+            TreeNode* child1 = it->second;
+            TreeNode* child2 = root2Children[key1];
+
+            TreeNode* childNode = solve(child1, child2);
+            children[key1] = childNode;
+        }
+
+        for(auto it = root2Children.begin(); it!=root2Children.end(); it++) {
+            if (children.find(it->first) == children.end()) {
+                children[it->first] = it->second;
+            }
+        }
+
+        root->children = children;
+        return root;
+    }
+
+    void printLevelOrder(TreeNode* root) {
+        queue<TreeNode*>q;
+        q.push(root);
+
+        while(!q.empty()) {
+            int size = q.size();
+            while(size--) {
+                TreeNode* node = q.front();
+                q.pop();
+
+                cout<<"("<<node->key<<", "<<node->value<<")"<<" ";
+
+                for(auto it = node->children.begin(); it!=node->children.end(); it++) {
+                    q.push(it->second);
+                }
+
+            }
+            cout<<endl;
+        }
+    }
+};
+
+int main() {
+    TreeNode* root1 = new TreeNode();
+    root1->key = "root";
+    root1->value = 10;
+
+    TreeNode* root1ChildA = new TreeNode();
+    root1ChildA->key = "A";
+    root1ChildA->value = 2;
+
+    TreeNode* root1ChildB = new TreeNode();
+    root1ChildB->key = "B";
+    root1ChildB->value = 2;
+
+    TreeNode* root1ChildM = new TreeNode();
+    root1ChildM->key = "M";
+    root1ChildM->value = 6;
+
+    TreeNode* root1ChildL = new TreeNode();
+    root1ChildL->key = "L";
+    root1ChildL->value = 2;
+
+    TreeNode* root1ChildL_ = new TreeNode();
+    root1ChildL_->key = "L";
+    root1ChildL_->value = 2;
+
+
+    root1->children["A"] = root1ChildA;
+    root1->children["B"] = root1ChildB;
+    root1->children["M"] = root1ChildM;
+    root1ChildA->children["L"] = root1ChildL;
+    root1ChildB->children["L"] = root1ChildL_;
+
+
+    TreeNode* root2 = new TreeNode();
+    root2->key = "root";
+    root2->value = 13;
+
+    TreeNode* root2ChildA = new TreeNode();
+    root2ChildA->key = "A";
+    root2ChildA->value = 4;
+
+    TreeNode* root2ChildB = new TreeNode();
+    root2ChildB->key = "B";
+    root2ChildB->value = 3;
+
+    TreeNode* root2ChildD = new TreeNode();
+    root2ChildD->key = "D";
+    root2ChildD->value = 6;
+
+    TreeNode* root2ChildL = new TreeNode();
+    root2ChildL->key = "L";
+    root2ChildL->value = 4;
+
+    TreeNode* root2ChildM = new TreeNode();
+    root2ChildM->key = "M";
+    root2ChildM->value = 6;
+
+
+    root2->children["A"] = root2ChildA;
+    root2->children["B"] = root2ChildB;
+    root2->children["D"] = root2ChildD;
+    root2ChildA->children["L"] = root2ChildL;
+    root2ChildD->children["M"] = root2ChildM;
+
+    Solution* solution = new Solution();
+
+    TreeNode* root = solution->solve(root1, root2);
+    solution->printLevelOrder(root);
+}
