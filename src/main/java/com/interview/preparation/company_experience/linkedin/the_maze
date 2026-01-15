@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Solution {
+private:
+	vector<int>dirX = {1,-1,0,0};
+	vector<int>dirY = {0,0,1,-1};
+
+	bool isSafe(int r, int c, int R, int C) {
+	    return r>=0 && r<R && c>=0 && c<C;
+	}
+
+	bool dfs(vector<int>& start, vector<int>& destination, vector<vector<int>>& maze, vector<vector<bool>>&visited) {
+		visited[start[0]][start[1]] = true;
+
+		if (start == destination) {
+			return true;
+		}
+
+		for(int i=0;i<4;i++) {
+		    int nu = start[0];
+		    int nv = start[1];
+		    while(1) {
+		        if (isSafe(nu+dirX[i], nv+dirY[i], maze.size(), maze[0].size()) && maze[nu+dirX[i]][nv+dirY[i]] == 0) {
+		            nu = nu+dirX[i];
+		            nv = nv+dirY[i];
+		        } else {
+		            break;
+		        }
+		    }
+
+		    vector<int>v = {nu, nv};
+		    if(!visited[nu][nv]) {
+		        if (dfs(v, destination, maze, visited)) {
+		            return true;
+		        }
+		    }
+		}
+		return false;
+	}
+
+public:
+	bool hasPath(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination) {
+		int n = maze.size();
+		int m = maze[0].size();
+		vector<vector<bool>>visited(n, vector<bool>(m, false));
+
+		return dfs(start, destination, maze, visited);
+	}
+};
+
+int main() {
+    vector<vector<int>>maze = {
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 1, 0},
+        {1, 1, 0, 1, 1},
+        {0, 0, 0, 0, 0}
+    };
+
+    vector<int>start = {0, 4};
+    vector<int>destination = {4, 4};
+
+    Solution* solution = new Solution();
+    cout<<solution->hasPath(maze, start, destination);
+}
